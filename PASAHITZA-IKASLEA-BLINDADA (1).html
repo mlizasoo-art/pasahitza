@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASAHITZA - Ikaslea</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+        
+        .center { text-align: center; padding: 40px; }
+        .input-group { margin: 20px 0; }
+        .input-group input { padding: 10px; font-size: 16px; width: 200px; }
+        .input-group button { padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; }
+        .input-group input::placeholder { color: #999; }
+        
+        .game { display: none; }
+        .game.active { display: block; max-width: 600px; margin: 0 auto; }
+        
+        .game-header { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .game-header h2 { margin-bottom: 10px; }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat { background: #f0f0f0; padding: 10px; border-radius: 3px; text-align: center; }
+        .stat-label { font-size: 12px; color: #666; }
+        .stat-value { font-size: 20px; font-weight: bold; }
+        
+        .timer { font-size: 28px; font-weight: bold; margin: 10px 0; }
+        .timer.warning { color: #ff9800; }
+        .timer.danger { color: #f44336; }
+        
+        .question { background: white; padding: 30px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .question h3 { margin-bottom: 20px; font-size: 18px; }
+        .question input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ddd; border-radius: 3px; margin-bottom: 15px; }
+        .question input:focus { outline: none; border-color: #2196F3; }
+        
+        .buttons { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; font-size: 14px; }
+        .btn-send { background: #4CAF50; color: white; }
+        .btn-skip { background: #FF9800; color: white; }
+        
+        .feedback { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 30px 50px; border-radius: 10px; font-size: 24px; font-weight: bold; z-index: 1000; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #4CAF50; color: white; }
+        .feedback.incorrect { background: #f44336; color: white; }
+        
+        .notif { position: fixed; top: 20px; right: 20px; background: #333; color: white; padding: 15px 20px; border-radius: 5px; z-index: 1001; max-width: 300px; }
+        .notif.error { background: #d32f2f; }
+        .notif.success { background: #388e3c; }
+    </style>
+</head>
+<body>
+
+<div id="login" class="center">
+    <h2>👨‍🎓 PASAHITZA - Ikaslea</h2>
+    <div class="input-group">
+        <input type="text" id="izena" placeholder="Zure izena">
+    </div>
+    <div class="input-group">
+        <input type="text" id="kodea" placeholder="Kodea (ej: PASABCD)" maxlength="8">
+    </div>
+    <button class="input-group button" onclick="konektatu()">Konektatu</button>
+</div>
+
+<div id="game" class="game">
+    <div class="game-header">
+        <h2 id="gurpilaIzena">Gurpila</h2>
+        <div class="timer" id="timer">10:00</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">Puntuak</div>
+                <div class="stat-value" id="puntuak">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Erantzunak</div>
+                <div class="stat-value" id="erantzunak">0/10</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question">
+        <h3 id="galdera">Galdera</h3>
+        <input type="text" id="erantzuna" placeholder="Erantzuna" onkeypress="if(event.key==='Enter') responder()">
+        <div class="buttons">
+            <button class="btn btn-send" onclick="responder()">Bidali</button>
+            <button class="btn btn-skip" onclick="saltar()">Pasahitza</button>
+        </div>
+    </div>
+</div>
+
+<div id="feedback" class="feedback"></div>
+
+<script>
+// ============ CONFIGURACIÓN GLOBAL (IIFE para scope privado) ============
+(function() {
+    var timerInterval = null;
+    var bc = null;
+    
+    var APP = {
+        egoera: {
+            izena: '',
+            ikasleId: '',
+            puntuak: 0,
+            erantzunak: 0,
+            indizea: 0,
+            ronda: 1,
+            gurpila: null,
+            saltaduak: [],
+            denboraHasiera: 0,
+            denboraigaroa: 0
+        }
+    };
+    
+    // ============ VALIDACIÓN EUSKERA ============
+    function validarEuskerera(respuestaAlumno, palabraCorrecta) {
+        if (!respuestaAlumno || !palabraCorrecta) return false;
+        
+        var r = String(respuestaAlumno).toLowerCase().trim();
+        
+        // Aceptar múltiples opciones separadas por |
+        var opciones = String(palabraCorrecta).split('|').map(function(p) { 
+            return p.toLowerCase().trim(); 
+        });
+        
+        for (var i = 0; i < opciones.length; i++) {
+            var p = opciones[i];
+            
+            // Exacta
+            if (r === p) return true;
+            
+            // Sin -ak (plural)
+            if (r === p.replace(/ak$/, '')) return true;
+            if (p === r.replace(/ak$/, '')) return true;
+            
+            // Sin -a (itsatsia singular)
+            if (r === p.replace(/a$/, '')) return true;
+            if (p === r.replace(/a$/, '')) return true;
+            
+            // Sin -ak eta -a
+            var rSinA = r.replace(/a$/, '').replace(/ak$/, '');
+            var pSinA = p.replace(/a$/, '').replace(/ak$/, '');
+            if (rSinA === pSinA && rSinA.length > 2) return true;
+        }
+        
+        return false;
+    }
+    
+    // ============ NOTIFICACIONES ============
+    function showNotif(msg, type) {
+        type = type || 'info';
+        var d = document.createElement('div');
+        d.className = 'notif ' + type;
+        d.textContent = msg;
+        document.body.appendChild(d);
+        setTimeout(function() { d.remove(); }, 3000);
+    }
+    
+    function showFeedback(msg, zuzena) {
+        var fb = document.getElementById('feedback');
+        fb.textContent = msg;
+        fb.className = 'feedback show ' + (zuzena ? 'correct' : 'incorrect');
+        setTimeout(function() {
+            fb.classList.remove('show');
+        }, 1500);
+    }
+    
+    // ============ CONEXIÓN ============
+    window.konektatu = function() {
+        var izen = document.getElementById('izena').value.trim();
+        var kod = document.getElementById('kodea').value.trim().toUpperCase();
+        
+        if (!izen || izen.length === 0) {
+            showNotif('❌ Izena sartu behar duzu', 'error');
+            return;
+        }
+        if (!kod || kod.length === 0) {
+            showNotif('❌ Kodea sartu behar duzu', 'error');
+            return;
+        }
+        
+        var kodigoGordeta = localStorage.getItem('pasahitza_codigo');
+        if (!kodigoGordeta || kodigoGordeta !== kod) {
+            showNotif('❌ Kodea okerra', 'error');
+            return;
+        }
+        
+        var gurpilaJson = localStorage.getItem('pasahitza_gurpila_activa');
+        if (!gurpilaJson) {
+            showNotif('❌ Irakaslea ez dago konektatuta', 'error');
+            return;
+        }
+        
+        try {
+            APP.egoera.gurpila = JSON.parse(gurpilaJson);
+        } catch (e) {
+            showNotif('❌ Errorea datumak kargatzean', 'error');
+            return;
+        }
+        
+        if (!APP.egoera.gurpila || !APP.egoera.gurpila.preguntas || APP.egoera.gurpila.preguntas.length === 0) {
+            showNotif('❌ Gurpila ez da baliogabea', 'error');
+            return;
+        }
+        
+        APP.egoera.izena = izen;
+        APP.egoera.ikasleId = izen + Math.random().toString(36).substr(2, 8);
+        APP.egoera.indizea = 0;
+        APP.egoera.ronda = 1;
+        APP.egoera.puntuak = 0;
+        APP.egoera.erantzunak = 0;
+        APP.egoera.saltaduak = [];
+        APP.egoera.denboraHasiera = Date.now();
+        
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('game').classList.add('active');
+        document.getElementById('gurpilaIzena').textContent = APP.egoera.gurpila.izena || APP.egoera.gurpila.nombre || 'Gurpila';
+        
+        try {
+            bc = new BroadcastChannel('pasahitza_' + kod);
+            bc.postMessage({ tipo: 'ikasle-konektatu', izena: izen, id: APP.egoera.ikasleId });
+            bc.onmessage = function(e) {
+                if (e.data && e.data.tipo === 'joko-hasi') {
+                    erakutsiGaldera();
+                    hasieratuTimer();
+                }
+            };
+        } catch (e) {
+            showNotif('❌ BroadcastChannel ez dago suportatu', 'error');
+            document.getElementById('game').classList.remove('active');
+            document.getElementById('login').style.display = 'block';
+            return;
+        }
+        
+        showNotif('✅ Konektatuta. Itxaron irakasleari...', 'success');
+    };
+    
+    // ============ TIMER ============
+    function hasieratuTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        
+        timerInterval = setInterval(function() {
+            APP.egoera.denboraigaroa = Math.floor((Date.now() - APP.egoera.denboraHasiera) / 1000);
+            
+            var geratzen = 600 - APP.egoera.denboraigaroa;
+            if (geratzen <= 0) {
+                amaituJokoa();
+                return;
+            }
+            
+            var min = Math.floor(geratzen / 60);
+            var seg = geratzen % 60;
+            var erakutsi = min + ':' + (seg < 10 ? '0' : '') + seg;
+            
+            var timer = document.getElementById('timer');
+            if (timer) {
+                timer.textContent = erakutsi;
+                if (geratzen <= 60) {
+                    timer.classList.add('danger');
+                } else if (geratzen <= 120) {
+                    timer.classList.add('warning');
+                }
+            }
+        }, 1000);
+    }
+    
+    // ============ MOSTRAR PREGUNTA ============
+    function erakutsiGaldera() {
+        var preguntas = APP.egoera.gurpila ? APP.egoera.gurpila.preguntas : null;
+        if (!preguntas || !Array.isArray(preguntas) || preguntas.length === 0) {
+            amaituJokoa();
+            return;
+        }
+        
+        // Ronda 1: todas las preguntas
+        if (APP.egoera.ronda === 1) {
+            if (APP.egoera.indizea >= preguntas.length) {
+                // Acabó ronda 1, ¿hay saltadas?
+                if (APP.egoera.saltaduak.length === 0) {
+                    amaituJokoa();
+                    return;
+                }
+                // Iniciar ronda 2
+                APP.egoera.ronda = 2;
+                APP.egoera.indizea = 0;
+                showNotif('🎮 Bigarren ronda: Pasahitzak!', 'success');
+            }
+        }
+        
+        // Ronda 2: solo saltadas
+        if (APP.egoera.ronda === 2) {
+            if (APP.egoera.indizea >= APP.egoera.saltaduak.length) {
+                amaituJokoa();
+                return;
+            }
+        }
+        
+        // Obtener pregunta actual
+        var preguntaIdx;
+        if (APP.egoera.ronda === 1) {
+            preguntaIdx = APP.egoera.indizea;
+        } else {
+            preguntaIdx = APP.egoera.saltaduak[APP.egoera.indizea];
+        }
+        
+        if (preguntaIdx < 0 || preguntaIdx >= preguntas.length) {
+            amaituJokoa();
+            return;
+        }
+        
+        var g = preguntas[preguntaIdx];
+        if (!g) {
+            amaituJokoa();
+            return;
+        }
+        
+        document.getElementById('galdera').textContent = (g.letra || '?') + ' - ' + (g.definicion || '');
+        document.getElementById('erantzuna').value = '';
+        document.getElementById('puntuak').textContent = APP.egoera.puntuak;
+        document.getElementById('erantzunak').textContent = APP.egoera.erantzunak + '/' + preguntas.length;
+        document.getElementById('erantzuna').focus();
+    }
+    
+    window.erakutsiGaldera = erakutsiGaldera;
+    
+    // ============ RESPONDER ============
+    window.responder = function() {
+        var erantzu = document.getElementById('erantzuna').value.trim();
+        if (!erantzu || erantzu.length === 0) return;
+        
+        var preguntas = APP.egoera.gurpila ? APP.egoera.gurpila.preguntas : null;
+        if (!preguntas || !Array.isArray(preguntas) || APP.egoera.indizea >= preguntas.length) {
+            amaituJokoa();
+            return;
+        }
+        
+        var preguntaIdx;
+        if (APP.egoera.ronda === 1) {
+            preguntaIdx = APP.egoera.indizea;
+        } else {
+            preguntaIdx = APP.egoera.saltaduak[APP.egoera.indizea];
+        }
+        
+        if (preguntaIdx < 0 || preguntaIdx >= preguntas.length) {
+            amaituJokoa();
+            return;
+        }
+        
+        var g = preguntas[preguntaIdx];
+        if (!g) {
+            amaituJokoa();
+            return;
+        }
+        
+        var zuzena = validarEuskerera(erantzu, g.palabra);
+        
+        if (zuzena) {
+            APP.egoera.puntuak++;
+            showFeedback('✅ Ongi!', true);
+        } else {
+            showFeedback('❌ ' + (g.palabra || ''), false);
+        }
+        
+        APP.egoera.erantzunak++;
+        if (bc) {
+            try {
+                bc.postMessage({
+                    tipo: 'erantzuna-bidali',
+                    ikasleId: APP.egoera.ikasleId,
+                    galderaIdx: preguntaIdx,
+                    erantzuna: erantzu,
+                    zuzena: zuzena,
+                    denbora: APP.egoera.denboraigaroa
+                });
+            } catch (e) {
+                // Silencio si no puede enviar
+            }
+        }
+        
+        APP.egoera.indizea++;
+        setTimeout(erakutsiGaldera, 1500);
+    };
+    
+    // ============ SALTAR ============
+    window.saltar = function() {
+        if (APP.egoera.ronda === 1 && APP.egoera.indizea >= 0) {
+            APP.egoera.saltaduak.push(APP.egoera.indizea);
+        }
+        APP.egoera.erantzunak++;
+        APP.egoera.indizea++;
+        erakutsiGaldera();
+    };
+    
+    // ============ TERMINAR JUEGO ============
+    function amaituJokoa() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        showNotif('🎉 Amaitu duzu! Puntuak: ' + APP.egoera.puntuak, 'success');
+        document.getElementById('game').classList.remove('active');
+        document.getElementById('login').style.display = 'block';
+        if (bc) {
+            try { bc.close(); } catch (e) {}
+            bc = null;
+        }
+    }
+    
+    window.amaituJokoa = amaituJokoa;
+    window.hasieratuTimer = hasieratuTimer;
+    
+    // ============ CLEANUP EN BEFOREUNLOAD ============
+    window.addEventListener('beforeunload', function() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        if (bc) {
+            try { bc.close(); } catch (e) {}
+        }
+    });
+})();
+</script>
+</body>
+</html>
