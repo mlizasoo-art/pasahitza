@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASAHITZA - Kiosko (Reto Aulak)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* ============ PANTALLA LISTADO ============ */
+        .list-view { display: block; }
+        .list-view.hidden { display: none; }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        .gurpila-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .gurpila-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .gurpila-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .gurpila-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .gurpila-meta {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .gurpila-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-aktivatu {
+            flex: 1;
+            padding: 15px 20px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-aktivatu:hover {
+            background: #1976D2;
+        }
+        
+        .btn-aktivatu:active {
+            background: #1565C0;
+        }
+        
+        /* ============ PANTALLA SESIÓN ACTIVA ============ */
+        .session-view { display: none; }
+        .session-view.active { display: block; }
+        
+        .session-header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .session-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .gurpila-name {
+            font-size: 28px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .codigo-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .codigo-label {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .codigo-value {
+            font-size: 56px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .codigo-hint {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+        
+        /* ============ RANKING ============ */
+        .ranking-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .ranking-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ikasle-count {
+            background: #2196F3;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .ranking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .ikasle-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .ikasle-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .ikasle-stat {
+            font-size: 14px;
+            color: #666;
+            margin: 4px 0;
+        }
+        
+        .empty-ranking {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 18px;
+        }
+        
+        /* ============ BOTONES ACCIÓN ============ */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .btn-start {
+            background: #4CAF50;
+            color: white;
+            font-size: 24px;
+            padding: 25px 40px;
+            flex: 2;
+        }
+        
+        .btn-start:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        .btn-start:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #E68900;
+        }
+        
+        .btn-back {
+            background: #9E9E9E;
+            color: white;
+        }
+        
+        .btn-back:hover {
+            background: #757575;
+        }
+        
+        .btn-close {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-close:hover {
+            background: #da190b;
+        }
+        
+        /* ============ NOTIFICACIONES Y MODALES ============ */
+        .notif {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .notif.success { background: #4CAF50; }
+        .notif.error { background: #f44336; }
+        .notif.warning { background: #FF9800; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn-confirm {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .modal-btn-confirm:hover {
+            background: #45a049;
+        }
+        
+        .modal-btn-cancel {
+            background: #999;
+            color: white;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #777;
+        }
+        
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .codigo-value { font-size: 40px; }
+            .btn { font-size: 16px; }
+            .gurpila-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* ============ FULLSCREEN ============ */
+        .fullscreen-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<!-- PANTALLA LISTADO -->
+<div id="listView" class="list-view">
+    <div class="container">
+        <div class="header">
+            <h1>🎮 PASAHITZA - RETO AULAK</h1>
+            <p>Aukeratu gurpila eta aktivatu</p>
+        </div>
+        <div id="gurpilaGrid" class="gurpila-grid"></div>
+    </div>
+</div>
+
+<!-- PANTALLA SESIÓN ACTIVA -->
+<div id="sessionView" class="session-view">
+    <div class="container">
+        <div class="session-header">
+            <div class="session-title">🎮 SAIO AKTIBA</div>
+            <div class="gurpila-name" id="sessionGurpilaName">---</div>
+            
+            <div class="codigo-box">
+                <div class="codigo-label">Kodea:</div>
+                <div class="codigo-value" id="codigoDisplay">------</div>
+                <div class="codigo-hint">Ikasleak kodearekin konektatu behar dute</div>
+            </div>
+        </div>
+        
+        <div class="ranking-section">
+            <div class="ranking-title">
+                Ikasleak Konektatuta
+                <span class="ikasle-count" id="ikasleCount">0</span>
+            </div>
+            <div id="rankingContainer" class="ranking-grid">
+                <div class="empty-ranking">Ikasleak itxaroten...</div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-start" id="btnStartGame">🎮 JOKOA HASI</button>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-secondary" id="btnChangeCourse">↺ Gurpila Aldatu</button>
+            <button class="btn btn-close" id="btnCloseSesion">Itxi saioa</button>
+            <button class="btn btn-back" id="btnBack">← Atzera</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title">⚠️ Baieztatu</div>
+        <div class="modal-message" id="confirmMessage"></div>
+        <div class="modal-buttons">
+            <button class="modal-btn-confirm" id="confirmYes">Bai</button>
+            <button class="modal-btn-cancel" id="confirmNo">Ez</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL INFORMACIÓN -->
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title" id="infoTitle">ℹ️ Informazioa</div>
+        <div class="modal-message" id="infoMessage"></div>
+        <div class="modal-buttons">
+            <button class="modal-btn-confirm" id="infoOk">Ondo</button>
+        </div>
+    </div>
+</div>
+
+<!-- FULLSCREEN TOGGLE -->
+<button class="fullscreen-toggle" id="fullscreenBtn" title="Fullscreen">⛶ Fullscreen</button>
+
+<script>
+// ============ CONFIGURACIÓN GLOBAL ============
+var KIOSKO = {
+    gurpils: [],
+    gurpilaActiva: null,
+    sesionActiva: false,
+    codigo: null,
+    bc: null,
+    ikasleak: {},
+    timerInterval: null,
+    confirmCallback: null
+};
+
+// ============ UTILIDADES ============
+function showNotif(msg, type) {
+    type = type || 'info';
+    var d = document.createElement('div');
+    d.className = 'notif ' + type;
+    d.textContent = msg;
+    document.body.appendChild(d);
+    setTimeout(function() { d.remove(); }, 3000);
+}
+
+function showConfirm(msg, callback) {
+    document.getElementById('confirmMessage').textContent = msg;
+    KIOSKO.confirmCallback = callback;
+    document.getElementById('confirmModal').classList.add('show');
+}
+
+function showInfo(title, msg) {
+    document.getElementById('infoTitle').textContent = title;
+    document.getElementById('infoMessage').textContent = msg;
+    document.getElementById('infoModal').classList.add('show');
+}
+
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ============ CARGAR GURPILAS ============
+function loadGurpils() {
+    try {
+        var data = localStorage.getItem('pasahitza_gurpils');
+        KIOSKO.gurpils = data ? JSON.parse(data) : [];
+    } catch (e) {
+        showNotif('❌ Errorea datumak kargatzean', 'error');
+        KIOSKO.gurpils = [];
+    }
+    
+    if (KIOSKO.gurpils.length === 0) {
+        showInfo('⚠️ Arazoa', 'Ez dago gurpilik. Irakaslea gurpilak sortu behar du lehenengo.');
+        return false;
+    }
+    
+    renderGurpilaList();
+    return true;
+}
+
+// ============ RENDERIZAR LISTADO ============
+function renderGurpilaList() {
+    var grid = document.getElementById('gurpilaGrid');
+    var html = '';
+    
+    for (var i = 0; i < KIOSKO.gurpils.length; i++) {
+        var g = KIOSKO.gurpils[i];
+        if (!g || !g.preguntas) continue;
+        
+        html += '<div class="gurpila-card">';
+        html += '<div>';
+        html += '<div class="gurpila-title">' + escapeHtml(g.nombre || 'Gurpila') + '</div>';
+        html += '<div class="gurpila-meta">📊 Galderak: ' + g.preguntas.length + '</div>';
+        html += '</div>';
+        html += '<div class="gurpila-actions">';
+        html += '<button class="btn-aktivatu" data-idx="' + i + '">▶️ AKTIBATU</button>';
+        html += '</div>';
+        html += '</div>';
+    }
+    
+    grid.innerHTML = html;
+    
+    // Event listeners
+    document.querySelectorAll('.btn-aktivatu').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.getAttribute('data-idx'));
+            if (!isNaN(idx) && idx >= 0 && idx < KIOSKO.gurpils.length) {
+                aktivatuGurpila(idx);
+            }
+        });
+    });
+}
+
+// ============ ACTIVAR GURPILA ============
+function aktivatuGurpila(idx) {
+    var g = KIOSKO.gurpils[idx];
+    if (!g || !g.preguntas || g.preguntas.length === 0) {
+        showNotif('❌ Gurpila okerra', 'error');
+        return;
+    }
+    
+    // Si hay sesión activa, pedir confirmación
+    if (KIOSKO.sesionActiva) {
+        showConfirm(
+            'Gurpila berria aktibatu nahi duzu?\nAurreko saioa itxi egingo da.',
+            function(confirmed) {
+                if (confirmed) {
+                    closeSesion();
+                    setTimeout(function() { startSesion(idx, g); }, 500);
+                }
+            }
+        );
+    } else {
+        startSesion(idx, g);
+    }
+}
+
+// ============ INICIAR SESIÓN ============
+function startSesion(idx, g) {
+    KIOSKO.gurpilaActiva = g;
+    KIOSKO.codigo = 'PAS' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    KIOSKO.ikasleak = {};
+    KIOSKO.sesionActiva = true;
+    
+    try {
+        localStorage.setItem('pasahitza_codigo', KIOSKO.codigo);
+        localStorage.setItem('pasahitza_gurpila_activa', JSON.stringify(g));
+    } catch (e) {
+        showNotif('❌ Ezin gorde datua', 'error');
+        KIOSKO.sesionActiva = false;
+        return;
+    }
+    
+    // Cerrar BC anterior
+    if (KIOSKO.bc) {
+        try { KIOSKO.bc.close(); } catch (e) {}
+    }
+    
+    // Crear BC nuevo
+    try {
+        KIOSKO.bc = new BroadcastChannel('pasahitza_' + KIOSKO.codigo);
+        KIOSKO.bc.onmessage = handleMessage;
+    } catch (e) {
+        showNotif('❌ BroadcastChannel errorea', 'error');
+        KIOSKO.sesionActiva = false;
+        return;
+    }
+    
+    // Mostrar sesión
+    document.getElementById('listView').classList.add('hidden');
+    document.getElementById('sessionView').classList.add('active');
+    document.getElementById('sessionGurpilaName').textContent = escapeHtml(g.nombre || 'Gurpila');
+    document.getElementById('codigoDisplay').textContent = KIOSKO.codigo;
+    
+    showNotif('✅ Gurpila aktibatuta: ' + KIOSKO.codigo, 'success');
+}
+
+// ============ HANDLE MESSAGES ============
+function handleMessage(e) {
+    if (!e.data) return;
+    var msg = e.data;
+    
+    if (msg.tipo === 'ikasle-konektatu' && msg.id) {
+        if (!KIOSKO.ikasleak[msg.id]) {
+            KIOSKO.ikasleak[msg.id] = { izena: msg.izena || 'Ikaslea', puntuak: 0, erantzunak: 0, denbora: 0 };
+            updateRanking();
+        }
+    } else if (msg.tipo === 'erantzuna-bidali' && msg.ikasleId) {
+        if (KIOSKO.ikasleak[msg.ikasleId]) {
+            KIOSKO.ikasleak[msg.ikasleId].erantzunak++;
+            if (msg.zuzena) KIOSKO.ikasleak[msg.ikasleId].puntuak++;
+            if (typeof msg.denbora === 'number') {
+                KIOSKO.ikasleak[msg.ikasleId].denbora = msg.denbora;
+            }
+            updateRanking();
+        }
+    }
+}
+
+// ============ ACTUALIZAR RANKING ============
+function updateRanking() {
+    var container = document.getElementById('rankingContainer');
+    document.getElementById('ikasleCount').textContent = Object.keys(KIOSKO.ikasleak).length;
+    
+    var html = '';
+    var sorted = Object.values(KIOSKO.ikasleak).sort(function(a, b) {
+        return b.puntuak - a.puntuak;
+    });
+    
+    if (sorted.length === 0) {
+        container.innerHTML = '<div class="empty-ranking">Ikasleak itxaroten...</div>';
+        return;
+    }
+    
+    for (var i = 0; i < sorted.length; i++) {
+        var a = sorted[i];
+        var medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : ''));
+        
+        html += '<div class="ikasle-card">';
+        html += '<div class="ikasle-name">' + medal + ' ' + (i + 1) + '. ' + escapeHtml(a.izena) + '</div>';
+        html += '<div class="ikasle-stat">✅ Zuzenak: ' + a.puntuak + '</div>';
+        html += '<div class="ikasle-stat">📊 Erantzunak: ' + a.erantzunak + '</div>';
+        html += '<div class="ikasle-stat">⏱️ Denbora: ' + Math.round(a.denbora) + 's</div>';
+        html += '</div>';
+    }
+    
+    container.innerHTML = html;
+}
+
+// ============ INICIAR JUEGO ============
+function startGame() {
+    if (!KIOSKO.bc) {
+        showNotif('❌ BroadcastChannel arazoa', 'error');
+        return;
+    }
+    
+    try {
+        KIOSKO.bc.postMessage({ tipo: 'joko-hasi' });
+        showNotif('✅ Jokoa hasita!', 'success');
+    } catch (e) {
+        showNotif('❌ Errorea mezua bidatzean', 'error');
+    }
+}
+
+// ============ CERRAR SESIÓN ============
+function closeSesion() {
+    if (KIOSKO.bc) {
+        try { KIOSKO.bc.close(); } catch (e) {}
+        KIOSKO.bc = null;
+    }
+    
+    KIOSKO.sesionActiva = false;
+    KIOSKO.codigo = null;
+    KIOSKO.gurpilaActiva = null;
+    KIOSKO.ikasleak = {};
+    
+    try {
+        localStorage.removeItem('pasahitza_codigo');
+        localStorage.removeItem('pasahitza_gurpila_activa');
+    } catch (e) {}
+    
+    showNotif('✅ Saioa itxita', 'success');
+}
+
+// ============ VOLVER A LISTADO ============
+function backToList() {
+    if (KIOSKO.sesionActiva) {
+        showConfirm(
+            'Saioa itxi nahi duzu?',
+            function(confirmed) {
+                if (confirmed) {
+                    closeSesion();
+                    document.getElementById('listView').classList.remove('hidden');
+                    document.getElementById('sessionView').classList.remove('active');
+                }
+            }
+        );
+    } else {
+        document.getElementById('listView').classList.remove('hidden');
+        document.getElementById('sessionView').classList.remove('active');
+    }
+}
+
+// ============ FULLSCREEN ============
+function toggleFullscreen() {
+    var elem = document.documentElement;
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(function() {
+            showNotif('⚠️ Fullscreen ez dago suportatu', 'warning');
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// ============ EVENT LISTENERS ============
+document.getElementById('btnStartGame').addEventListener('click', startGame);
+document.getElementById('btnBack').addEventListener('click', backToList);
+document.getElementById('btnChangeCourse').addEventListener('click', backToList);
+document.getElementById('btnCloseSesion').addEventListener('click', function() {
+    showConfirm('Saioa itxi nahi duzu?', function(confirmed) {
+        if (confirmed) {
+            closeSesion();
+            document.getElementById('listView').classList.remove('hidden');
+            document.getElementById('sessionView').classList.remove('active');
+        }
+    });
+});
+
+document.getElementById('confirmYes').addEventListener('click', function() {
+    document.getElementById('confirmModal').classList.remove('show');
+    if (KIOSKO.confirmCallback) KIOSKO.confirmCallback(true);
+    KIOSKO.confirmCallback = null;
+});
+
+document.getElementById('confirmNo').addEventListener('click', function() {
+    document.getElementById('confirmModal').classList.remove('show');
+    if (KIOSKO.confirmCallback) KIOSKO.confirmCallback(false);
+    KIOSKO.confirmCallback = null;
+});
+
+document.getElementById('infoOk').addEventListener('click', function() {
+    document.getElementById('infoModal').classList.remove('show');
+});
+
+document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+
+// Cerrar modal al hacer click afuera
+document.getElementById('confirmModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.remove('show');
+    }
+});
+
+document.getElementById('infoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.remove('show');
+    }
+});
+
+// ============ CLEANUP EN BEFOREUNLOAD ============
+window.addEventListener('beforeunload', function() {
+    if (KIOSKO.bc) {
+        try { KIOSKO.bc.close(); } catch (e) {}
+    }
+});
+
+// ============ INICIALIZACIÓN ============
+window.addEventListener('load', function() {
+    if (!loadGurpils()) {
+        document.getElementById('gurpilaGrid').innerHTML = 
+            '<div style="text-align: center; color: white; font-size: 18px; grid-column: 1/-1; padding: 40px;">' +
+            'Ez dago gurpilik. Irakaslea sortu behar dituena lehen.' +
+            '</div>';
+    }
+});
+</script>
+</body>
+</html>

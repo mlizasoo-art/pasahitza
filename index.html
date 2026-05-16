@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASAHITZA - Aukera</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 64px;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 24px;
+            opacity: 0.95;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .option {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+        
+        .option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+        
+        .option:active {
+            transform: translateY(-5px);
+        }
+        
+        .option-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .option h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .option p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .option-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .option-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .info {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .info p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 5px 0;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 48px;
+            }
+            
+            .header p {
+                font-size: 18px;
+            }
+            
+            .option h2 {
+                font-size: 24px;
+            }
+            
+            .option-icon {
+                font-size: 56px;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🎮 PASAHITZA</h1>
+        <p>Pasapalabra en euskera</p>
+        <p class="subtitle">Aukeratu zure rola</p>
+    </div>
+    
+    <div class="options">
+        <!-- OPCIÓN 1: IKASLEA -->
+        <a href="PASAHITZA-IKASLEA-BLINDADA.html" class="option">
+            <span class="option-icon">👨‍🎓</span>
+            <h2>Ikaslea</h2>
+            <p>Jokatu eta puntuak lortu. Irakaslearen kodea behar duzu.</p>
+            <span class="option-link">→ Jokatu</span>
+        </a>
+        
+        <!-- OPCIÓN 2: KIOSKO -->
+        <a href="PASAHITZA-KIOSKO.html" class="option">
+            <span class="option-icon">🎮</span>
+            <h2>Kiosko</h2>
+            <p>Kontrola aula bakoitzean. Irakaslearen nola saioa aktibatzea eta jokoa hasi.</p>
+            <span class="option-link">→ Kontrol</span>
+        </a>
+    </div>
+    
+    <div class="info">
+        <h3>ℹ️ Informatzearen</h3>
+        <p>✅ Konektatuta estasu: <strong>AKTIBO</strong></p>
+        <p>📱 Zabaleran: <strong>Wi-Fi Eskolara</strong></p>
+        <p>⏱️ Nola: <strong>Jarraituz</strong></p>
+        <span class="status">PREST JOKATZEKO</span>
+    </div>
+    
+    <div class="footer">
+        <p>PASAHITZA - Reto aulak 2026</p>
+    </div>
+</div>
+
+<script>
+// Verificación simple de conexión
+window.addEventListener('load', function() {
+    // Intentar leer desde localStorage para verificar funcionalidad
+    try {
+        localStorage.setItem('test', 'ok');
+        localStorage.removeItem('test');
+    } catch (e) {
+        console.warn('localStorage no disponible');
+    }
+});
+</script>
+
+</body>
+</html>
