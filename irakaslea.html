@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irakaslea · PASAHITZA</title>
+<style>
+:root{--bg:#FAFAFA;--surface:#FFF;--text:#0A0A0A;--text2:#737373;--border:#E5E5E5;--accent:#2563EB;--ok:#10B981;--error:#EF4444}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:1.5rem;font-weight:700}
+.header-a{display:flex;gap:1rem}
+
+.layout{max-width:1200px;margin:0 auto;padding:2rem;width:100%}
+
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem}
+
+.list-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1.5rem}
+
+.gurpila-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;cursor:pointer;transition:all .15s}
+.gurpila-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.gurpila-h{display:flex;justify-content:space-between;align-items:start;margin-bottom:0.75rem}
+.gurpila-n{font-size:1.1rem;font-weight:700}
+.gurpila-desc{color:var(--text2);font-size:.9rem;margin-bottom:0.75rem}
+.gurpila-meta{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--text2)}
+.gurpila-a{display:flex;gap:0.5rem}
+.btn-small{background:0;border:0;color:var(--text2);cursor:pointer;padding:0.5rem;font-size:.85rem;transition:color .15s}
+.btn-small:hover{color:var(--text)}
+.btn-del:hover{color:var(--error)}
+
+.form-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1.5rem}
+
+.form-g{display:flex;flex-direction:column;gap:1rem}
+
+.form-field{display:flex;flex-direction:column;gap:.5rem}
+.form-field label{font-size:.9rem;font-weight:600;color:var(--text2)}
+.input{width:100%;padding:0.75rem 1rem;font-size:.95rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;background:var(--surface)}
+.input:focus{outline:0;border-color:var(--accent)}
+.textarea{resize:vertical;min-height:80px;font-family:inherit}
+
+.questions{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:1rem}
+.questions h3{font-size:1rem;font-weight:700;margin-bottom:1rem}
+
+.q-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:0.75rem;display:grid;grid-template-columns:40px 1fr auto;gap:1rem;align-items:center}
+.q-letter{background:var(--accent);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
+.q-content{display:flex;flex-direction:column;gap:.25rem}
+.q-content-l{font-weight:600}
+.q-content-s{color:var(--text2);font-size:.85rem}
+.q-del-btn{background:0;border:0;color:var(--error);cursor:pointer;padding:.5rem;font-size:.9rem}
+
+.add-q{background:var(--accent);color:#fff;border:0;padding:0.75rem 1rem;font-size:.9rem;font-weight:600;border-radius:8px;cursor:pointer;width:100%;margin-top:1rem;transition:background .15s}
+.add-q:hover{background:#1D4ED8}
+
+.buttons{display:flex;gap:1rem;margin-top:2rem}
+.btn{background:var(--accent);color:#fff;border:0;padding:1rem 1.5rem;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s;flex:1}
+.btn:hover{background:#1D4ED8}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg)}
+.btn-ghost{background:0;color:var(--text2);border:0;padding:.5rem 1rem;flex:0}
+
+.modal-o{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem}
+.modal-o.active{display:flex}
+.modal{background:#fff;border-radius:16px;padding:2rem;max-width:500px;width:100%}
+.modal h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+.modal p{color:var(--text2);margin-bottom:1.5rem}
+.modal-inp{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;margin-bottom:1.5rem}
+.modal-a{display:flex;gap:.75rem;justify-content:flex-end}
+
+.file-inp{display:none}
+
+.msg{padding:1rem 1.5rem;border-radius:10px;margin-bottom:1.5rem;display:none}
+.msg.ok{background:#DCFCE7;color:#15803D;border:1px solid #BBF7D0}
+.msg.error{background:#FEE2E2;color:#DC2626;border:1px solid #FECACA}
+.msg.show{display:block}
+
+@media(max-width:768px){
+  .grid{grid-template-columns:1fr;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Irakaslea · Gurpilak kudeatu</h1>
+  <div class="header-a">
+    <button class="btn-small" onclick="exportJSON()" title="Deskargu JSON">📥 Deskargu</button>
+    <label class="btn-small" style="cursor:pointer">📤 Kargatu<input type="file" id="file-import" class="file-inp" accept=".json" onchange="importJSON(event)"></label>
+    <a href="index.html" class="btn-small">← Hasierara</a>
+  </div>
+</div>
+
+<div class="layout">
+  <div id="msg" class="msg"></div>
+
+  <div class="grid">
+    <div class="list-section">
+      <h2>Gurpilak (<span id="count">0</span>)</h2>
+      <div id="list"></div>
+    </div>
+
+    <div class="form-section">
+      <h2 id="form-title">Gurpila berria</h2>
+      
+      <form class="form-g" onsubmit="saveGurpila(event)">
+        <div class="form-field">
+          <label>Izena</label>
+          <input type="text" id="name" class="input" placeholder="Adibidea: Euskal Historian" maxlength="100" required>
+        </div>
+
+        <div class="form-field">
+          <label>Deskribapena</label>
+          <input type="text" id="desc" class="input" placeholder="Laburra" maxlength="200">
+        </div>
+
+        <div class="form-field">
+          <label>Galderak (gehitu behean)</label>
+          <div class="questions">
+            <div id="questions-list"></div>
+            <button type="button" class="add-q" onclick="addQuestion()">+ Galdera gehitu</button>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn btn-ghost" onclick="clearForm()">Garbitu</button>
+          <button type="submit" class="btn">Gorde</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-o" id="modal">
+  <div class="modal">
+    <h2>Berretsi</h2>
+    <p id="modal-msg"></p>
+    <div class="modal-a">
+      <button class="btn btn-secondary" onclick="closeModal()">Utzi</button>
+      <button class="btn" id="modal-ok">Bai</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const APP={
+  data:{gurpilak:[]},
+  currentId:null,
+  questions:[],
+  
+  genId(){return 'G'+Math.random().toString(36).substr(2,8).toUpperCase()},
+  save(){localStorage.setItem('pasahitza_gurpilak_editor',JSON.stringify(this.data))},
+  load(){const d=localStorage.getItem('pasahitza_gurpilak_editor');if(d)this.data=JSON.parse(d)}
+};
+
+function show(msg,type='ok'){
+  const el=document.getElementById('msg');
+  el.textContent=msg;
+  el.className='msg '+type+' show';
+  setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function render(){
+  const list=document.getElementById('list');
+  document.getElementById('count').textContent=APP.data.gurpilak.length;
+  
+  if(APP.data.gurpilak.length===0){
+    list.innerHTML='<p style="color:var(--text2)">Ez dago gurpilarik. Sortu berria.</p>';
+    return;
+  }
+  
+  list.innerHTML=APP.data.gurpilak.map(g=>`
+    <div class="gurpila-card" onclick="editGurpila('${g.id}')">
+      <div class="gurpila-h">
+        <div class="gurpila-n">${esc(g.izena)}</div>
+        <div class="gurpila-a">
+          <button type="button" class="btn-small btn-del" onclick="delGurpila(event,'${g.id}')">🗑</button>
+        </div>
+      </div>
+      <div class="gurpila-desc">${esc(g.deskribapena||'')}</div>
+      <div class="gurpila-meta">
+        <span>${g.galderak.length} galdera</span>
+        <span style="font-family:monospace">${esc(g.id)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editGurpila(id){
+  const g=APP.data.gurpilak.find(x=>x.id===id);
+  if(!g)return;
+  
+  APP.currentId=id;
+  APP.questions=JSON.parse(JSON.stringify(g.galderak||[]));
+  
+  document.getElementById('form-title').textContent='Aldatu: '+g.izena;
+  document.getElementById('name').value=g.izena;
+  document.getElementById('desc').value=g.deskribapena||'';
+  renderQuestions();
+  window.scrollTo(0,0);
+}
+
+function addQuestion(){
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZÑ';
+  const used=APP.questions.map(q=>q.hizkia);
+  let l='A';
+  for(const c of letters){
+    if(!used.includes(c)){l=c;break}
+  }
+  APP.questions.push({hizkia:l,hitza:'',definizioa:''});
+  renderQuestions();
+}
+
+function renderQuestions(){
+  const cont=document.getElementById('questions-list');
+  if(APP.questions.length===0){
+    cont.innerHTML='';
+    return;
+  }
+  cont.innerHTML=APP.questions.map((q,i)=>`
+    <div class="q-item">
+      <div class="q-letter">${esc(q.hizkia)}</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem;flex:1">
+        <input type="text" placeholder="Hitza" value="${esc(q.hitza)}" onchange="APP.questions[${i}].hitza=this.value" class="input" style="font-size:.9rem;padding:.5rem .75rem">
+        <input type="text" placeholder="Definizioa" value="${esc(q.definizioa)}" onchange="APP.questions[${i}].definizioa=this.value" class="input" style="font-size:.85rem;padding:.5rem .75rem;color:var(--text2)">
+      </div>
+      <button type="button" class="q-del-btn" onclick="APP.questions.splice(${i},1);renderQuestions()">×</button>
+    </div>
+  `).join('');
+}
+
+function clearForm(){
+  APP.currentId=null;
+  APP.questions=[];
+  document.getElementById('form-title').textContent='Gurpila berria';
+  document.getElementById('name').value='';
+  document.getElementById('desc').value='';
+  renderQuestions();
+}
+
+function saveGurpila(ev){
+  ev.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const desc=document.getElementById('desc').value.trim();
+  
+  if(!name){show('Idatzi izena',  'error');return}
+  if(APP.questions.length===0){show('Gehitu gutxienez 1 galdera','error');return}
+  
+  const invalid=APP.questions.find(q=>!q.hitza.trim());
+  if(invalid){show('Bete itzazu hitze guztiak','error');return}
+  
+  let g;
+  if(APP.currentId){
+    g=APP.data.gurpilak.find(x=>x.id===APP.currentId);
+    g.izena=name;
+    g.deskribapena=desc;
+  }else{
+    g={id:APP.genId(),izena:name,deskribapena:desc};
+    APP.data.gurpilak.push(g);
+  }
+  
+  g.galderak=JSON.parse(JSON.stringify(APP.questions));
+  
+  APP.save();
+  render();
+  clearForm();
+  show('Gordetakoa!'+(APP.currentId?'':'Gurpila berria sortu da'));
+}
+
+function delGurpila(ev,id){
+  ev.stopPropagation();
+  const g=APP.data.gurpilak.find(x=>x.id===id);
+  if(!g)return;
+  
+  const ok=document.getElementById('modal-ok');
+  ok.onclick=()=>{
+    APP.data.gurpilak=APP.data.gurpilak.filter(x=>x.id!==id);
+    if(APP.currentId===id)clearForm();
+    APP.save();
+    render();
+    closeModal();
+    show('Ezabatakoa');
+  };
+  
+  document.getElementById('modal-msg').textContent=`Ziur "${g.izena}" ezabatzeari?`;
+  document.getElementById('modal').classList.add('active');
+}
+
+function exportJSON(){
+  const json=JSON.stringify({gurpilak:APP.data.gurpilak},null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='gurpilak_pasahitza_'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  show('Deskargatua!');
+}
+
+function importJSON(ev){
+  const file=ev.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      if(!d.gurpilak||!Array.isArray(d.gurpilak))throw new Error('Formatua ez da zuzena');
+      APP.data.gurpilak=d.gurpilak;
+      APP.save();
+      render();
+      show('Kargatua! '+d.gurpilak.length+' gurpila');
+      document.getElementById('file-import').value='';
+    }catch(err){
+      show('Akatsa: '+err.message,'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+
+function esc(s){
+  const d=document.createElement('div');
+  d.textContent=String(s);
+  return d.innerHTML;
+}
+
+APP.load();
+render();
+</script>
+
+</body>
+</html>

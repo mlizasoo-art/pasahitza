@@ -1,0 +1,268 @@
+{
+  "gurpilak": [
+    {
+      "id": "G1",
+      "izena": "Euskal Historia",
+      "deskribapena": "Euskal herriaren historia",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Aberria",
+          "definizioa": "Jaio den herria"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Bilbo",
+          "definizioa": "Bizkaiako hiriburua"
+        },
+        {
+          "hizkia": "C",
+          "hitza": "Cortes",
+          "definizioa": "Legegintzaren batzarra"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "Donibane",
+          "definizioa": "San Juan ingelesez"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Errege",
+          "definizioa": "Monarkiaren burua"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Fortuna",
+          "definizioa": "Sorte ona"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Gernika",
+          "definizioa": "Askatasun sakona duen herria"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Historia",
+          "definizioa": "Denbora-arte zerbait hitz egitea"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Inperioa",
+          "definizioa": "Botere handiko estatu batean erresumaren barnean"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Jaiotza",
+          "definizioa": "Mundura etortzea"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Korsaria",
+          "definizioa": "Baimen barik itsasoan abenturak egiten duen pertsona"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "Legea",
+          "definizioa": "Erregelari jarraituz egin beharreko eta baimendu edo debekatzen dena"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Miramon",
+          "definizioa": "Bizkaiako kastilua"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "Nafarroa",
+          "definizioa": "Euskadiko probintzia historikoa"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Onda",
+          "definizioa": "Uraren gainean itsaso edo ibai batean sortzen den abiadura handiko higadura"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Pazko",
+          "definizioa": "Asteazkena hiru egunetan dagoen ospea"
+        },
+        {
+          "hizkia": "Q",
+          "hitza": "Quena",
+          "definizioa": "Aldaren gainaren edo aurren gainaren aingura batean"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Reindikazio",
+          "definizioa": "Dena berriro bere ikuspegia jaitsi iritzi ahalantzea"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Sagarra",
+          "definizioa": "Lehen lorea"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Tradizioa",
+          "definizioa": "Aurrekoen menpe egon dena"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Ugaztuna",
+          "definizioa": "Bizia duten animaliak hartu dezaketen lehen motakoa"
+        },
+        {
+          "hizkia": "V",
+          "hitza": "Vara",
+          "definizioa": "Neurreko akats desberdina"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xaharra",
+          "definizioa": "Gaur egun zaharra dena, apala"
+        },
+        {
+          "hizkia": "Y",
+          "hitza": "Yada",
+          "definizioa": "Oraino inondik behera dago"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Zikloaren",
+          "definizioa": "Bere buruari bitzar egiten duen aldian"
+        }
+      ]
+    },
+    {
+      "id": "G2",
+      "izena": "Biologia",
+      "deskribapena": "Bizia eta bere gauzak",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Adarkan",
+          "definizioa": "Adarzaleen bitartez hezia"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Bizia",
+          "definizioa": "Organismo baten egonean"
+        },
+        {
+          "hizkia": "C",
+          "hitza": "Celula",
+          "definizioa": "Bizia dutenaren txikiena"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "DNA",
+          "definizioa": "Hereditatearen informazioa ematen duena"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Enzima",
+          "definizioa": "Erreakzioa azkarrago egiten duten proteinak"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Fotosintesia",
+          "definizioa": "Lanpara eta ura erabiliz elikagaia egitea"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Genea",
+          "definizioa": "Heredantzaren aldaera duten zatia"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Herentzia",
+          "definizioa": "Aurrekoek uzten dutena"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Inmunitate",
+          "definizioa": "Gaixotasunen aurka borrokatzeko gaitasuna"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Jatorra",
+          "definizioa": "Noiz nonahik hezitzen dena"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Kaloria",
+          "definizioa": "Energia elikagaia utziz"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "Laboralgia",
+          "definizioa": "Nerbioetako gaixotasuna"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Metabolismo",
+          "definizioa": "Bizia mantentzeko egintzak"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "Nerbio",
+          "definizioa": "Burua eta gorputzaren arteko mezu emaila"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Organo",
+          "definizioa": "Atalak batzuz egina"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Proteina",
+          "definizioa": "Bizia mantentzen laguntzen duen eraku konplikaturik"
+        },
+        {
+          "hizkia": "Q",
+          "hitza": "Quimika",
+          "definizioa": "Substantzien aldaketak aztertzen duena"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Respirazio",
+          "definizioa": "Oxigenoa hartu eta dioxido karbonoa bota"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Selekzio",
+          "definizioa": "Indarrenaren bidez onena gelditzea"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Tisua",
+          "definizioa": "Zelula berdinen osoa"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Uraren",
+          "definizioa": "Nola hainbeste gorputzaren osagaia dena"
+        },
+        {
+          "hizkia": "V",
+          "hitza": "Virus",
+          "definizioa": "Transmititzen diren gaixotasun sortzaileak"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xanela",
+          "definizioa": "Batzarriaren baten motakoa"
+        },
+        {
+          "hizkia": "Y",
+          "hitza": "Yolkua",
+          "definizioa": "Arrain arraina"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Zoologia",
+          "definizioa": "Animalien zientzia"
+        }
+      ]
+    }
+  ]
+}

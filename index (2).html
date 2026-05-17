@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PASAHITZA</title>
+<style>
+:root{--bg:#FAFAFA;--surface:#FFF;--text:#0A0A0A;--text2:#737373;--border:#E5E5E5;--accent:#2563EB}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
+.hero-content{max-width:600px;width:100%;text-align:center}
+
+.logo{font-size:4rem;margin-bottom:1rem}
+
+.title{font-size:3rem;font-weight:800;letter-spacing:-.04em;margin-bottom:1rem}
+
+.subtitle{font-size:1.25rem;color:var(--text2);margin-bottom:4rem;line-height:1.6}
+
+.btn-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-bottom:3rem}
+
+.btn-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:2.5rem 2rem;
+  text-decoration:none;
+  color:inherit;
+  transition:all .15s;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:1rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1rem;
+  min-height:140px;
+  justify-content:center;
+}
+
+.btn-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(37,99,235,0.1)
+}
+
+.btn-icon{
+  font-size:2.5rem;
+  opacity:.7;
+  transition:opacity .15s
+}
+
+.btn-card:hover .btn-icon{opacity:1}
+
+.btn-label{
+  font-size:1.1rem;
+  font-weight:600;
+}
+
+.btn-sublabel{
+  font-size:.85rem;
+  color:var(--text2);
+  font-weight:400;
+}
+
+.footer{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);font-size:.85rem;color:var(--text2)}
+
+@media(max-width:600px){
+  .title{font-size:2rem}
+  .subtitle{font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="logo">🎡</div>
+    
+    <h1 class="title">PASAHITZA</h1>
+    <p class="subtitle">Pasapalabra euskeraz denbora errealean</p>
+    
+    <div class="btn-grid">
+      <a href="koordinatzaile.html" class="btn-card">
+        <div class="btn-icon">🎮</div>
+        <div>
+          <div class="btn-label">Koordinatzaile</div>
+          <div class="btn-sublabel">Jokoaren zuzendaria</div>
+        </div>
+      </a>
+      
+      <a href="lehiakidea.html" class="btn-card">
+        <div class="btn-icon">🏃</div>
+        <div>
+          <div class="btn-label">Lehiakidea</div>
+          <div class="btn-sublabel">Erantzun eta irabazi</div>
+        </div>
+      </a>
+      
+      <a href="irakaslea.html" class="btn-card">
+        <div class="btn-icon">📝</div>
+        <div>
+          <div class="btn-label">Irakaslea</div>
+          <div class="btn-sublabel">Gurpilak sortu eta kudeatu</div>
+        </div>
+      </a>
+    </div>
+    
+    <div class="footer">
+      <p>PASAHITZA v1.0 · Firebase denbora errealean</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
