@@ -1,266 +1,674 @@
 {
   "gurpilak": [
     {
-      "id": "G1",
-      "izena": "Euskal Historia",
-      "deskribapena": "Euskal herriaren historia",
+      "id": "GA",
+      "izena": "A gurpila",
+      "deskribapena": "A gurpilaren galderak",
       "galderak": [
         {
           "hizkia": "A",
-          "hitza": "Aberria",
-          "definizioa": "Jaio den herria"
+          "hitza": "Aditza",
+          "definizioa": "Ekintza, egoera edo prozesu bat adierazten duen hitza"
         },
         {
           "hizkia": "B",
-          "hitza": "Bilbo",
-          "definizioa": "Bizkaiako hiriburua"
-        },
-        {
-          "hizkia": "C",
-          "hitza": "Cortes",
-          "definizioa": "Legegintzaren batzarra"
+          "hitza": "Bikotea",
+          "definizioa": "Bi pertsonek osatzen dutena"
         },
         {
           "hizkia": "D",
-          "hitza": "Donibane",
-          "definizioa": "San Juan ingelesez"
+          "hitza": "Diametroa",
+          "definizioa": "Zirkunferentziaren luzera osoa adierazten duen neurria"
         },
         {
           "hizkia": "E",
-          "hitza": "Errege",
-          "definizioa": "Monarkiaren burua"
+          "hitza": "Erregela",
+          "definizioa": "Gauzak neurtzeko erabiltzen den materiala"
         },
         {
           "hizkia": "F",
-          "hitza": "Fortuna",
-          "definizioa": "Sorte ona"
+          "hitza": "Frantzia",
+          "definizioa": "Zein herritan hasi zen 1789an sortutako mugimendu politiko eta soziala, monarkiarekin amaitu zuena"
         },
         {
           "hizkia": "G",
-          "hitza": "Gernika",
-          "definizioa": "Askatasun sakona duen herria"
+          "hitza": "Greba",
+          "definizioa": "Lanari edo jarduerari uko egitea, eskubideak aldarrikatzeko"
         },
         {
           "hizkia": "H",
-          "hitza": "Historia",
-          "definizioa": "Denbora-arte zerbait hitz egitea"
+          "hitza": "Herria",
+          "definizioa": "Pertsona talde txiki bat bizi den lekua"
         },
         {
           "hizkia": "I",
-          "hitza": "Inperioa",
-          "definizioa": "Botere handiko estatu batean erresumaren barnean"
+          "hitza": "Ikasbidaia",
+          "definizioa": "Ikasleok ikasturte amaieran elkarrekin egiten dugun bidaia"
         },
         {
           "hizkia": "J",
-          "hitza": "Jaiotza",
-          "definizioa": "Mundura etortzea"
+          "hitza": "Jarrera",
+          "definizioa": "Portaeraren sinonimoa"
         },
         {
           "hizkia": "K",
-          "hitza": "Korsaria",
-          "definizioa": "Baimen barik itsasoan abenturak egiten duen pertsona"
+          "hitza": "Klasea",
+          "definizioa": "Ikasgela edo irakasle batek ematen duen ikasgaia"
         },
         {
           "hizkia": "L",
-          "hitza": "Legea",
-          "definizioa": "Erregelari jarraituz egin beharreko eta baimendu edo debekatzen dena"
+          "hitza": "Laura",
+          "definizioa": "Euskarako irakasle baten izena"
         },
         {
           "hizkia": "M",
-          "hitza": "Miramon",
-          "definizioa": "Bizkaiako kastilua"
+          "hitza": "Mahaia",
+          "definizioa": "Lau hanka dituen altzaria, gainean gauzak jartzeko"
         },
         {
           "hizkia": "N",
           "hitza": "Nafarroa",
-          "definizioa": "Euskadiko probintzia historikoa"
+          "definizioa": "Euskal Herriko herrialde bat, Iruñea hiriburua duena"
         },
         {
           "hizkia": "O",
-          "hitza": "Onda",
-          "definizioa": "Uraren gainean itsaso edo ibai batean sortzen den abiadura handiko higadura"
+          "hitza": "Ostirala",
+          "definizioa": "Asteko bosgarren eguna"
         },
         {
           "hizkia": "P",
-          "hitza": "Pazko",
-          "definizioa": "Asteazkena hiru egunetan dagoen ospea"
-        },
-        {
-          "hizkia": "Q",
-          "hitza": "Quena",
-          "definizioa": "Aldaren gainaren edo aurren gainaren aingura batean"
+          "hitza": "Parte",
+          "definizioa": "Gaizki portatzen zarenean zure etxera ailegatzen dena"
         },
         {
           "hizkia": "R",
-          "hitza": "Reindikazio",
-          "definizioa": "Dena berriro bere ikuspegia jaitsi iritzi ahalantzea"
+          "hitza": "Ramadan",
+          "definizioa": "Musulmanentzat hilabete sakratua"
         },
         {
           "hizkia": "S",
-          "hitza": "Sagarra",
-          "definizioa": "Lehen lorea"
+          "hitza": "Saskia",
+          "definizioa": "Baloia uztai horretan sartu behar duzu"
         },
         {
           "hizkia": "T",
-          "hitza": "Tradizioa",
-          "definizioa": "Aurrekoen menpe egon dena"
+          "hitza": "Txoria",
+          "definizioa": "Hegoak eta lumak dituen animalia eta hegan egiten duena"
         },
         {
           "hizkia": "U",
-          "hitza": "Ugaztuna",
-          "definizioa": "Bizia duten animaliak hartu dezaketen lehen motakoa"
-        },
-        {
-          "hizkia": "V",
-          "hitza": "Vara",
-          "definizioa": "Neurreko akats desberdina"
+          "hitza": "Uda",
+          "definizioa": "Urteko urtarorik beroena, ekainetik irailera irauten duena"
         },
         {
           "hizkia": "X",
-          "hitza": "Xaharra",
-          "definizioa": "Gaur egun zaharra dena, apala"
-        },
-        {
-          "hizkia": "Y",
-          "hitza": "Yada",
-          "definizioa": "Oraino inondik behera dago"
+          "hitza": "Xaboia",
+          "definizioa": "Gorputza edo gauzak garbitzeko erabiltzen den produktua"
         },
         {
           "hizkia": "Z",
-          "hitza": "Zikloaren",
-          "definizioa": "Bere buruari bitzar egiten duen aldian"
+          "hitza": "Zatiketak",
+          "definizioa": "Zenbaki bat hainbat zati berdinetan banatzen denean. Eragiketa matematikoa"
         }
       ]
     },
     {
-      "id": "G2",
-      "izena": "Biologia",
-      "deskribapena": "Bizia eta bere gauzak",
+      "id": "GB",
+      "izena": "B gurpila",
+      "deskribapena": "B gurpilaren galderak",
       "galderak": [
         {
           "hizkia": "A",
-          "hitza": "Adarkan",
-          "definizioa": "Adarzaleen bitartez hezia"
+          "hitza": "Andoni",
+          "definizioa": "Mate irakaslea 4.mailan"
         },
         {
           "hizkia": "B",
-          "hitza": "Bizia",
-          "definizioa": "Organismo baten egonean"
-        },
-        {
-          "hizkia": "C",
-          "hitza": "Celula",
-          "definizioa": "Bizia dutenaren txikiena"
+          "hitza": "Banbu",
+          "definizioa": "Zerekin mozten ditu zapatilak ibrahimaren aitak Miñan liburuan?"
         },
         {
           "hizkia": "D",
-          "hitza": "DNA",
-          "definizioa": "Hereditatearen informazioa ematen duena"
+          "hitza": "Danimarka",
+          "definizioa": "Kopenhage hiriburu duen herria"
         },
         {
           "hizkia": "E",
-          "hitza": "Enzima",
-          "definizioa": "Erreakzioa azkarrago egiten duten proteinak"
+          "hitza": "Errekuperazioa",
+          "definizioa": "Suspenditzen duzuenean egin beharreko azterketa"
         },
         {
           "hizkia": "F",
-          "hitza": "Fotosintesia",
-          "definizioa": "Lanpara eta ura erabiliz elikagaia egitea"
+          "hitza": "Fruta",
+          "definizioa": "Landareek ematen duten jaki gozoa"
         },
         {
           "hizkia": "G",
-          "hitza": "Genea",
-          "definizioa": "Heredantzaren aldaera duten zatia"
+          "hitza": "Gainditu",
+          "definizioa": "Suspenditzen ez duzuenean"
         },
         {
           "hizkia": "H",
-          "hitza": "Herentzia",
-          "definizioa": "Aurrekoek uzten dutena"
+          "hitza": "HA",
+          "definizioa": "Zein da HA akronimoaren lehen letraren esanahia?"
         },
         {
           "hizkia": "I",
-          "hitza": "Inmunitate",
-          "definizioa": "Gaixotasunen aurka borrokatzeko gaitasuna"
+          "hitza": "Irabazlea",
+          "definizioa": "Galtzailearen antonimoa"
         },
         {
           "hizkia": "J",
           "hitza": "Jatorra",
-          "definizioa": "Noiz nonahik hezitzen dena"
+          "definizioa": "Pertsona zintzoa, laguntzeko prest egoten dena eta alaia"
         },
         {
           "hizkia": "K",
-          "hitza": "Kaloria",
-          "definizioa": "Energia elikagaia utziz"
+          "hitza": "Kaixo",
+          "definizioa": "Euskaraz ongi-etorria emateko gehien erabiltzen dugun hitza"
         },
         {
           "hizkia": "L",
-          "hitza": "Laboralgia",
-          "definizioa": "Nerbioetako gaixotasuna"
+          "hitza": "Lenin",
+          "definizioa": "Errusiar iraultzaren buruzagi nagusiaren abizena"
         },
         {
           "hizkia": "M",
-          "hitza": "Metabolismo",
-          "definizioa": "Bizia mantentzeko egintzak"
+          "hitza": "Monitorea",
+          "definizioa": "Nola deitzen zaie ordenagailuen pantailei?"
         },
         {
           "hizkia": "N",
-          "hitza": "Nerbio",
-          "definizioa": "Burua eta gorputzaren arteko mezu emaila"
+          "hitza": "Nahiko",
+          "definizioa": "5 bat ateratzen duzunean"
         },
         {
           "hizkia": "O",
-          "hitza": "Organo",
-          "definizioa": "Atalak batzuz egina"
+          "hitza": "Orreaga",
+          "definizioa": "Baskoiek Karlomagno irabazi zuten tokia"
         },
         {
           "hizkia": "P",
-          "hitza": "Proteina",
-          "definizioa": "Bizia mantentzen laguntzen duen eraku konplikaturik"
-        },
-        {
-          "hizkia": "Q",
-          "hitza": "Quimika",
-          "definizioa": "Substantzien aldaketak aztertzen duena"
+          "hitza": "Peru",
+          "definizioa": "Juan Antonio Mogelek idatzitako lehen liburuaren protagonistaren izena"
         },
         {
           "hizkia": "R",
-          "hitza": "Respirazio",
-          "definizioa": "Oxigenoa hartu eta dioxido karbonoa bota"
+          "hitza": "Robespierre",
+          "definizioa": "Frantziar Iraultzan gilotina erabili zuen eta gilotinaz hil zuten pertsonajea"
         },
         {
           "hizkia": "S",
-          "hitza": "Selekzio",
-          "definizioa": "Indarrenaren bidez onena gelditzea"
+          "hitza": "Siglak",
+          "definizioa": "Kimikan, elementu bakunagoak konbinatuz konposatu berri bat sortzeko prozesua"
         },
         {
           "hizkia": "T",
-          "hitza": "Tisua",
-          "definizioa": "Zelula berdinen osoa"
+          "hitza": "Termometro",
+          "definizioa": "Tenperatura neurtzeko erabiltzen den tresna"
         },
         {
           "hizkia": "U",
-          "hitza": "Uraren",
-          "definizioa": "Nola hainbeste gorputzaren osagaia dena"
-        },
-        {
-          "hizkia": "V",
-          "hitza": "Virus",
-          "definizioa": "Transmititzen diren gaixotasun sortzaileak"
+          "hitza": "Urrea",
+          "definizioa": "Au sinboloa duena"
         },
         {
           "hizkia": "X",
-          "hitza": "Xanela",
-          "definizioa": "Batzarriaren baten motakoa"
-        },
-        {
-          "hizkia": "Y",
-          "hitza": "Yolkua",
-          "definizioa": "Arrain arraina"
+          "hitza": "Xilofonoa",
+          "definizioa": "Musika instrumentu bat"
         },
         {
           "hizkia": "Z",
-          "hitza": "Zoologia",
-          "definizioa": "Animalien zientzia"
+          "hitza": "Zaborra",
+          "definizioa": "Hondakina"
+        }
+      ]
+    },
+    {
+      "id": "GC",
+      "izena": "C gurpila",
+      "deskribapena": "C gurpilaren galderak",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Ahalera",
+          "definizioa": "Euskaran eman dugun aditz motatako bat"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Batua",
+          "definizioa": "Zein da denon artean ulertzeko sortutako euskara eredua"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "Dialektoa",
+          "definizioa": "Hizkuntzaren kategoria sozialera iristen ez den hizkuntzaren barietatea"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Eskalada",
+          "definizioa": "Paretan igota egiten den kirola"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Frantzia",
+          "definizioa": "Absolutismoarekin amaitu zuen iraultza gertatu zen herria"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Girona",
+          "definizioa": "Kataluniako probintzia bat"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Hormak",
+          "definizioa": "Euskaran irakurri genuen liburu bat"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Ikasbidaia",
+          "definizioa": "4.mailan egiten den bidaia"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Jolasa",
+          "definizioa": "Gorputz hezkuntzan berotzeko egiten den ariketa"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Koreografia",
+          "definizioa": "Inauterietan egiten den dantza"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "Latin",
+          "definizioa": "Soilik Vatikanoan hitz egiten den hizkuntza"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Maria",
+          "definizioa": "Luis XVIren emaztearen lehen izena"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "Nerve",
+          "definizioa": "Ingelesean ikusitako filmaren izenburua"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Otsaila",
+          "definizioa": "Ihauteriak hilabete honetan izan ziren"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Polonia",
+          "definizioa": "Varsovia hiriburutzat duen herria"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Radio",
+          "definizioa": "Ra sinbolo kimikoa duena"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Sufragismoa",
+          "definizioa": "Emakumeek bozka eskubidea lortzeko egin zuten mugimendua"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Tutorea",
+          "definizioa": "Gure kezkak jasotzen dituen irakaslea"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Ulermen",
+          "definizioa": "Euskaran eman dugun testu mota bat"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xilofonoa",
+          "definizioa": "Musikan jotzen den instrumentua"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Zatiketak",
+          "definizioa": "Zenbakien arteko banaketa egiten den eragiketa matematikoa"
+        }
+      ]
+    },
+    {
+      "id": "GD",
+      "izena": "D gurpila",
+      "deskribapena": "D gurpilaren galderak",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Absolutismoa",
+          "definizioa": "Geo-Hiseko kontzeptua, gobernu bat non botere guztia duen"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Build",
+          "definizioa": "Ingeleseko irregular verb bat, eraiki esanahia duena"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "Duce",
+          "definizioa": "Mussolini diktadore izatera iritsi zenean nola deitzen zuten?"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Elebakar",
+          "definizioa": "Hizkuntza bakarra hitz egiten duen pertsona"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Francisco",
+          "definizioa": "Espainako gerra-zibila eragin zuen estatu-kolpea burutu zuen jeneralaren izena"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Grebak",
+          "definizioa": "Zerbait aldarrikatzeko lan uztea"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Hamabi",
+          "definizioa": "Zenbat ikasgai ditugu?"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Iparbanda",
+          "definizioa": "Iparraldeko musika taldearen izena"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Jarduerak",
+          "definizioa": "Klaseetan egiten duguna edukiak praktikatzeko"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Katalunia",
+          "definizioa": "Ikasbidaiara joan garen autonomia erkidegoa"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "LA",
+          "definizioa": "Musikako nota bat"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Monarkia",
+          "definizioa": "Errepublikaren kontrakoa"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "NAN",
+          "definizioa": "Poliziaren aurrean Identifikatzeko erabiltzen den txartela"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Olentzero",
+          "definizioa": "Eguberrietako protagonista"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Persepolis",
+          "definizioa": "Gazten irakurritako liburua"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Rafting",
+          "definizioa": "Ikasbidaian egingo dugun jarduera"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Sufragismoa",
+          "definizioa": "Emakumeen bozkatzeko eskubidea lortu zuen mugimendua"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Tsarra",
+          "definizioa": "Nola deitzen zaio/diote Errusiako erregeari?"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Urria",
+          "definizioa": "Boltxebikeak protagonistak izan ziren Iraultzaren hilabetea"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xilofonoa",
+          "definizioa": "Musikan jotzen den instrumentua"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Zanpantzar",
+          "definizioa": "Ituren eta Zubietako folkloreko pertsonaia tradizionala da, kanpai handiak astinduz iragartzen dituena"
+        }
+      ]
+    },
+    {
+      "id": "GE",
+      "izena": "E gurpila",
+      "deskribapena": "E gurpilaren galderak",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Adjektiboa",
+          "definizioa": "Zerbait deskribatzeko"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Badminton",
+          "definizioa": "Gorputz Hezkuntzako kirola"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "Difficult",
+          "definizioa": "Ingelesez zaila"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Ekuazioa",
+          "definizioa": "Berdintza matematiko bat da"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Falazia",
+          "definizioa": "Egiaren kontrako hitza"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Grafiko",
+          "definizioa": "Matematiketan datuak irudien bidez adierazteko"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Hormak",
+          "definizioa": "Bigarren ebaluazioan Euskeran irakurri genuen liburua"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Izenburua",
+          "definizioa": "Liburu edo testu bati, hasiera ematen dion zatia"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Jolasak",
+          "definizioa": "Berotzeko egiten ditugun jarduerak"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Katetoa",
+          "definizioa": "Triangelu zuzen baten angelu zuzena"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "Listening",
+          "definizioa": "Ingelesean entzumen azterketa"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Monarkia",
+          "definizioa": "Sistema honetan erregea da nagusi"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "Number",
+          "definizioa": "Zenbakia ingelesez"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Ortografia",
+          "definizioa": "Atal horretan akatsa egiteagatik, puntu bat kendu ahal digute"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Patioa",
+          "definizioa": "11etan daukagun deskantsurako tokia"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Raketa",
+          "definizioa": "Badminton jolasteko behar dugun gailua"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Sufragismoa",
+          "definizioa": "Emakueentzako bozka eskubidea lortu zuen mugimendua"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Taula",
+          "definizioa": "Datuak sailatzeko erabiltzen den errenkada eta zutabe multzoa"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Unit",
+          "definizioa": "Ingeleseko liburuetan agertzen diren atalak"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xilofonoa",
+          "definizioa": "Hirugarren mailan musikan landu genuen instrumentua"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Zuzenketak",
+          "definizioa": "Azterketa bat baloratzeko irakasleek egiten dutena"
+        }
+      ]
+    },
+    {
+      "id": "GF",
+      "izena": "F gurpila",
+      "deskribapena": "F gurpilaren galderak",
+      "galderak": [
+        {
+          "hizkia": "A",
+          "hitza": "Artilea",
+          "definizioa": "Jertseak egiteko erabiltzen den materiala"
+        },
+        {
+          "hizkia": "B",
+          "hitza": "Baldintza",
+          "definizioa": "Euskaran ikusi dugun aditz mota korapilatsua"
+        },
+        {
+          "hizkia": "D",
+          "hitza": "Dibortzioa",
+          "definizioa": "Bikote bat banantzen denean"
+        },
+        {
+          "hizkia": "E",
+          "hitza": "Elefantea",
+          "definizioa": "Tronpadun animalia"
+        },
+        {
+          "hizkia": "F",
+          "hitza": "Funtzioak",
+          "definizioa": "Maten emandako azken gaia"
+        },
+        {
+          "hizkia": "G",
+          "hitza": "Historia",
+          "definizioa": "Ikasteko materia gehien bidaltzen diguten irakasgaia"
+        },
+        {
+          "hizkia": "H",
+          "hitza": "Hasi",
+          "definizioa": "Bukatzearen aurkako hitza"
+        },
+        {
+          "hizkia": "I",
+          "hitza": "Iparralde",
+          "definizioa": "Ikastetxe onenaren izena"
+        },
+        {
+          "hizkia": "J",
+          "hitza": "Janaria",
+          "definizioa": "Bizirauteko ezinbestekoa dena"
+        },
+        {
+          "hizkia": "K",
+          "hitza": "Kirola",
+          "definizioa": "Gorputz heziketako klasean egiten duguna"
+        },
+        {
+          "hizkia": "L",
+          "hitza": "Leihoa",
+          "definizioa": "Gorputz heziketa saio baten ondoren ireki behar da, airea hartzeko"
+        },
+        {
+          "hizkia": "M",
+          "hitza": "Maria",
+          "definizioa": "Gaileta marka ezaguna edo institutoko irakasle baten izena"
+        },
+        {
+          "hizkia": "N",
+          "hitza": "Negua",
+          "definizioa": "Udaren aurkakoa"
+        },
+        {
+          "hizkia": "O",
+          "hitza": "Osasuna",
+          "definizioa": "Iruñako futbol talderik onena"
+        },
+        {
+          "hizkia": "P",
+          "hitza": "Patioa",
+          "definizioa": "Bertan egoten gara 11.00ak eta 11.30ak artean"
+        },
+        {
+          "hizkia": "R",
+          "hitza": "Ramadan",
+          "definizioa": "Musulmanek egindako janari greba"
+        },
+        {
+          "hizkia": "S",
+          "hitza": "Saskibaloia",
+          "definizioa": "Kirol bat baloi laranjarekin jolasten dena"
+        },
+        {
+          "hizkia": "T",
+          "hitza": "Traktorea",
+          "definizioa": "Bi gurpil handi eta bi txiki dituen ibilgailua"
+        },
+        {
+          "hizkia": "U",
+          "hitza": "Urdina",
+          "definizioa": "Zeruaren eta itsasoaren kolorea"
+        },
+        {
+          "hizkia": "X",
+          "hitza": "Xaboia",
+          "definizioa": "Dutxatzeko erabilzen duzuna"
+        },
+        {
+          "hizkia": "Z",
+          "hitza": "Ziripot",
+          "definizioa": "Lantzeko mozorro ezagunaren izena"
         }
       ]
     }
