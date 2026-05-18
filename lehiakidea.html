@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lehiakidea · PASAHITZA</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+<style>
+:root{--bg:#FAFAFA;--surface:#FFF;--text:#0A0A0A;--text2:#737373;--border:#E5E5E5;--accent:#2563EB;--ok:#10B981;--error:#EF4444}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.screen{display:none}.screen.active{display:flex;flex-direction:column;min-height:100vh}
+.layout{max-width:600px;margin:0 auto;padding:2rem;width:100%}
+.inicio{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
+.inicio-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:3rem 2rem;max-width:500px;width:100%;text-align:center}
+.inicio-h{font-size:1.75rem;font-weight:700;margin-bottom:1rem}
+.inicio-p{color:var(--text2);margin-bottom:2rem;line-height:1.5}
+.form-g{display:flex;flex-direction:column;gap:1rem}
+.input{width:100%;padding:1rem 1.25rem;font-size:1rem;border:2px solid var(--border);border-radius:10px;font-family:inherit;background:var(--surface);transition:border .15s}
+.input:focus{outline:0;border-color:var(--accent)}
+.hint{font-size:.85rem;color:var(--text2);margin-top:.25rem}
+.btn{background:var(--accent);color:#fff;border:0;padding:1rem 1.5rem;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+.btn:hover:not(:disabled){background:#1D4ED8}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.error-box{background:#FEE2E2;border:1px solid #FECACA;color:#DC2626;padding:1rem 1.25rem;border-radius:10px;margin-bottom:1.5rem;font-size:.95rem;display:none}
+.game{display:flex;flex-direction:column;padding:2rem 1rem}
+.game-h{text-align:center;margin-bottom:2rem}
+.game-status{font-size:.9rem;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;font-weight:600}
+.game-title{font-size:2rem;font-weight:700}
+.game-name{font-size:.95rem;color:var(--text2);margin-top:.5rem}
+.rosco-container{flex:1;display:flex;align-items:center;justify-content:center;margin-bottom:2rem}
+.rosco{width:min(100vw,500px);height:min(100vw,500px);position:relative}
+.rosco-seg{position:absolute;width:100%;height:100%;left:0;top:0}
+.seg-letter{position:absolute;width:40px;height:40px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .15s;user-select:none}
+.seg-letter:hover:not(.ok):not(.error){border-color:var(--accent);transform:scale(1.1)}
+.seg-letter.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.seg-letter.error{background:var(--error);color:#fff;border-color:var(--error)}
+.seg-letter.pending{background:var(--accent);color:#fff;border-color:var(--accent)}
+.game-input{width:100%;padding:1.25rem 1.5rem;font-size:1.1rem;border:2px solid var(--border);border-radius:12px;font-family:inherit;background:var(--surface);text-align:center;text-transform:uppercase;letter-spacing:.05em;font-weight:600;transition:border .15s}
+.game-input:focus{outline:0;border-color:var(--accent)}
+.btn-check{background:var(--accent);color:#fff;border:0;padding:1rem;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;font-family:inherit;width:100%;margin-top:1rem;transition:all .15s}
+.btn-check:hover:not(:disabled){background:#1D4ED8}
+.btn-check:disabled{opacity:.5;cursor:not-allowed}
+.status-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:2rem;text-align:center}
+.status-title{font-size:.9rem;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;font-weight:600}
+.status-value{font-size:2rem;font-weight:700;font-family:monospace}
+.loading{text-align:center;color:var(--text2);padding:3rem 2rem}
+.loading-dot{display:inline-block;width:6px;height:6px;background:currentColor;border-radius:50%;margin:0 2px;animation:bounce .6s infinite}
+.loading-dot:nth-child(2){animation-delay:.2s}
+.loading-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,100%{transform:translateY(0)},50%{transform:translateY(-8px)}}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+.stat-label{font-size:.85rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.stat-value{font-size:1.75rem;font-weight:700;font-family:monospace}
+@media(max-width:600px){.rosco{width:min(90vw,300px);height:min(90vw,300px)}.seg-letter{width:32px;height:32px;font-size:.8rem}}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="s1">
+  <div class="inicio">
+    <div class="inicio-card">
+      <h1 class="inicio-h">PASAHITZA</h1>
+      <p class="inicio-p">Sartu zure izena eta saioen kodea</p>
+      <form class="form-g" id="join-form" onsubmit="joinGame(event)">
+        <div>
+          <input type="text" id="name" class="input" placeholder="Zure izena" maxlength="50" required>
+          <div class="hint">Ikaslearen izena</div>
+        </div>
+        <div>
+          <input type="text" id="code" class="input" placeholder="Saioen kodea" maxlength="6" style="text-transform:uppercase;letter-spacing:.1em" required>
+          <div class="hint">Koordinatzaileak emana (4-6 letrak)</div>
+        </div>
+        <button type="submit" class="btn" id="join-btn">Sartu</button>
+      </form>
+      <div id="err" class="error-box"></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s2">
+  <div class="game">
+    <div class="game-h">
+      <div class="game-status" id="status">Itxaroten</div>
+      <h1 class="game-title" id="title">—</h1>
+      <div class="game-name" id="myname">—</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Puntuak</div><div class="stat-value" id="pts">0</div></div>
+      <div class="stat"><div class="stat-label">Denbora</div><div class="stat-value" id="tm">0:00</div></div>
+    </div>
+    <div id="waiting" class="status-box"><div class="status-title">Itxaroten</div><p style="color:var(--text2);margin-top:.5rem">Koordinatzaileak saioa hasten du…</p></div>
+    <div id="answer" style="display:none">
+      <div class="rosco-container"><div class="rosco" id="rosco"></div></div>
+      <div id="q" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;text-align:center">
+        <div style="font-size:.9rem;color:var(--text2);text-transform:uppercase;margin-bottom:.5rem">Galdera</div>
+        <div style="font-size:1.25rem;font-weight:600;margin-bottom:1rem" id="qtext">—</div>
+        <input type="text" id="ans" class="game-input" placeholder="Erantzuna" autocomplete="off">
+      </div>
+      <button class="btn-check" id="check" onclick="checkAnswer()">Bidali</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let db=null;
+let firebaseReady=false;
+
+const APP={
+  saioId:null,
+  userName:null,
+  userId:null,
+  gurpila:null,
+  startTime:null,
+  timerInterval:null,
+  estadoListener:null,
+  questionIndex:0,
+  answered:[],
+  currentAnswer:null
+};
+
+function waitForFirebase(){
+  if(typeof firebase==='undefined'||!firebase.database){
+    setTimeout(waitForFirebase,100);
+    return;
+  }
+  
+  try{
+    const firebaseConfig={apiKey:"AIzaSyAyYzA5YwXHGAzF8WxR7sajbXmbbMavYNQ",authDomain:"pasahitza-e4435.firebaseapp.com",databaseURL:"https://pasahitza-e4435-default-rtdb.europe-west1.firebasedatabase.app",projectId:"pasahitza-e4435",storageBucket:"pasahitza-e4435.firebasestorage.app",messagingSenderId:"457685898301",appId:"1:457685898301:web:f3db124e0a746357cec654"};
+    
+    if(!firebase.apps.length){
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    db=firebase.database();
+    firebaseReady=true;
+    document.getElementById('join-btn').disabled=false;
+    console.log('Firebase listo');
+  }catch(e){
+    console.error('Firebase init error:',e);
+    document.getElementById('join-btn').disabled=false;
+  }
+}
+
+function showErr(msg){
+  const el=document.getElementById('err');
+  el.textContent=msg;
+  el.style.display='block';
+  setTimeout(()=>{el.style.display='none'},5000);
+}
+
+async function joinGame(ev){
+  ev.preventDefault();
+  
+  const name=document.getElementById('name').value.trim();
+  const code=document.getElementById('code').value.trim().toUpperCase();
+  
+  if(!name||!code){showErr('Bete itzazu eremu guztiak');return}
+  if(!db){showErr('Firebase ez dago prest. Itxaron...');return}
+  
+  document.getElementById('join-btn').disabled=true;
+  
+  try{
+    const snap=await db.ref('saioak/'+code).once('value');
+    if(!snap.exists()){
+      showErr('Saioak kodea ez da egokia');
+      document.getElementById('join-btn').disabled=false;
+      return;
+    }
+    
+    const saioa=snap.val();
+    if(!saioa.gurpila_id){
+      showErr('Saioa ez dago ondo konfiguratuta');
+      document.getElementById('join-btn').disabled=false;
+      return;
+    }
+    
+    APP.saioId=code;
+    APP.userName=name;
+    APP.userId='user_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+    APP.gurpila=saioa;
+    
+    document.getElementById('title').textContent=saioa.gurpila_izena;
+    document.getElementById('myname').textContent=name;
+    
+    await db.ref('saioak/'+code+'/lehiakideak/'+APP.userId).set({
+      izena:name,
+      puntuak:0,
+      denbora:0,
+      amaituta:false
+    });
+    
+    setupListeners();
+    show('s2');
+  }catch(e){
+    console.error('Join error:',e);
+    showErr('Konexio akatsa: '+e.message);
+    document.getElementById('join-btn').disabled=false;
+  }
+}
+
+function setupListeners(){
+  const estadoRef=db.ref('saioak/'+APP.saioId+'/egoera');
+  APP.estadoListener=estadoRef.on('value',snap=>{
+    const estado=snap.val();
+    if(estado==='jokoan'&&!APP.startTime){
+      APP.startTime=Date.now();
+      startGame();
+    }
+  });
+}
+
+function startGame(){
+  document.getElementById('status').textContent='JOKOAN';
+  document.getElementById('waiting').style.display='none';
+  document.getElementById('answer').style.display='block';
+  APP.answered=[];
+  APP.questionIndex=0;
+  showQuestion();
+  startTimer();
+}
+
+function showQuestion(){
+  if(APP.questionIndex>=APP.gurpila.galderak.length){
+    finishGame();
+    return;
+  }
+  const q=APP.gurpila.galderak[APP.questionIndex];
+  document.getElementById('qtext').textContent=q.definizioa;
+  document.getElementById('ans').value='';
+  document.getElementById('ans').focus();
+  APP.currentAnswer=q.hitza.toUpperCase();
+}
+
+function checkAnswer(){
+  const ans=document.getElementById('ans').value.trim().toUpperCase();
+  if(!ans){return}
+  
+  const q=APP.gurpila.galderak[APP.questionIndex];
+  const correct=ans===q.hitza.toUpperCase();
+  
+  if(correct){
+    APP.answered.push({ok:true,letra:q.hizkia});
+    const pts=APP.answered.filter(a=>a.ok).length;
+    document.getElementById('pts').textContent=pts;
+    updateFirebase(pts);
+  }else{
+    APP.answered.push({ok:false,letra:q.hizkia});
+  }
+  
+  APP.questionIndex++;
+  setTimeout(showQuestion,300);
+}
+
+function startTimer(){
+  APP.timerInterval=setInterval(()=>{
+    const elapsed=Math.floor((Date.now()-APP.startTime)/1000);
+    const m=Math.floor(elapsed/60);
+    const s=(elapsed%60).toString().padStart(2,'0');
+    document.getElementById('tm').textContent=`${m}:${s}`;
+    updateFirebase(null,elapsed);
+  },1000);
+}
+
+function updateFirebase(pts,tm){
+  if(!APP.saioId||!APP.userId)return;
+  const updates={};
+  if(pts!==null)updates.puntuak=pts;
+  if(tm!==null)updates.denbora=tm;
+  if(Object.keys(updates).length>0){
+    db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update(updates).catch(e=>console.error(e));
+  }
+}
+
+function finishGame(){
+  clearInterval(APP.timerInterval);
+  if(APP.estadoListener)APP.estadoListener.off();
+  const pts=APP.answered.filter(a=>a.ok).length;
+  const elapsed=Math.floor((Date.now()-APP.startTime)/1000);
+  
+  db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update({
+    puntuak:pts,
+    denbora:elapsed,
+    amaituta:true
+  }).catch(e=>console.error(e));
+  
+  document.getElementById('check').style.display='none';
+  document.getElementById('answer').innerHTML='<div class="status-box" style="margin-top:2rem"><div class="status-title">Bukatua!</div><p style="font-size:1.5rem;font-weight:700;margin-top:1rem">'+pts+' puntu</p></div>';
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+window.addEventListener('beforeunload',()=>{
+  if(APP.estadoListener)APP.estadoListener.off();
+  if(APP.saioId&&APP.userId){
+    db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).remove().catch(e=>console.error(e));
+  }
+});
+
+waitForFirebase();
+</script>
+</body>
+</html>
