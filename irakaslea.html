@@ -180,6 +180,12 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
               <div class="rule"><div class="rule-num">1</div><div class="rule-txt">Ikasleak webgunean sartu eta izena idatzi</div></div>
               <div class="rule"><div class="rule-num">2</div><div class="rule-txt">Pantailan ikusten duten saioen kodea idatzi</div></div>
               <div class="rule"><div class="rule-num">3</div><div class="rule-txt">Koordinatzaileak saioa hasten duenean, hasi zaitez</div></div>
+              
+              <div id="waiting-players" style="margin-top:1.5rem;padding:1rem;background:var(--surface);border:2px solid var(--border);border-radius:12px;display:none">
+                <div style="font-weight:600;margin-bottom:.5rem;color:var(--accent)">🟢 Konektatutako ikasleak: <span id="waiting-count">0</span></div>
+                <div id="waiting-list" style="font-size:.9rem;color:var(--text2);max-height:150px;overflow-y:auto"></div>
+              </div>
+              
               <button class="btn" style="margin-top:1rem" onclick="startScore()">Sailkapena hasi</button>
             </div>
           </div>
@@ -393,6 +399,20 @@ function selectGurpila(id){
   // Crear sesión en Firebase con estado 'itxaroten' para que alumnos puedan conectarse
   db.ref('saioak/'+APP.saioId).set({gurpila_id:APP.gurpila.id,gurpila_izena:APP.gurpila.izena,galderak:APP.gurpila.galderak,egoera:'itxaroten',hasi_unea:Date.now(),lehiakideak:{}});
   
+  // Escuchar alumnos que se conectan (antes de empezar)
+  const waitingRef=db.ref('saioak/'+APP.saioId+'/lehiakideak');
+  APP.waitingListener=waitingRef.on('value',snapshot=>{
+    const players=snapshot.val()||{};
+    const count=Object.keys(players).length;
+    document.getElementById('waiting-count').textContent=count;
+    if(count>0){
+      document.getElementById('waiting-players').style.display='block';
+      document.getElementById('waiting-list').innerHTML=Object.values(players).map(p=>`• ${esc(p.izena)}`).join('<br>');
+    }else{
+      document.getElementById('waiting-players').style.display='none';
+    }
+  });
+  
   document.getElementById('coord-select').style.display='none';
   document.getElementById('coord-play').style.display='block';
 }
@@ -406,6 +426,11 @@ function backToSelect(){
 }
 
 function startScore(){
+  // Limpiar listener de espera
+  if(APP.waitingListener){
+    db.ref('saioak/'+APP.saioId+'/lehiakideak').off('value',APP.waitingListener);
+    APP.waitingListener=null;
+  }
   // Solo cambiar estado a 'jokoan' (no borrar lehiakideak)
   db.ref('saioak/'+APP.saioId+'/egoera').set('jokoan');
   const ref=db.ref('saioak/'+APP.saioId+'/lehiakideak');
@@ -460,6 +485,10 @@ async function savePartida(){
 
 function clrSes(){
   if(APP.listener)APP.listener.off();
+  if(APP.waitingListener){
+    db.ref('saioak/'+APP.saioId+'/lehiakideak').off('value',APP.waitingListener);
+    APP.waitingListener=null;
+  }
   if(APP.saioId)db.ref('saioak/'+APP.saioId).remove();
   APP.ranking=[];
   document.getElementById('scoring').style.display='none';
