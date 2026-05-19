@@ -476,8 +476,9 @@ async function savePartida(){
   
   try{
     console.log('📝 Intentando guardar partida:', partidaData);
-    await db.ref('historial_partidas/'+timestamp).set(partidaData);
-    alert('✅ Partida gordea!\n\nGordeta: historial_partidas/'+timestamp);
+    // Guardar en saioak/_historial/ (ya tiene permisos)
+    await db.ref('saioak/_historial/'+timestamp).set(partidaData);
+    alert('✅ Partida gordea!\n\nGordeta: saioak/_historial/'+timestamp);
   }catch(e){
     console.error('❌ Error completo:', e);
     alert('❌ Errorea gordetzean:\n\n'+e.message+'\n\nIkusi kontsola (F12) xehetasunetarako.');
