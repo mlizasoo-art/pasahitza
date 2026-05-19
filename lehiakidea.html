@@ -256,8 +256,45 @@ function startGame(){
   document.getElementById('pts').textContent='0'; // Inicializar puntos
   APP.answered=[];
   APP.questionIndex=0;
+  buildRosco(); // Generar rosco visual
   showQuestion();
   startTimer();
+}
+
+function buildRosco(){
+  const rosco=document.getElementById('rosco');
+  rosco.innerHTML='';
+  const letras=APP.gurpila.galderak.map(q=>q.hizkia);
+  const n=letras.length;
+  letras.forEach((letra,i)=>{
+    const angle=(i/n)*360-90; // Empezar arriba
+    const rad=angle*Math.PI/180;
+    const radius=45; // % desde el centro
+    const x=50+radius*Math.cos(rad);
+    const y=50+radius*Math.sin(rad);
+    const div=document.createElement('div');
+    div.className='seg-letter';
+    div.id='seg-'+letra;
+    div.textContent=letra;
+    div.style.left=x+'%';
+    div.style.top=y+'%';
+    div.style.transform='translate(-50%,-50%)';
+    rosco.appendChild(div);
+  });
+}
+
+function updateRosco(){
+  APP.gurpila.galderak.forEach(q=>{
+    const seg=document.getElementById('seg-'+q.hizkia);
+    if(!seg)return;
+    const ans=APP.answered.find(a=>a.letra===q.hizkia);
+    seg.className='seg-letter';
+    if(ans){
+      seg.classList.add(ans.ok?'ok':'error');
+    }else if(APP.questionIndex<APP.gurpila.galderak.length && APP.gurpila.galderak[APP.questionIndex].hizkia===q.hizkia){
+      seg.classList.add('pending');
+    }
+  });
 }
 
 function showQuestion(){
@@ -297,6 +334,7 @@ function showQuestion(){
   document.getElementById('feedback').textContent='';
   document.getElementById('ans').focus();
   APP.currentAnswer=q.hitza.toUpperCase();
+  updateRosco(); // Actualizar estado visual del rosco
 }
 
 function checkAnswer(){
