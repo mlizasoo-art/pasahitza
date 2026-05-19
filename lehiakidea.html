@@ -279,44 +279,60 @@ function showQuestion(){
 }
 
 function checkAnswer(){
-  const ans=document.getElementById('ans').value.trim().toUpperCase();
-  if(!ans){return}
-  
-  const q=APP.gurpila.galderak[APP.questionIndex];
-  const correctWord=q.hitza.toUpperCase();
-  
-  // Normalizar: eliminar "A" final si tiene más de 3 letras (artículo determinado)
-  function normalize(word){
-    if(word.length>3&&word.endsWith('A')){
-      return word.slice(0,-1);
+  try{
+    const ans=document.getElementById('ans').value.trim().toUpperCase();
+    if(!ans){return}
+    
+    const q=APP.gurpila.galderak[APP.questionIndex];
+    const correctWord=q.hitza.toUpperCase();
+    
+    console.log('Respuesta:', ans, 'Correcta:', correctWord);
+    
+    // Normalizar: eliminar "A" final si tiene más de 3 letras (artículo determinado)
+    function normalize(word){
+      if(word.length>3&&word.endsWith('A')){
+        return word.slice(0,-1);
+      }
+      return word;
     }
-    return word;
+    
+    // Aceptar con o sin artículo determinado
+    const correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
+    
+    console.log('¿Correcta?', correct, 'normalize(ans):', normalize(ans), 'normalize(correct):', normalize(correctWord));
+    
+    document.getElementById('ans').disabled=true;
+    document.getElementById('check').disabled=true;
+    document.getElementById('pass').disabled=true;
+    
+    const fb=document.getElementById('feedback');
+    if(!fb){
+      console.error('Elemento feedback no encontrado!');
+      return;
+    }
+    
+    if(correct){
+      APP.answered.push({ok:true,letra:q.hizkia});
+      const pts=APP.answered.filter(a=>a.ok).length;
+      document.getElementById('pts').textContent=pts;
+      try{updateFirebase(pts)}catch(e){console.error('Firebase error:',e)}
+      fb.className='feedback ok';
+      fb.textContent='✓ Zuzena! '+q.hitza;
+      console.log('Feedback mostrado: CORRECTO');
+    }else{
+      APP.answered.push({ok:false,letra:q.hizkia});
+      fb.className='feedback error';
+      fb.textContent='✗ Okerra. Erantzun zuzena: '+q.hitza;
+      console.log('Feedback mostrado: INCORRECTO');
+    }
+    
+    APP.questionIndex++;
+    console.log('Avanzando a pregunta', APP.questionIndex, 'en 1.5s');
+    setTimeout(showQuestion,1500);
+  }catch(e){
+    console.error('Error en checkAnswer:', e);
+    alert('Error: '+e.message);
   }
-  
-  // Aceptar con o sin artículo determinado
-  const correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
-  
-  document.getElementById('ans').disabled=true;
-  document.getElementById('check').disabled=true;
-  document.getElementById('pass').disabled=true;
-  
-  const fb=document.getElementById('feedback');
-  
-  if(correct){
-    APP.answered.push({ok:true,letra:q.hizkia});
-    const pts=APP.answered.filter(a=>a.ok).length;
-    document.getElementById('pts').textContent=pts;
-    updateFirebase(pts);
-    fb.className='feedback ok';
-    fb.textContent='✓ Zuzena! '+q.hitza;
-  }else{
-    APP.answered.push({ok:false,letra:q.hizkia});
-    fb.className='feedback error';
-    fb.textContent='✗ Okerra. Erantzun zuzena: '+q.hitza;
-  }
-  
-  APP.questionIndex++;
-  setTimeout(showQuestion,1500);
 }
 
 function passQuestion(){
