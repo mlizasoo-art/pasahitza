@@ -191,6 +191,7 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
         <div class="ranking" id="rl"><div class="r-empty">Konektatzen…</div></div>
         <div style="display:flex;gap:1rem;margin-top:1rem">
           <button class="btn btn-secondary" onclick="backToSelect()">← Atzera</button>
+          <button class="btn" onclick="savePartida()" style="background:#059669">💾 Gorde emaitzak</button>
           <button class="btn" onclick="clrSes()">Saioa hustu</button>
         </div>
       </div>
@@ -427,6 +428,34 @@ function renderRL(){
   c.textContent=`(${APP.ranking.length} lehiakide)`;
   if(APP.ranking.length===0){l.innerHTML='<div class="r-empty">Konektatzen…</div>';return}
   l.innerHTML=APP.ranking.map((r,i)=>`<div class="r-row"><div class="r-pos">${i+1}</div><div class="r-name">${esc(r.izena)}</div><div class="r-pts">${r.puntuak} pt</div><div class="r-time">${APP.time(r.denbora)}</div></div>`).join('');
+}
+
+async function savePartida(){
+  if(!APP.ranking || APP.ranking.length===0){
+    alert('Ez dago emaitzarik gordetzeko');
+    return;
+  }
+  
+  const timestamp=Date.now();
+  const partidaData={
+    data:new Date().toISOString(),
+    gurpila_id:APP.gurpila.id,
+    gurpila_izena:APP.gurpila.izena,
+    participantes:{}
+  };
+  
+  // Convertir ranking a objeto con userId como clave
+  APP.ranking.forEach(r=>{
+    partidaData.participantes[r.userId||'user_'+Math.random()]=r;
+  });
+  
+  try{
+    await db.ref('historial_partidas/'+timestamp).set(partidaData);
+    alert('✅ Partida gordea!');
+  }catch(e){
+    console.error(e);
+    alert('❌ Errorea gordetzean');
+  }
 }
 
 function clrSes(){
