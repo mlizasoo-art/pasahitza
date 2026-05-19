@@ -408,10 +408,13 @@ function startScore(){
   // Solo cambiar estado a 'jokoan' (no borrar lehiakideak)
   db.ref('saioak/'+APP.saioId+'/egoera').set('jokoan');
   const ref=db.ref('saioak/'+APP.saioId+'/lehiakideak');
+  console.log('📡 Activando listener en:', 'saioak/'+APP.saioId+'/lehiakideak');
   if(APP.listener)APP.listener.off();
   APP.listener=ref.on('value',snapshot=>{
     const d=snapshot.val()||{};
+    console.log('🔔 Datos recibidos de Firebase:', d);
     APP.ranking=Object.values(d).sort((a,b)=>b.puntuak!==a.puntuak?b.puntuak-a.puntuak:a.denbora-b.denbora);
+    console.log('📊 Ranking actualizado:', APP.ranking);
     renderRL();
   });
   document.getElementById('coord-play').style.display='none';

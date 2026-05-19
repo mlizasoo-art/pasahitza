@@ -353,12 +353,18 @@ function startTimer(){
 }
 
 function updateFirebase(pts,tm){
-  if(!APP.saioId||!APP.userId)return;
+  if(!APP.saioId||!APP.userId){
+    console.error('No saioId o userId:', APP.saioId, APP.userId);
+    return;
+  }
   const updates={};
   if(pts!==null)updates.puntuak=pts;
   if(tm!==null)updates.denbora=tm;
   if(Object.keys(updates).length>0){
-    db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update(updates).catch(e=>console.error(e));
+    console.log('🔥 Actualizando Firebase:', 'saioak/'+APP.saioId+'/lehiakideak/'+APP.userId, updates);
+    db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update(updates)
+      .then(()=>console.log('✅ Firebase actualizado correctamente'))
+      .catch(e=>console.error('❌ Error Firebase:',e));
   }
 }
 
