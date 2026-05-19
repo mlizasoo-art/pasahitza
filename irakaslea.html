@@ -125,7 +125,7 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
     <div class="mode-switch">
       <button class="mode-btn active" onclick="switchMode('edit')">✏️ Edita</button>
       <button class="mode-btn" onclick="switchMode('coord')">🎮 Jolastu</button>
-      <button class="mode-btn" onclick="switchMode('history')">📜 Historialea</button>
+      <button class="mode-btn" onclick="switchMode('history')">📜 Historiala</button>
     </div>
     <a href="index.html" class="btn-small">← Hasierara</a>
   </div>
@@ -231,7 +231,7 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
 <div class="screen" id="screen-history">
   <div class="layout">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-      <h2>Partiden historialea</h2>
+      <h2>Partiden historiala</h2>
       <button class="btn-small" onclick="loadHistory()">🔄 Freskatu</button>
     </div>
     
@@ -561,7 +561,7 @@ async function loadHistory(){
     renderHistory(partidas);
   }catch(e){
     console.error('Error cargando historial:',e);
-    alert('Errorea historialea kargatzean');
+    alert('Errorea historiala kargatzean');
   }
 }
 
