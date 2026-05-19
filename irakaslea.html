@@ -92,6 +92,28 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
 .modal h3{font-size:1.25rem;font-weight:700;margin-bottom:.75rem}
 .modal p{color:var(--text2);margin-bottom:1.5rem}
 .modal-a{display:flex;gap:.75rem;justify-content:flex-end}
+.history-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;transition:box-shadow .2s}
+.history-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.history-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:1rem}
+.history-date{font-size:.85rem;color:var(--text2)}
+.history-gurpila{font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:.25rem}
+.history-stats{display:flex;gap:1.5rem;margin-bottom:1rem;font-size:.9rem;color:var(--text2)}
+.history-stat{display:flex;align-items:center;gap:.5rem}
+.history-podium{background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:.75rem}
+.podium-title{font-size:.85rem;font-weight:600;color:var(--text2);margin-bottom:.75rem}
+.podium-item{display:flex;align-items:center;gap:.75rem;padding:.5rem;margin-bottom:.25rem}
+.podium-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.podium-pos.gold{background:#FFD700;color:#000}
+.podium-pos.silver{background:#C0C0C0;color:#000}
+.podium-pos.bronze{background:#CD7F32;color:#fff}
+.podium-name{flex:1;font-weight:600}
+.podium-score{color:var(--accent);font-weight:700}
+.history-toggle{background:0;border:0;color:var(--accent);cursor:pointer;padding:.5rem;font-size:.9rem;font-weight:600}
+.history-toggle:hover{text-decoration:underline}
+.history-full{display:none;margin-top:.75rem}
+.history-full.active{display:block}
+.full-item{display:flex;justify-content:space-between;padding:.5rem;border-bottom:1px solid var(--border)}
+.full-item:last-child{border-bottom:0}
 @media(max-width:768px){.grid{grid-template-columns:1fr}.pres-cnt{grid-template-columns:1fr}}
 </style>
 </head>
@@ -103,6 +125,7 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
     <div class="mode-switch">
       <button class="mode-btn active" onclick="switchMode('edit')">✏️ Edita</button>
       <button class="mode-btn" onclick="switchMode('coord')">🎮 Jolastu</button>
+      <button class="mode-btn" onclick="switchMode('history')">📜 Historialea</button>
     </div>
     <a href="index.html" class="btn-small">← Hasierara</a>
   </div>
@@ -204,6 +227,22 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
   </div>
 </div>
 
+<!-- MODO HISTORIAL -->
+<div class="screen" id="screen-history">
+  <div class="layout">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+      <h2>Partiden historialea</h2>
+      <button class="btn-small" onclick="loadHistory()">🔄 Freskatu</button>
+    </div>
+    
+    <div id="history-empty" style="text-align:center;padding:3rem;color:var(--text2)">
+      Ez dago partidarik gordeta
+    </div>
+    
+    <div id="history-list" style="display:none"></div>
+  </div>
+</div>
+
 <div class="modal-o" id="m">
   <div class="modal">
     <h3 id="mt">—</h3>
@@ -250,10 +289,14 @@ function switchMode(mode){
   if(mode==='edit'){
     document.querySelector('.mode-btn:nth-child(1)').classList.add('active');
     document.getElementById('screen-edit').classList.add('active');
-  }else{
+  }else if(mode==='coord'){
     document.querySelector('.mode-btn:nth-child(2)').classList.add('active');
     document.getElementById('screen-coord').classList.add('active');
     renderCoord();
+  }else if(mode==='history'){
+    document.querySelector('.mode-btn:nth-child(3)').classList.add('active');
+    document.getElementById('screen-history').classList.add('active');
+    loadHistory();
   }
 }
 
@@ -495,6 +538,99 @@ function clrSes(){
   APP.ranking=[];
   document.getElementById('scoring').style.display='none';
   document.getElementById('coord-play').style.display='block';
+}
+
+// HISTORIAL DE PARTIDAS
+async function loadHistory(){
+  try{
+    const snapshot=await db.ref('saioak/_historial').once('value');
+    const data=snapshot.val();
+    
+    if(!data || Object.keys(data).length===0){
+      document.getElementById('history-empty').style.display='block';
+      document.getElementById('history-list').style.display='none';
+      return;
+    }
+    
+    // Convertir a array y ordenar por timestamp (más reciente primero)
+    const partidas=Object.entries(data).map(([timestamp,p])=>({
+      timestamp,
+      ...p
+    })).sort((a,b)=>b.timestamp-a.timestamp);
+    
+    renderHistory(partidas);
+  }catch(e){
+    console.error('Error cargando historial:',e);
+    alert('Errorea historialea kargatzean');
+  }
+}
+
+function renderHistory(partidas){
+  document.getElementById('history-empty').style.display='none';
+  document.getElementById('history-list').style.display='block';
+  
+  const html=partidas.map((p,idx)=>{
+    const fecha=new Date(p.data);
+    const participantes=Object.values(p.participantes||{});
+    const podio=participantes.sort((a,b)=>
+      b.puntuak!==a.puntuak?b.puntuak-a.puntuak:a.denbora-b.denbora
+    ).slice(0,3);
+    
+    const medals=['gold','silver','bronze'];
+    const podioHTML=podio.map((r,i)=>`
+      <div class="podium-item">
+        <div class="podium-pos ${medals[i]}">${i+1}</div>
+        <div class="podium-name">${esc(r.izena)}</div>
+        <div class="podium-score">${r.puntuak} pt</div>
+      </div>
+    `).join('');
+    
+    const fullHTML=participantes.map((r,i)=>`
+      <div class="full-item">
+        <span><strong>${i+1}.</strong> ${esc(r.izena)}</span>
+        <span>${r.puntuak} pt · ${APP.time(r.denbora)}</span>
+      </div>
+    `).join('');
+    
+    return `
+      <div class="history-card">
+        <div class="history-header">
+          <div>
+            <div class="history-gurpila">${esc(p.gurpila_izena||'—')}</div>
+            <div class="history-date">📅 ${fecha.toLocaleDateString('eu')} · ${fecha.toLocaleTimeString('eu',{hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+        </div>
+        
+        <div class="history-stats">
+          <div class="history-stat">
+            <span>👥</span>
+            <span>${participantes.length} lehiakide</span>
+          </div>
+        </div>
+        
+        <div class="history-podium">
+          <div class="podium-title">🏆 Podioa</div>
+          ${podioHTML}
+        </div>
+        
+        ${participantes.length>3?`
+          <button class="history-toggle" onclick="toggleDetails(${idx})">
+            📋 Emaitza osoa ikusi
+          </button>
+          <div class="history-full" id="history-full-${idx}">
+            ${fullHTML}
+          </div>
+        `:''}
+      </div>
+    `;
+  }).join('');
+  
+  document.getElementById('history-list').innerHTML=html;
+}
+
+function toggleDetails(idx){
+  const el=document.getElementById('history-full-'+idx);
+  el.classList.toggle('active');
 }
 
 waitForFirebase();
