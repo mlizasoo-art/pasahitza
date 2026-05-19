@@ -358,8 +358,8 @@ function updateFirebase(pts,tm){
     return;
   }
   const updates={};
-  if(pts!==null)updates.puntuak=pts;
-  if(tm!==null)updates.denbora=tm;
+  if(pts!==undefined && pts!==null)updates.puntuak=pts;
+  if(tm!==undefined && tm!==null)updates.denbora=tm;
   if(Object.keys(updates).length>0){
     console.log('🔥 Actualizando Firebase:', 'saioak/'+APP.saioId+'/lehiakideak/'+APP.userId, updates);
     db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update(updates)
