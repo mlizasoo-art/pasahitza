@@ -475,11 +475,12 @@ async function savePartida(){
   });
   
   try{
+    console.log('📝 Intentando guardar partida:', partidaData);
     await db.ref('historial_partidas/'+timestamp).set(partidaData);
-    alert('✅ Partida gordea!');
+    alert('✅ Partida gordea!\n\nGordeta: historial_partidas/'+timestamp);
   }catch(e){
-    console.error(e);
-    alert('❌ Errorea gordetzean');
+    console.error('❌ Error completo:', e);
+    alert('❌ Errorea gordetzean:\n\n'+e.message+'\n\nIkusi kontsola (F12) xehetasunetarako.');
   }
 }
 
