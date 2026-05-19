@@ -283,7 +283,18 @@ function checkAnswer(){
   if(!ans){return}
   
   const q=APP.gurpila.galderak[APP.questionIndex];
-  const correct=ans===q.hitza.toUpperCase();
+  const correctWord=q.hitza.toUpperCase();
+  
+  // Normalizar: eliminar "A" final si tiene más de 3 letras (artículo determinado)
+  function normalize(word){
+    if(word.length>3&&word.endsWith('A')){
+      return word.slice(0,-1);
+    }
+    return word;
+  }
+  
+  // Aceptar con o sin artículo determinado
+  const correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
   
   document.getElementById('ans').disabled=true;
   document.getElementById('check').disabled=true;
