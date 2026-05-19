@@ -251,6 +251,8 @@ function startGame(){
   document.getElementById('status').textContent='JOKOAN';
   document.getElementById('waiting').style.display='none';
   document.getElementById('answer').style.display='block';
+  document.getElementById('tm').textContent='10:00'; // Inicializar countdown
+  document.getElementById('pts').textContent='0'; // Inicializar puntos
   APP.answered=[];
   APP.questionIndex=0;
   showQuestion();
@@ -345,10 +347,15 @@ function passQuestion(){
 function startTimer(){
   APP.timerInterval=setInterval(()=>{
     const elapsed=Math.floor((Date.now()-APP.startTime)/1000);
-    const m=Math.floor(elapsed/60);
-    const s=(elapsed%60).toString().padStart(2,'0');
+    const remaining=Math.max(0, 600-elapsed); // Countdown desde 10 minutos
+    const m=Math.floor(remaining/60);
+    const s=(remaining%60).toString().padStart(2,'0');
     document.getElementById('tm').textContent=`${m}:${s}`;
+    document.getElementById('tm').style.color=remaining<60?'#DC2626':'inherit'; // Rojo último minuto
     updateFirebase(null,elapsed);
+    if(remaining===0){
+      finishGame(); // Termina automáticamente al llegar a 0
+    }
   },1000);
 }
 
