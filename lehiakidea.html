@@ -112,10 +112,11 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-se
         <input type="text" id="ans" class="game-input" placeholder="Erantzuna" autocomplete="off">
         <div class="feedback" id="feedback"></div>
       </div>
-      <div style="display:flex;gap:.75rem">
-        <button class="btn-check" id="pass" onclick="passQuestion()" style="background:var(--text2);flex:1">Pasapalabra</button>
+      <div style="display:flex;gap:.75rem;margin-bottom:.5rem">
+        <button class="btn-check" id="pass" onclick="passQuestion()" style="background:var(--text2);flex:1">Pasahitza</button>
         <button class="btn-check" id="check" onclick="checkAnswer()" style="flex:2">Erantzun</button>
       </div>
+      <button class="btn-check" id="finish" onclick="finishGame()" style="background:#DC2626;color:#fff;width:100%">Amaitu</button>
     </div>
   </div>
 </div>
@@ -291,6 +292,7 @@ function showQuestion(){
   document.getElementById('ans').disabled=false;
   document.getElementById('check').disabled=false;
   document.getElementById('pass').disabled=false;
+  document.getElementById('finish').disabled=false;
   document.getElementById('feedback').className='feedback';
   document.getElementById('feedback').textContent='';
   document.getElementById('ans').focus();
@@ -325,13 +327,25 @@ function checkAnswer(){
     }
     
     // Aceptar con o sin artículo determinado / plural
-    const correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
+    let correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
+    
+    // Verificar sinónimos si existen
+    if(!correct && q.sinonimoak && Array.isArray(q.sinonimoak)){
+      for(const sinonimo of q.sinonimoak){
+        const synUpper=sinonimo.toUpperCase();
+        if(ans===synUpper || normalize(ans)===normalize(synUpper)){
+          correct=true;
+          break;
+        }
+      }
+    }
     
     console.log('¿Correcta?', correct, 'normalize(ans):', normalize(ans), 'normalize(correct):', normalize(correctWord));
     
     document.getElementById('ans').disabled=true;
     document.getElementById('check').disabled=true;
     document.getElementById('pass').disabled=true;
+    document.getElementById('finish').disabled=true;
     
     const fb=document.getElementById('feedback');
     if(!fb){
