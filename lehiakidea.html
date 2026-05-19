@@ -260,10 +260,27 @@ function startGame(){
 }
 
 function showQuestion(){
-  if(APP.questionIndex>=APP.gurpila.galderak.length){
+  // Si ya respondió todas las preguntas, terminar
+  const totalUniqueAnswers = APP.answered.filter((v,i,a)=>a.findIndex(t=>t.letra===v.letra)===i).length;
+  if(totalUniqueAnswers>=APP.gurpila.galderak.length){
     finishGame();
     return;
   }
+  
+  // Si llegó al final del array, volver al principio (dar la vuelta)
+  if(APP.questionIndex>=APP.gurpila.galderak.length){
+    APP.questionIndex=0;
+  }
+  
+  // Saltar preguntas ya respondidas
+  while(APP.questionIndex<APP.gurpila.galderak.length){
+    const q=APP.gurpila.galderak[APP.questionIndex];
+    const alreadyAnswered=APP.answered.find(a=>a.letra===q.hizkia && !a.passed);
+    if(!alreadyAnswered) break;
+    APP.questionIndex++;
+    if(APP.questionIndex>=APP.gurpila.galderak.length) APP.questionIndex=0; // Dar vuelta
+  }
+  
   const q=APP.gurpila.galderak[APP.questionIndex];
   const tipo=q.itsatsia?'ITSATSIA':'HASIERA';
   document.getElementById('qletter').textContent=q.hizkia;
@@ -290,15 +307,24 @@ function checkAnswer(){
     
     console.log('Respuesta:', ans, 'Correcta:', correctWord);
     
-    // Normalizar: eliminar "A" final si tiene más de 3 letras (artículo determinado)
+    // Normalizar: eliminar sufijos de plural y artículo determinado
     function normalize(word){
-      if(word.length>3&&word.endsWith('A')){
+      // Eliminar "AK" (plural + artículo): liburuak → liburu
+      if(word.length>4 && word.endsWith('AK')){
+        return word.slice(0,-2);
+      }
+      // Eliminar "K" (plural): liburuk → liburu, zatiketak → zatiketa
+      if(word.length>3 && word.endsWith('K')){
+        return word.slice(0,-1);
+      }
+      // Eliminar "A" (artículo): liburua → liburu
+      if(word.length>3 && word.endsWith('A')){
         return word.slice(0,-1);
       }
       return word;
     }
     
-    // Aceptar con o sin artículo determinado
+    // Aceptar con o sin artículo determinado / plural
     const correct=(ans===correctWord)||(normalize(ans)===normalize(correctWord));
     
     console.log('¿Correcta?', correct, 'normalize(ans):', normalize(ans), 'normalize(correct):', normalize(correctWord));
@@ -338,8 +364,8 @@ function checkAnswer(){
 }
 
 function passQuestion(){
-  const q=APP.gurpila.galderak[APP.questionIndex];
-  APP.answered.push({ok:false,letra:q.hizkia,passed:true});
+  // Simplemente avanzar a la siguiente pregunta
+  // No marcar como respondida - podrá volver después
   APP.questionIndex++;
   showQuestion();
 }
