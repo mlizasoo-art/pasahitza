@@ -238,8 +238,8 @@ async function joinGame(ev){
 }
 
 function setupListeners(){
-  const estadoRef=db.ref('saioak/'+APP.saioId+'/egoera');
-  APP.estadoListener=estadoRef.on('value',snap=>{
+  APP.estadoRef=db.ref('saioak/'+APP.saioId+'/egoera');
+  APP.estadoRef.on('value',snap=>{
     const estado=snap.val();
     if(estado==='jokoan'&&!APP.startTime){
       APP.startTime=Date.now();
@@ -457,7 +457,7 @@ function finishGame(){
   console.log('🛑 finishGame() ejecutado');
   
   clearInterval(APP.timerInterval);
-  if(APP.estadoListener)APP.estadoListener.off();
+  if(APP.estadoRef)APP.estadoRef.off();
   const pts=APP.answered.filter(a=>a.ok).length;
   const elapsed=Math.floor((Date.now()-APP.startTime)/1000);
   
@@ -498,7 +498,7 @@ function show(id){
 }
 
 window.addEventListener('beforeunload',()=>{
-  if(APP.estadoListener)APP.estadoListener.off();
+  if(APP.estadoRef)APP.estadoRef.off();
   if(APP.saioId&&APP.userId){
     db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).remove().catch(e=>console.error(e));
   }
