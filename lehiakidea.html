@@ -465,8 +465,16 @@ function finishGame(){
     amaituta:true
   }).catch(e=>console.error(e));
   
-  document.getElementById('check').style.display='none';
-  document.getElementById('answer').innerHTML='<div class="status-box" style="margin-top:2rem"><div class="status-title">Bukatua!</div><p style="font-size:1.5rem;font-weight:700;margin-top:1rem">'+pts+' puntu</p></div>';
+  // Ocultar área de pregunta y botones
+  document.getElementById('q').style.display='none';
+  document.querySelector('#answer > div:last-child').style.display='none';
+  
+  // Mostrar mensaje de finalización (sin borrar el rosco)
+  const msg=document.createElement('div');
+  msg.className='status-box';
+  msg.style.marginTop='2rem';
+  msg.innerHTML='<div class="status-title">Bukatua!</div><p style="font-size:1.5rem;font-weight:700;margin-top:1rem">'+pts+' puntu</p><p style="color:var(--text2);margin-top:.5rem">Denbora: '+APP.time(elapsed)+'</p>';
+  document.getElementById('answer').appendChild(msg);
 }
 
 function show(id){
