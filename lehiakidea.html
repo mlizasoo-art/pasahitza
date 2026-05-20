@@ -454,27 +454,42 @@ function updateFirebase(pts,tm){
 }
 
 function finishGame(){
+  console.log('🛑 finishGame() ejecutado');
+  
   clearInterval(APP.timerInterval);
   if(APP.estadoListener)APP.estadoListener.off();
   const pts=APP.answered.filter(a=>a.ok).length;
   const elapsed=Math.floor((Date.now()-APP.startTime)/1000);
   
+  console.log('Puntos:', pts, 'Tiempo:', elapsed);
+  
   db.ref('saioak/'+APP.saioId+'/lehiakideak/'+APP.userId).update({
     puntuak:pts,
     denbora:elapsed,
     amaituta:true
-  }).catch(e=>console.error(e));
+  }).then(()=>{
+    console.log('✅ Datos guardados en Firebase');
+  }).catch(e=>{
+    console.error('❌ Error guardando en Firebase:', e);
+  });
   
   // Ocultar área de pregunta y botones
-  document.getElementById('q').style.display='none';
-  document.querySelector('#answer > div:last-child').style.display='none';
+  const qEl=document.getElementById('q');
+  const buttonsEl=document.querySelector('#answer > div:last-child');
   
-  // Mostrar mensaje de finalización (sin borrar el rosco)
+  if(qEl) qEl.style.display='none';
+  if(buttonsEl) buttonsEl.style.display='none';
+  
+  console.log('Elementos ocultados:', qEl?'q:ok':'q:NO', buttonsEl?'buttons:ok':'buttons:NO');
+  
+  // Mostrar mensaje de finalización
   const msg=document.createElement('div');
   msg.className='status-box';
   msg.style.marginTop='2rem';
   msg.innerHTML='<div class="status-title">Bukatua!</div><p style="font-size:1.5rem;font-weight:700;margin-top:1rem">'+pts+' puntu</p><p style="color:var(--text2);margin-top:.5rem">Denbora: '+APP.time(elapsed)+'</p>';
   document.getElementById('answer').appendChild(msg);
+  
+  console.log('✅ Mensaje de finalización mostrado');
 }
 
 function show(id){
