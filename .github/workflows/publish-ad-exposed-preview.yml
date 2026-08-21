@@ -32,9 +32,15 @@ jobs:
           out='ad-exposed-preview'
           base='https://unidades-app.vercel.app/ad-exposed/site'
           briefing="$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          webb='https://fsxozhthibraurgvsxtw.supabase.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio.mp3'
+          local_webb='./assets/director-webb-recruit-briefing.mp3'
+          target="$out/assets/director-webb-recruit-briefing.mp3"
+          webb_primary='https://fsxozhthibraurgvsxtw.supabase.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio.mp3'
+          webb_fallback='https://unidades-app.vercel.app/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1'
+          expected_sha='657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532'
+          expected_size='955053'
+
           rm -rf "$out"
-          mkdir -p "$out"
+          mkdir -p "$out/assets"
           files=(
             'AdExposed-Hub.dc.html'
             'AdExposed-Ramp1-Recruit-Briefing.dc.html'
@@ -59,20 +65,46 @@ jobs:
           )
           for f in "${files[@]}"; do
             echo "Fetching $f"
-            curl --fail --location --retry 3 --retry-delay 2 \
-              "$base/$f" -o "$out/$f"
+            curl --fail --location --retry 3 --retry-delay 2 "$base/$f" -o "$out/$f"
             test -s "$out/$f"
           done
 
-          python3 - "$briefing" "$webb" <<'PY'
+          echo 'Fetching locked Webb Gold asset'
+          if ! curl --fail --location --retry 3 --retry-delay 2 "$webb_primary" -o "$target"; then
+            echo 'Primary object unavailable; using locked legacy build source'
+            curl --fail --location --retry 3 --retry-delay 2 "$webb_fallback" -o "$target"
+          fi
+          echo "$expected_sha  $target" | sha256sum --check --strict
+          test "$(stat --format=%s "$target")" -eq "$expected_size"
+
+          python3 - "$briefing" "$local_webb" <<'PY'
           from pathlib import Path
           import re, sys
+
           path = Path(sys.argv[1])
-          webb = sys.argv[2]
+          local_webb = sys.argv[2]
           text = path.read_text(encoding='utf-8')
-          text, count = re.subn(r'src="/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1"', f'src="{webb}"', text)
-          if count == 0 and webb not in text:
+
+          audio_patterns = [
+              r'src="/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1"',
+              r'src="https://fsxozhthibraurgvsxtw\.supabase\.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio\.mp3"',
+          ]
+          replaced = 0
+          for pattern in audio_patterns:
+              text, count = re.subn(pattern, f'src="{local_webb}"', text)
+              replaced += count
+          if replaced == 0 and f'src="{local_webb}"' not in text:
               raise SystemExit('Webb audio source not found in recovered briefing')
+
+          # Contract: HIDDEN_FROM_LEARNER. Remove the recovered Claude Design transcript UI.
+          text = re.sub(
+              r'<div style="margin-top:14px;">\s*<button[^>]*onClick="\{\{ onOpenTranscript \}\}"[^>]*>View transcript</button>\s*</div>',
+              '', text, flags=re.S
+          )
+          text = re.sub(
+              r'<sc-if value="\{\{ showTranscript \}\}"[^>]*>.*?</sc-if>',
+              '', text, flags=re.S
+          )
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -82,10 +114,11 @@ jobs:
           grep -q '<x-dc>' "$out/index.html"
           grep -q 'support.js' "$out/index.html"
           grep -q 'id="mb01-transmission-audio"' "$briefing"
-          grep -q "$webb" "$briefing"
-          grep -q 'data:image/' "$briefing"
-          test -s "$out/support.js"
-          echo 'STATIC_PREVIEW_PREFLIGHT=PASS'
+          grep -q 'src="./assets/director-webb-recruit-briefing.mp3"' "$briefing"
+          ! grep -q 'View transcript' "$briefing"
+          ! grep -q 'MB-01 · Transcript' "$briefing"
+          test -s "$target"
+          echo 'STATIC_PREVIEW_AUDIO_GOLD=PASS'
 
       - name: Commit isolated preview to current branch
         shell: bash
@@ -99,5 +132,5 @@ jobs:
             echo 'No preview changes to commit.'
             exit 0
           fi
-          git commit -m 'feat: publish isolated AD EXPOSE static preview'
+          git commit -m 'feat: publish AD EXPOSE with locked local Webb audio'
           git push origin "HEAD:${branch}"
