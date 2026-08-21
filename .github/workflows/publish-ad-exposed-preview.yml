@@ -1,0 +1,81 @@
+name: Publish AD EXPOSE static preview
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-ad-exposed-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize AD EXPOSE as ordinary static files
+        shell: bash
+        run: |
+          set -euo pipefail
+          out='ad-exposed-preview'
+          base='https://unidades-app.vercel.app/ad-exposed/site'
+          rm -rf "$out"
+          mkdir -p "$out"
+          files=(
+            'AdExposed-Hub.dc.html'
+            'AdExposed-Ramp1-Recruit-Briefing.dc.html'
+            'AdExposed-Ramp1-Recruit-Checkpoint.dc.html'
+            'AdExposed-Ramp1-Recruit-Drill.dc.html'
+            'AdExposed-Ramp1-Recruit-LanguageFile.dc.html'
+            'AdExposed-Ramp1-Recruit-Practice.dc.html'
+            'AdExposed-Ramp1-Recruit-WhoWhatWhom.dc.html'
+            'AdExposed-Ramp2-Decode-Briefing.dc.html'
+            'AdExposed-Ramp2-Decode-Checkpoint.dc.html'
+            'AdExposed-Ramp2-Decode-Practice.dc.html'
+            'AdExposed-Ramp3-Expose-Briefing.dc.html'
+            'AdExposed-Ramp3-Expose-Checkpoint.dc.html'
+            'AdExposed-Ramp3-Expose-Practice.dc.html'
+            'AdExposed-Ramp4-Create-Briefing.dc.html'
+            'AdExposed-Ramp4-Create-Checkpoint.dc.html'
+            'AdExposed-Ramp4-Create-Practice.dc.html'
+            'support.js'
+            'image-slot.js'
+            'adexposed-shared.js'
+            'adexposed-drill.js'
+          )
+          for f in "${files[@]}"; do
+            echo "Fetching $f"
+            curl --fail --location --retry 3 --retry-delay 2 \
+              "$base/$f" -o "$out/$f"
+            test -s "$out/$f"
+          done
+          cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
+          touch "$out/.nojekyll"
+
+          # Structural verification before publication.
+          grep -q '<x-dc>' "$out/index.html"
+          grep -q 'support.js' "$out/index.html"
+          grep -q 'id="mb01-transmission-audio"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'session_1_audio.mp3' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'data:image/webp;base64' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          test -s "$out/support.js"
+          echo 'STATIC_PREVIEW_PREFLIGHT=PASS'
+
+      - name: Commit isolated preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ad-expose-preview[bot]'
+          git config user.email 'ad-expose-preview@users.noreply.github.com'
+          git add -- ad-exposed-preview
+          if git diff --cached --quiet; then
+            echo 'No preview changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat: publish isolated AD EXPOSE static preview'
+          git push origin HEAD:main
