@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/publish-ad-exposed-preview.yml'
+      - 'docs/ad-exposed-preview-trigger.txt'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -63,7 +64,6 @@ jobs:
             test -s "$out/$f"
           done
 
-          # Make the static copy independent from the old Next audio proxy.
           python3 - "$briefing" "$webb" <<'PY'
           from pathlib import Path
           import re, sys
