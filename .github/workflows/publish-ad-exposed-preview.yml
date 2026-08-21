@@ -30,6 +30,8 @@ jobs:
           set -euo pipefail
           out='ad-exposed-preview'
           base='https://unidades-app.vercel.app/ad-exposed/site'
+          briefing="$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          webb='https://fsxozhthibraurgvsxtw.supabase.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio.mp3'
           rm -rf "$out"
           mkdir -p "$out"
           files=(
@@ -60,14 +62,28 @@ jobs:
               "$base/$f" -o "$out/$f"
             test -s "$out/$f"
           done
+
+          # Make the static copy independent from the old Next audio proxy.
+          python3 - "$briefing" "$webb" <<'PY'
+          from pathlib import Path
+          import re, sys
+          path = Path(sys.argv[1])
+          webb = sys.argv[2]
+          text = path.read_text(encoding='utf-8')
+          text, count = re.subn(r'src="/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1"', f'src="{webb}"', text)
+          if count == 0 and webb not in text:
+              raise SystemExit('Webb audio source not found in recovered briefing')
+          path.write_text(text, encoding='utf-8')
+          PY
+
           cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
           touch "$out/.nojekyll"
 
           grep -q '<x-dc>' "$out/index.html"
           grep -q 'support.js' "$out/index.html"
-          grep -q 'id="mb01-transmission-audio"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'session_1_audio.mp3' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'data:image/' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'id="mb01-transmission-audio"' "$briefing"
+          grep -q "$webb" "$briefing"
+          grep -q 'data:image/' "$briefing"
           test -s "$out/support.js"
           echo 'STATIC_PREVIEW_PREFLIGHT=PASS'
 
