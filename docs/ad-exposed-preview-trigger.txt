@@ -1,0 +1,2 @@
+AD EXPOSE static preview publication trigger
+2026-08-21
