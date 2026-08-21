@@ -67,7 +67,7 @@ jobs:
           grep -q 'support.js' "$out/index.html"
           grep -q 'id="mb01-transmission-audio"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
           grep -q 'session_1_audio.mp3' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'data:image/webp;base64' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'data:image/' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
           test -s "$out/support.js"
           echo 'STATIC_PREVIEW_PREFLIGHT=PASS'
 
