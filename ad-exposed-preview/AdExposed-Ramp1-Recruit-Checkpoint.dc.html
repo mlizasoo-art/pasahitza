@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#fff;}
+    a{color:#671C25;text-decoration:none;}
+    a:hover{color:#4d151c;}
+  </style>
+</helmet>
+<div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
+
+  <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
+        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:32px;">
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9C6B12;padding-bottom:4px;border-bottom:2px solid #FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
+        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
+        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+    <div>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 01 · Recruit / Checkpoint</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
+      <input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" />
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;gap:24px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;flex-wrap:wrap;">
+      <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="4">
+        <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:900px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Checkpoint · Agency Entry</div>
+        <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
+        </sc-if>
+        <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
+      </div>
+
+      <div style="display:flex;gap:18px;margin-top:20px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:{{ stage1Color }};">1 · Rehearsal</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:{{ stage2Color }};">2 · Official Test</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:{{ stage3Color }};">3 · Results</span>
+      </div>
+
+      <!-- REHEARSAL -->
+      <sc-if value="{{ inRehearsal }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:22px;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#15171A;line-height:1.55;">CP-01 Agency Entry Rehearsal — 12 items, practice only. Answer all, then check — you'll see feedback and the correct answers straight away.</div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:22px;">
+          <sc-for list="{{ rehearsalItems }}" as="q" hint-placeholder-count="4">
+            <div style="background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:12px;padding:18px 22px;">
+              <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13.5px;color:#15171A;">{{ q.number }}. {{ q.prompt }}</div>
+              <sc-if value="{{ q.isChoice }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+                  <sc-for list="{{ q.options }}" as="opt" hint-placeholder-count="4">
+                    <div onClick="{{ opt.onSelect }}" style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:8px 12px;border-radius:7px;cursor:pointer;border:1.5px solid {{ opt.border }};background:{{ opt.bg }};">{{ opt.label }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ q.isGapfill }}" hint-placeholder-val="{{ false }}">
+                <input value="{{ q.textValue }}" onChange="{{ q.onTextChange }}" style="margin-top:10px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;border:1px solid {{ q.gapBorder }};border-radius:7px;padding:8px 12px;width:220px;outline:none;" />
+              </sc-if>
+              <sc-if value="{{ q.showAnswer }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ q.answerColor }};margin-top:8px;">{{ q.answerText }}</div></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:20px;display:flex;align-items:center;gap:16px;">
+          <button onClick="{{ checkRehearsal }}" disabled="{{ frozen }}" style="outline:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#671C25;border:none;border-radius:24px;padding:12px 26px;cursor:pointer;">Check answers</button>
+        </div>
+        <sc-if value="{{ rehearsalChecked }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:18px;background:#F7F1E4;border-radius:10px;padding:16px 20px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;color:#671C25;">SECURE {{ rehearsalSecure }} · REVIEW {{ rehearsalReview }}</div>
+            <button onClick="{{ goToTest }}" style="margin-top:12px;outline:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;color:#fff;background:#15171A;border:none;border-radius:20px;padding:10px 20px;cursor:pointer;">Start Official Test →</button>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- OFFICIAL TEST -->
+      <sc-if value="{{ inTest }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:22px;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#15171A;line-height:1.55;">CP-02 Agency Entry Test — graded, one attempt. Answers are not revealed until you submit.</div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:22px;">
+          <sc-for list="{{ testItems }}" as="q" hint-placeholder-count="4">
+            <div style="background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:12px;padding:18px 22px;">
+              <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13.5px;color:#15171A;">{{ q.number }}. {{ q.prompt }}</div>
+              <sc-if value="{{ q.isChoice }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+                  <sc-for list="{{ q.options }}" as="opt" hint-placeholder-count="4">
+                    <div onClick="{{ opt.onSelect }}" style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:8px 12px;border-radius:7px;cursor:pointer;border:1.5px solid {{ opt.border }};background:{{ opt.bg }};">{{ opt.label }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ q.isGapfill }}" hint-placeholder-val="{{ false }}">
+                <input value="{{ q.textValue }}" onChange="{{ q.onTextChange }}" style="margin-top:10px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;border:1px solid rgba(21,23,26,0.25);border-radius:7px;padding:8px 12px;width:220px;outline:none;" />
+              </sc-if>
+              <sc-if value="{{ q.isMatch }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                  <div style="display:flex;flex-direction:column;gap:6px;">
+                    <sc-for list="{{ q.termChips }}" as="t" hint-placeholder-count="4">
+                      <div onClick="{{ t.onSelect }}" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;padding:8px 10px;border-radius:6px;cursor:pointer;border:1.5px solid {{ t.border }};background:{{ t.bg }};">{{ t.label }}</div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px;">
+                    <sc-for list="{{ q.defChips }}" as="d" hint-placeholder-count="4">
+                      <div onClick="{{ d.onSelect }}" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;padding:8px 10px;border-radius:6px;cursor:pointer;border:1.5px solid {{ d.border }};background:{{ d.bg }};">{{ d.label }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:20px;">
+          <button onClick="{{ submitTest }}" style="outline:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#671C25;border:none;border-radius:24px;padding:12px 26px;cursor:pointer;">Submit test</button>
+        </div>
+      </sc-if>
+
+      <!-- RESULTS -->
+      <sc-if value="{{ inResults }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:22px;background:#F7F1E4;border-radius:12px;padding:24px 26px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#671C25;">Mark</div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:28px;color:#15171A;margin-top:4px;">{{ resultScore }} / {{ resultTotal }}</div>
+
+          <div style="margin-top:18px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#2A7864;">Strengths</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+            <sc-for list="{{ strengths }}" as="s" hint-placeholder-count="3"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#2A7864;background:rgba(111,196,176,0.18);border-radius:6px;padding:4px 10px;">{{ s }}</span></sc-for>
+          </div>
+
+          <div style="margin-top:16px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#671C25;">Priority Practice</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+            <sc-for list="{{ priorities }}" as="p" hint-placeholder-count="3"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#671C25;background:rgba(103,28,37,0.08);border-radius:6px;padding:4px 10px;">{{ p }}</span></sc-for>
+          </div>
+          <a href="AdExposed-Ramp1-Recruit-Drill.dc.html?pool=review" style="display:inline-block;margin-top:16px;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;color:#671C25;">Priority practice in the Language File →</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:900px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">The checkpoint is not open yet. Ask your teacher to unlock it.</div>
+  </div>
+  </sc-if>
+
+  <div style="border-top:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:900px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
+      <a href="AdExposed-Ramp1-Recruit-LanguageFile.dc.html" style="color:#9C6B12;">← Language File</a>
+      <a href="AdExposed-Hub.dc.html">Ad Exposed Hub</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const REHEARSAL_GRAMMAR = [
+  { skill: 'be', type: 'mc', prompt: "AURÉLIA ______ the brand behind Crème Lumière.", options: ['is', 'are', 'be', 'am'], correct: 0 },
+  { skill: 'have got', type: 'gapfill', prompt: "AURÉLIA ______ (have got) a new slogan this year.", accept: ['has got'] },
+  { skill: 'there is / there are', type: 'mc', prompt: "There ______ three different media in the campaign.", options: ['is', 'are'], correct: 1 },
+  { skill: 'Present Simple', type: 'gapfill', prompt: "SIGNAL ______ (investigate) every campaign carefully.", accept: ['investigates'] },
+  { skill: 'Present Continuous', type: 'mc', prompt: "Right now, SIGNAL ______ the AURÉLIA campaign.", options: ['investigates', 'is investigating', 'investigate', 'investigated'], correct: 1 },
+  { skill: 'Present Simple vs Present Continuous', type: 'mc', prompt: "AURÉLIA usually ______ on billboards, but this month it ______ on social media too.", options: ['advertises / is advertising', 'is advertising / advertises', 'advertise / advertising', 'advertises / advertise'], correct: 0 },
+];
+const REHEARSAL_VOCAB = [
+  { skill: 'advertiser', type: 'mc', prompt: "The company that pays for an advertisement is the ______.", options: ['consumer', 'advertiser', 'audience', 'slogan'], correct: 1 },
+  { skill: 'brand', type: 'mc', prompt: "AURÉLIA is the ______ people recognise in the campaign.", options: ['brand', 'service', 'claim', 'medium'], correct: 0 },
+  { skill: 'target audience', type: 'mc', prompt: "The specific group an advertiser most wants to reach is the ______.", options: ['audience', 'target audience', 'consumer', 'brand'], correct: 1 },
+  { skill: 'slogan', type: 'gapfill', prompt: "A short, memorable phrase linked to a brand is called a ______.", accept: ['slogan'] },
+];
+const REHEARSAL_ERROR = [
+  { skill: 'be', type: 'mc', prompt: "Which sentence is correct?\n\"They is the target audience.\"", options: ['They is the target audience.', 'They are the target audience.'], correct: 1 },
+  { skill: 'purpose', type: 'mc', prompt: "Which sentence is correct?\n\"The purpose is sell more cream.\"", options: ['The purpose is sell more cream.', 'The purpose is to sell more cream.'], correct: 1 },
+];
+const REHEARSAL_ITEMS = [...REHEARSAL_GRAMMAR, ...REHEARSAL_VOCAB, ...REHEARSAL_ERROR];
+
+const TEST_GRAMMAR = [
+  { skill: 'Present Simple', type: 'mc', prompt: "Which sentence is correct?\n\"SIGNAL investigate every campaign.\"", options: ['SIGNAL investigate every campaign.', 'SIGNAL investigates every campaign.'], correct: 1 },
+  { skill: 'there is / there are', type: 'mc', prompt: "Which sentence is correct?\n\"There is three media.\"", options: ['There is three media.', 'There are three media.'], correct: 1 },
+];
+const TEST_VOCAB = [
+  { skill: 'consumer', type: 'mc', prompt: "A person who buys or uses the cream is a ______.", options: ['advertiser', 'consumer', 'medium', 'purpose'], correct: 1 },
+  { skill: 'claim', type: 'mc', prompt: "\"9 out of 10 people preferred this cream\" is an example of a ______.", options: ['slogan', 'claim', 'logo', 'medium'], correct: 1 },
+  { skill: 'purpose', type: 'gapfill', prompt: "The ______ of an advertisement is usually to inform or persuade.", accept: ['purpose'] },
+  { skill: 'medium / media', type: 'mc', prompt: "Billboard, commercial and social media ad are three different ______.", options: ['audiences', 'media', 'brands', 'claims'], correct: 1 },
+];
+const TEST_ERROR = [
+  { skill: 'have got', type: 'mc', prompt: "Which sentence is correct?\n\"AURÉLIA have got a new slogan.\"", options: ['AURÉLIA have got a new slogan.', 'AURÉLIA has got a new slogan.'], correct: 1 },
+  { skill: 'Present Continuous', type: 'mc', prompt: "Which sentence is correct?\n\"Right now, SIGNAL investigate the campaign.\"", options: ['Right now, SIGNAL investigate the campaign.', 'Right now, SIGNAL is investigating the campaign.'], correct: 1 },
+];
+const TEST_MATCH = { skill: 'vocabulary matching', type: 'match', prompt: "Match each term to its definition.", terms: ['advertiser', 'brand', 'product', 'audience'], defs: ['The company that pays for an ad.', 'The name people recognise.', 'A thing a customer can buy.', 'The people who see or hear an ad.'] };
+const TEST_ITEMS = [...TEST_GRAMMAR, ...TEST_VOCAB, ...TEST_ERROR, TEST_MATCH];
+
+class Component extends DCLogic {
+  state = {
+    config: null, studentName: '', stage: 'rehearsal',
+    rehAnswers: {}, rehChecked: false,
+    testAnswers: {}, testMatchSelTerm: null, testMatchPairs: {}, testSubmitted: false,
+    officialResult: null,
+  };
+
+  componentDidMount() {
+    Promise.all([import('./adexposed-shared.js'), import('./adexposed-drill.js')]).then(([shared, drill]) => {
+      this._mod = shared; this._drill = drill;
+      const taken = drill.isOfficialTestTaken();
+      this.setState({
+        config: shared.getConfig(), studentName: shared.getStudentName(),
+        stage: taken ? 'results' : 'rehearsal',
+        officialResult: drill.getOfficialTestResult(),
+      });
+      this._poll = setInterval(() => {
+        const cfg = shared.getConfig();
+        if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg });
+      }, 1500);
+      this._onStorage = () => this.setState({ config: shared.getConfig() });
+      window.addEventListener('storage', this._onStorage);
+    });
+  }
+  componentWillUnmount() {
+    if (this._poll) clearInterval(this._poll);
+    if (this._onStorage) window.removeEventListener('storage', this._onStorage);
+  }
+  visState(key) { const vis = (this.state.config && this.state.config.visibility) || {}; return vis[key] || 'visible'; }
+  onNameChange(e) { const name = e.target.value; this.setState({ studentName: name }); if (this._mod) this._mod.setStudentName(name); }
+
+  rehSelect(i, oi) { if (this.visState('r1_checkpoint') === 'frozen') return; this.setState(s => ({ rehAnswers: { ...s.rehAnswers, [i]: oi } })); }
+  rehText(i, val) { this.setState(s => ({ rehAnswers: { ...s.rehAnswers, [i]: val } })); }
+  checkRehearsal() {
+    if (this.visState('r1_checkpoint') === 'frozen') return;
+    this.setState({ rehChecked: true });
+  }
+  goToTest() { this.setState({ stage: 'test' }); }
+
+  testSelect(i, oi) { this.setState(s => ({ testAnswers: { ...s.testAnswers, [i]: oi } })); }
+  testText(i, val) { this.setState(s => ({ testAnswers: { ...s.testAnswers, [i]: val } })); }
+  matchSelectTerm(term) { this.setState({ testMatchSelTerm: term }); }
+  matchSelectDef(def) {
+    const term = this.state.testMatchSelTerm;
+    if (!term) return;
+    const idx = TEST_MATCH.terms.indexOf(term);
+    if (TEST_MATCH.defs[idx] === def) {
+      this.setState(s => ({ testMatchPairs: { ...s.testMatchPairs, [term]: def }, testMatchSelTerm: null }));
+    } else {
+      this.setState({ testMatchSelTerm: null });
+    }
+  }
+
+  submitTest() {
+    let score = 0, total = 0;
+    const strengths = [], priorities = [];
+    TEST_ITEMS.forEach((q, i) => {
+      if (q.type === 'match') {
+        total += q.terms.length;
+        const got = Object.keys(this.state.testMatchPairs).length;
+        score += got;
+        if (this._drill) this._drill.recordSkillResult(q.skill, got === q.terms.length);
+        (got === q.terms.length ? strengths : priorities).push(q.skill);
+        return;
+      }
+      total += 1;
+      let ok = false;
+      if (q.type === 'gapfill') ok = (q.accept || []).some(a => a.toLowerCase() === (this.state.testAnswers[i] || '').trim().toLowerCase());
+      else ok = this.state.testAnswers[i] === q.correct;
+      if (ok) score++;
+      if (this._drill) { this._drill.recordSkillResult(q.skill, ok); if (!ok) this._drill.addToReviewQueue(q.skill); }
+      (ok ? strengths : priorities).push(q.skill);
+    });
+    const result = { score, total, strengths: [...new Set(strengths)], priorities: [...new Set(priorities)] };
+    if (this._drill) this._drill.setOfficialTestResult(result);
+    if (this._mod) this._mod.logAttempt({ student: this.state.studentName || 'Unnamed analyst', ramp: 'r1', rampName: 'Recruit', score, total, passed: score / total >= 0.6 });
+    this.setState({ officialResult: result, stage: 'results' });
+  }
+
+  renderVals() {
+    const cpState = this.visState('r1_checkpoint');
+    const subTabs = this._mod ? this._mod.buildSubTabs({
+      rampKey: 'r1', activeSection: 'checkpoint', config: this.state.config,
+      colorDark: '#9C6B12', colorAccent: '#FFC340',
+      extraSections: [{ key: 'languagefile', label: 'Language File' }],
+      hrefs: {
+        briefing: 'AdExposed-Ramp1-Recruit-Briefing.dc.html',
+        practice: 'AdExposed-Ramp1-Recruit-Practice.dc.html',
+        languagefile: 'AdExposed-Ramp1-Recruit-LanguageFile.dc.html',
+        checkpoint: 'AdExposed-Ramp1-Recruit-Checkpoint.dc.html',
+      },
+    }) : [];
+
+    const rehItems = REHEARSAL_ITEMS.map((q, i) => {
+      const isChoice = q.type !== 'gapfill';
+      const ans = this.state.rehAnswers[i];
+      const checked = this.state.rehChecked;
+      let options = [];
+      if (isChoice) {
+        options = q.options.map((label, oi) => {
+          let border = 'rgba(21,23,26,0.2)', bg = '#fff';
+          if (checked) { if (oi === q.correct) { border = '#FFC340'; bg = 'rgba(255,195,64,0.16)'; } else if (ans === oi) { border = '#671C25'; bg = 'rgba(103,28,37,0.05)'; } }
+          else if (ans === oi) { border = '#671C25'; bg = 'rgba(103,28,37,0.06)'; }
+          return { label, border, bg, onSelect: () => this.rehSelect(i, oi) };
+        });
+      }
+      const gapOk = q.type === 'gapfill' && checked && (q.accept || []).some(a => a.toLowerCase() === (ans || '').trim().toLowerCase());
+      return {
+        number: i + 1, prompt: q.prompt, isChoice, isGapfill: q.type === 'gapfill',
+        options, textValue: q.type === 'gapfill' ? (ans || '') : '', onTextChange: (e) => this.rehText(i, e.target.value),
+        gapBorder: checked ? (gapOk ? '#FFC340' : '#671C25') : 'rgba(21,23,26,0.25)',
+        showAnswer: checked, answerColor: (isChoice ? ans === q.correct : gapOk) ? '#9C6B12' : '#671C25',
+        answerText: isChoice ? (ans === q.correct ? 'Correct.' : `Correct answer: ${q.options[q.correct]}`) : (gapOk ? 'Correct.' : `Correct answer: ${q.accept[0]}`),
+      };
+    });
+    let rehearsalSecure = 0;
+    if (this.state.rehChecked) {
+      REHEARSAL_ITEMS.forEach((q, i) => {
+        const ans = this.state.rehAnswers[i];
+        const ok = q.type === 'gapfill' ? (q.accept || []).some(a => a.toLowerCase() === (ans || '').trim().toLowerCase()) : ans === q.correct;
+        if (ok) rehearsalSecure++;
+      });
+    }
+
+    const testItems = TEST_ITEMS.map((q, i) => {
+      if (q.type === 'match') {
+        const termChips = q.terms.map(t => ({ label: t, onSelect: () => this.matchSelectTerm(t), border: this.state.testMatchPairs[t] ? '#FFC340' : (this.state.testMatchSelTerm === t ? '#671C25' : 'rgba(21,23,26,0.2)'), bg: this.state.testMatchPairs[t] ? 'rgba(255,195,64,0.16)' : '#fff' }));
+        const defChips = q.defs.map(d => { const matched = Object.values(this.state.testMatchPairs).includes(d); return { label: d, onSelect: () => this.matchSelectDef(d), border: matched ? '#FFC340' : 'rgba(21,23,26,0.2)', bg: matched ? 'rgba(255,195,64,0.16)' : '#fff' }; });
+        return { number: i + 1, prompt: q.prompt, isChoice: false, isGapfill: false, isMatch: true, termChips, defChips };
+      }
+      const isChoice = q.type !== 'gapfill';
+      const ans = this.state.testAnswers[i];
+      const options = isChoice ? q.options.map((label, oi) => ({ label, border: ans === oi ? '#671C25' : 'rgba(21,23,26,0.2)', bg: ans === oi ? 'rgba(103,28,37,0.06)' : '#fff', onSelect: () => this.testSelect(i, oi) })) : [];
+      return { number: i + 1, prompt: q.prompt, isChoice, isGapfill: q.type === 'gapfill', isMatch: false, options, textValue: q.type === 'gapfill' ? (ans || '') : '', onTextChange: (e) => this.testText(i, e.target.value) };
+    });
+
+    const res = this.state.officialResult || { score: 0, total: 0, strengths: [], priorities: [] };
+
+    return {
+      studentName: this.state.studentName, onNameChange: (e) => this.onNameChange(e), subTabs,
+      shown: cpState !== 'hidden', hidden: cpState === 'hidden', frozen: cpState === 'frozen',
+      opacity: cpState === 'frozen' ? '0.5' : '1', filter: cpState === 'frozen' ? 'grayscale(1)' : 'none', pointerEvents: cpState === 'frozen' ? 'none' : 'auto',
+      inRehearsal: this.state.stage === 'rehearsal', inTest: this.state.stage === 'test', inResults: this.state.stage === 'results',
+      stage1Color: this.state.stage === 'rehearsal' ? '#671C25' : '#B9B7AF',
+      stage2Color: this.state.stage === 'test' ? '#671C25' : '#B9B7AF',
+      stage3Color: this.state.stage === 'results' ? '#671C25' : '#B9B7AF',
+      rehearsalItems: rehItems, checkRehearsal: () => this.checkRehearsal(), rehearsalChecked: this.state.rehChecked,
+      rehearsalSecure, rehearsalReview: REHEARSAL_ITEMS.length - rehearsalSecure, goToTest: () => this.goToTest(),
+      testItems, submitTest: () => this.submitTest(),
+      resultScore: res.score, resultTotal: res.total, strengths: res.strengths, priorities: res.priorities,
+    };
+  }
+}
+</script>
+</body>
+</html>

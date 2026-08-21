@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#fff;}
+    a{color:#671C25;text-decoration:none;}
+    a:hover{color:#4d151c;}
+  </style>
+</helmet>
+<div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
+
+  <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
+        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:32px;">
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9C6B12;padding-bottom:4px;border-bottom:2px solid #FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
+        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
+        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:760px;margin:0 auto;padding:20px 48px 0;">
+    <a href="AdExposed-Ramp1-Recruit-LanguageFile.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Language File</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / {{ poolLabel }}</span>
+  </div>
+
+  <div style="max-width:760px;margin:0 auto;padding:22px 48px 90px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.18em;color:#9C6B12;text-transform:uppercase;">{{ poolLabel }}</div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#6B6A63;margin-top:8px;">Practice only. Attempt 1: try again. Attempt 2: a hint. Attempt 3: the explanation and answer.</div>
+
+    <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#6B6A63;">Item {{ posDisplay }} of {{ total }}</div>
+
+      <div style="margin-top:18px;background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:14px;padding:26px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:15px;color:#15171A;line-height:1.5;">{{ item.prompt }}</div>
+
+        <sc-if value="{{ item.isChoice }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
+            <sc-for list="{{ item.options }}" as="opt" hint-placeholder-count="4">
+              <div onClick="{{ opt.onSelect }}" style="font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;padding:10px 14px;border-radius:8px;cursor:pointer;border:1.5px solid {{ opt.border }};background:{{ opt.bg }};">{{ opt.label }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ item.isGapfill }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <input value="{{ textInput }}" onChange="{{ onTextChange }}" style="flex:1;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;border:1px solid rgba(21,23,26,0.25);border-radius:8px;padding:10px 14px;outline:none;" />
+            <button onClick="{{ onSubmitGap }}" style="outline:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#fff;background:#671C25;border:none;border-radius:20px;padding:10px 18px;cursor:pointer;">Check</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showRetry }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#671C25;">Not quite — try again.</div></sc-if>
+        <sc-if value="{{ showHint }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#B9862A;">Hint: {{ item.hint }}</div></sc-if>
+        <sc-if value="{{ showExplain }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:14px;background:rgba(255,195,64,0.12);border:1px solid rgba(255,195,64,0.5);border-radius:8px;padding:12px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;line-height:1.5;">{{ item.explain }}</div>
+        </sc-if>
+        <sc-if value="{{ showCorrect }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;color:#9C6B12;">Correct.</div></sc-if>
+
+        <sc-if value="{{ showNext }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ onNext }}" style="margin-top:18px;outline:none;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#671C25;background:none;border:1.5px solid #671C25;border-radius:20px;padding:9px 18px;cursor:pointer;">Next →</button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:24px;background:#F7F1E4;border-radius:12px;padding:24px 26px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:16px;color:#671C25;">Session complete</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#15171A;margin-top:8px;">{{ total }} items reviewed.</div>
+        <a href="AdExposed-Ramp1-Recruit-LanguageFile.dc.html" style="display:inline-block;margin-top:14px;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;color:#9C6B12;">← Back to Language File</a>
+      </div>
+    </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ noItems }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:24px;background:#F7F1E4;border-radius:12px;padding:24px 26px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:16px;color:#671C25;">Your review queue is empty</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#15171A;margin-top:8px;">Nice work — nothing flagged for review right now.</div>
+        <a href="AdExposed-Ramp1-Recruit-LanguageFile.dc.html" style="display:inline-block;margin-top:14px;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;color:#9C6B12;">← Back to Language File</a>
+      </div>
+    </sc-if>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { items: [], pool: 'mixed', index: 0, attempt: 0, phase: 'answer', textInput: '', selected: null };
+
+  componentDidMount() {
+    import('./adexposed-drill.js').then(mod => {
+      this._drill = mod;
+      const pool = new URLSearchParams(window.location.search).get('pool') || 'mixed';
+      let items = [];
+      if (pool === 'grammar') items = mod.GRAMMAR_ITEMS.slice();
+      else if (pool === 'vocab') items = mod.VOCAB_ITEMS.slice();
+      else if (pool === 'review') {
+        const skills = mod.getReviewQueue();
+        items = [...mod.GRAMMAR_ITEMS, ...mod.VOCAB_ITEMS, ...mod.ERROR_ITEMS.map(e => ({ id: e.id, skill: e.skill, type: 'mc', prompt: `Which sentence is correct?\n"${e.wrong}"`, options: [e.wrong, e.correct], correct: 1, hint: 'Check subject-verb agreement and word order.', explain: `Correct: "${e.correct}"` }))].filter(i => skills.includes(i.skill));
+      } else {
+        items = [...mod.GRAMMAR_ITEMS, ...mod.VOCAB_ITEMS];
+      }
+      this.setState({ items, pool });
+    });
+  }
+
+  select(optIndex) {
+    if (this.state.phase === 'correct' || this.state.phase === 'explain') return;
+    this.check(optIndex);
+  }
+  onTextChange(e) { this.setState({ textInput: e.target.value }); }
+  submitGap() {
+    if (this.state.phase === 'correct' || this.state.phase === 'explain') return;
+    const item = this.state.items[this.state.index];
+    const ok = (item.accept || []).some(a => a.toLowerCase() === (this.state.textInput || '').trim().toLowerCase());
+    this.check(ok ? item.correct ?? 0 : -1, ok);
+  }
+  check(optIndex, forcedOk) {
+    const item = this.state.items[this.state.index];
+    const ok = forcedOk !== undefined ? forcedOk : optIndex === item.correct;
+    const attempt = this.state.attempt + 1;
+    if (ok) {
+      if (this._drill) this._drill.recordSkillResult(item.skill, true);
+      this.setState({ selected: optIndex, phase: 'correct', attempt });
+    } else if (attempt >= 3) {
+      if (this._drill) { this._drill.recordSkillResult(item.skill, false); this._drill.addToReviewQueue(item.skill); }
+      this.setState({ selected: optIndex, phase: 'explain', attempt });
+    } else {
+      this.setState({ selected: optIndex, phase: attempt === 1 ? 'retry' : 'hint', attempt });
+    }
+  }
+  next() {
+    this.setState({ index: this.state.index + 1, attempt: 0, phase: 'answer', textInput: '', selected: null });
+  }
+
+  renderVals() {
+    const items = this.state.items;
+    const total = items.length;
+    const isDone = total > 0 && this.state.index >= total;
+    const noItems = total === 0;
+    const item = !isDone && !noItems ? items[this.state.index] : null;
+    const poolLabels = { grammar: '3 MINUTES · GRAMMAR', vocab: '3 MINUTES · VOCABULARY', mixed: '5 MINUTES · MIXED', review: 'PRACTISE THESE 3' };
+
+    let options = [];
+    if (item && item.type !== 'gapfill') {
+      options = item.options.map((label, oi) => {
+        let border = 'rgba(21,23,26,0.2)', bg = '#fff';
+        if (this.state.selected !== null) {
+          if (oi === item.correct) { border = '#FFC340'; bg = 'rgba(255,195,64,0.16)'; }
+          else if (oi === this.state.selected) { border = '#671C25'; bg = 'rgba(103,28,37,0.06)'; }
+        }
+        return { label, border, bg, onSelect: () => this.select(oi) };
+      });
+    }
+
+    return {
+      hasItems: !noItems, noItems, isDone, notDone: !isDone && !noItems,
+      total, posDisplay: this.state.index + 1,
+      poolLabel: poolLabels[this.state.pool] || 'PRACTICE',
+      item: item ? { prompt: item.prompt, hint: item.hint, explain: item.explain, isChoice: item.type !== 'gapfill', isGapfill: item.type === 'gapfill', options } : { prompt: '', options: [] },
+      textInput: this.state.textInput,
+      onTextChange: (e) => this.onTextChange(e),
+      onSubmitGap: () => this.submitGap(),
+      showRetry: this.state.phase === 'retry',
+      showHint: this.state.phase === 'hint',
+      showExplain: this.state.phase === 'explain',
+      showCorrect: this.state.phase === 'correct',
+      showNext: this.state.phase === 'correct' || this.state.phase === 'explain',
+      onNext: () => this.next(),
+    };
+  }
+}
+</script>
+</body>
+</html>

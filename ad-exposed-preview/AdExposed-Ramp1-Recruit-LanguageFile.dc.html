@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#fff;}
+    a{color:#671C25;text-decoration:none;}
+    a:hover{color:#4d151c;}
+  </style>
+</helmet>
+<div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
+
+  <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
+        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:32px;">
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9C6B12;padding-bottom:4px;border-bottom:2px solid #FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
+        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
+        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+    <div>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 01 · Recruit / Language File</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
+      <input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" />
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;gap:24px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;flex-wrap:wrap;">
+      <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="4">
+        <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Language File</div>
+        <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
+        </sc-if>
+        <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
+      </div>
+
+      <!-- Practice launchers -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;">
+        <a href="AdExposed-Ramp1-Recruit-Drill.dc.html?pool=grammar" style="display:block;background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:10px;padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;color:#9C6B12;">3 MINUTES</div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:14px;color:#15171A;margin-top:4px;">GRAMMAR</div>
+        </a>
+        <a href="AdExposed-Ramp1-Recruit-Drill.dc.html?pool=vocab" style="display:block;background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:10px;padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;color:#9C6B12;">3 MINUTES</div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:14px;color:#15171A;margin-top:4px;">VOCABULARY</div>
+        </a>
+        <a href="AdExposed-Ramp1-Recruit-Drill.dc.html?pool=mixed" style="display:block;background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:10px;padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;color:#9C6B12;">5 MINUTES</div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:14px;color:#15171A;margin-top:4px;">MIXED</div>
+        </a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-top:14px;">
+        <div style="background:#F7F1E4;border-radius:10px;padding:18px 20px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#671C25;">RECRUIT Readiness</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+            <sc-for list="{{ readiness }}" as="r" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;"><span>{{ r.label }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#671C25;">{{ r.status }}</span></div>
+                <div style="height:6px;border-radius:4px;background:rgba(21,23,26,0.1);margin-top:5px;overflow:hidden;"><div style="height:100%;width:{{ r.width }};background:#9C6B12;"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#FFFEFA;border:1px solid rgba(21,23,26,0.14);border-radius:10px;padding:18px 20px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#671C25;">My Review</div>
+          <sc-if value="{{ hasWeak }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+              <sc-for list="{{ weakSkills }}" as="w" hint-placeholder-count="3"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#15171A;">· {{ w }}</div></sc-for>
+            </div>
+            <a href="AdExposed-Ramp1-Recruit-Drill.dc.html?pool=review" style="display:inline-block;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:#671C25;">Practise these →</a>
+          </sc-if>
+          <sc-if value="{{ noWeak }}" hint-placeholder-val="{{ true }}">
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#6B6A63;margin-top:10px;">Nothing flagged yet.</div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- Grammar -->
+      <div style="margin-top:36px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#6B6A63;text-transform:uppercase;margin-bottom:12px;">Grammar</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ grammarRef }}" as="g" hint-placeholder-count="6">
+            <div style="background:#FFFEFA;border:1px solid rgba(21,23,26,0.12);border-radius:8px;padding:12px 16px;">
+              <span style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:13px;color:#15171A;">{{ g.name }}</span>
+              <span style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#6B6A63;"> — {{ g.example }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div style="margin-top:32px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#6B6A63;text-transform:uppercase;margin-bottom:12px;">Vocabulary — 20 terms</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <sc-for list="{{ vocabRef }}" as="v" hint-placeholder-count="20">
+            <div style="background:#FFFEFA;border:1px solid rgba(21,23,26,0.12);border-radius:8px;padding:10px 14px;">
+              <span style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:12.5px;color:#15171A;">{{ v.term }}</span>
+              <span style="font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#6B6A63;"> — {{ v.def }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Common mistakes -->
+      <div style="margin-top:32px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#6B6A63;text-transform:uppercase;margin-bottom:12px;">Common Mistakes</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ mistakes }}" as="m" hint-placeholder-count="9">
+            <div style="display:flex;gap:10px;align-items:baseline;font-family:'IBM Plex Sans',sans-serif;font-size:13px;">
+              <span style="color:#671C25;">✗ {{ m.wrong }}</span>
+              <span style="color:#6B6A63;">→</span>
+              <span style="color:#2A7864;">✓ {{ m.correct }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Useful language -->
+      <div style="margin-top:32px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#6B6A63;text-transform:uppercase;margin-bottom:12px;">Useful Language</div>
+        <div style="background:#F7F1E4;border-radius:10px;padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <sc-for list="{{ usefulLanguage }}" as="u" hint-placeholder-count="15">
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#15171A;">• {{ u }}</div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">This section is not open yet. Ask your teacher to unlock it.</div>
+  </div>
+  </sc-if>
+
+  <div style="border-top:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
+      <a href="AdExposed-Ramp1-Recruit-Practice.dc.html" style="color:#9C6B12;">← Extra Practice</a>
+      <a href="AdExposed-Ramp1-Recruit-Checkpoint.dc.html" style="color:#9C6B12;">Checkpoint →</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const GRAMMAR_REF = [
+  { name: 'be', example: "AURÉLIA is the brand behind Crème Lumière." },
+  { name: 'have got', example: "AURÉLIA has got a new slogan this year." },
+  { name: 'there is / there are', example: "There are three different media in the AURÉLIA campaign." },
+  { name: 'Present Simple', example: "SIGNAL investigates every campaign carefully." },
+  { name: 'Present Continuous', example: "Right now, SIGNAL is investigating the AURÉLIA campaign." },
+  { name: 'Present Simple vs Present Continuous', example: "AURÉLIA usually advertises on billboards, but this month it is advertising on social media too." },
+];
+
+const VOCAB_REF = [
+  { term: 'ad / advertisement', def: "A message that tries to sell or promote something. This is an advertisement for a skincare product." },
+  { term: 'advertise', def: "To tell people about a product so they notice it or want to buy it. Lumen Skincare advertises Crème Lumière online." },
+  { term: 'advertiser', def: "The company that pays for the advertisement. Lumen Skincare is the advertiser behind AURÉLIA." },
+  { term: 'product', def: "A thing a customer can buy. Crème Lumière is a product." },
+  { term: 'service', def: "Something a company does for a customer. A gym class is a service." },
+  { term: 'brand', def: "The name and identity people recognise. AURÉLIA is the brand." },
+  { term: 'campaign', def: "A group of advertisements that share a message. The AURÉLIA campaign uses three formats." },
+  { term: 'audience', def: "The people who see or hear an advertisement. A billboard may have a very wide audience." },
+  { term: 'target audience', def: "The specific group the advertiser most wants to reach. AURÉLIA's target audience is women aged 25–45." },
+  { term: 'consumer', def: "A person who buys or uses a product. The campaign tries to persuade consumers to consider Crème Lumière." },
+  { term: 'slogan', def: "A short, memorable phrase linked to a brand." },
+  { term: 'claim', def: "A statement an advertisement makes about a product. \"Visibly smoother skin in two weeks\" is a claim." },
+  { term: 'logo', def: "A brand's visual mark. The AURÉLIA logo appears on every format." },
+  { term: 'message', def: "The main idea an advertisement communicates. The AURÉLIA message is that the cream restores radiance." },
+  { term: 'purpose', def: "The reason an advertisement exists. The purpose of the campaign is to sell Crème Lumière." },
+  { term: 'persuade', def: "To make someone want to do something. Advertisements persuade consumers to consider a product." },
+  { term: 'billboard', def: "A large outdoor advertisement seen by a wide audience." },
+  { term: 'commercial', def: "A paid advertisement broadcast on television or video." },
+  { term: 'social media ad', def: "An advertisement shown inside a social media feed or app." },
+  { term: 'medium / media', def: "The channel that carries an advertisement. The AURÉLIA campaign uses three different media." },
+];
+
+const MISTAKES = [
+  { wrong: "They is the target audience.", correct: "They are the target audience." },
+  { wrong: "AURÉLIA have got a new slogan.", correct: "AURÉLIA has got a new slogan." },
+  { wrong: "There is three media.", correct: "There are three media." },
+  { wrong: "SIGNAL investigate every campaign.", correct: "SIGNAL investigates every campaign." },
+  { wrong: "This product don't work.", correct: "This product doesn't work." },
+  { wrong: "Right now, SIGNAL investigate the campaign.", correct: "Right now, SIGNAL is investigating the campaign." },
+  { wrong: "The audience and target audience are always the same.", correct: "The audience can be wider than the target audience." },
+  { wrong: "Lumen Skincare is the advertisement.", correct: "Lumen Skincare advertises; the ad is the advertisement; Lumen Skincare is the advertiser." },
+  { wrong: "The purpose is sell more cream.", correct: "The purpose is to sell more cream." },
+];
+
+const USEFUL_LANGUAGE = ["This is an advertisement for…", "The advertiser is…", "The product / service is…", "The brand is…", "The advertisement has got…", "There is / There are…", "The slogan says…", "The claim is…", "The message is…", "The audience is…", "The target audience is…", "The purpose is to…", "The advertisement persuades consumers to…", "The company usually advertises…", "In this advertisement, the company is showing…"];
+
+class Component extends DCLogic {
+  state = { config: null, studentName: '', readinessData: { grammar: null, vocabulary: null, adAnalysis: null }, weakSkills: [] };
+
+  componentDidMount() {
+    Promise.all([import('./adexposed-shared.js'), import('./adexposed-drill.js')]).then(([shared, drill]) => {
+      this._mod = shared; this._drill = drill;
+      this.setState({ config: shared.getConfig(), studentName: shared.getStudentName(), readinessData: drill.getReadiness(), weakSkills: drill.getTopWeakSkills(3) });
+      this._poll = setInterval(() => {
+        const cfg = shared.getConfig();
+        if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg });
+        this.setState({ readinessData: drill.getReadiness(), weakSkills: drill.getTopWeakSkills(3) });
+      }, 1500);
+      this._onStorage = () => this.setState({ config: shared.getConfig() });
+      window.addEventListener('storage', this._onStorage);
+    });
+  }
+  componentWillUnmount() {
+    if (this._poll) clearInterval(this._poll);
+    if (this._onStorage) window.removeEventListener('storage', this._onStorage);
+  }
+
+  visState(key) {
+    const vis = (this.state.config && this.state.config.visibility) || {};
+    return vis[key] || 'visible';
+  }
+  onNameChange(e) {
+    const name = e.target.value;
+    this.setState({ studentName: name });
+    if (this._mod) this._mod.setStudentName(name);
+  }
+
+  renderVals() {
+    const state = this.visState('r1_languagefile');
+    const subTabs = this._mod ? this._mod.buildSubTabs({
+      rampKey: 'r1', activeSection: 'languagefile', config: this.state.config,
+      colorDark: '#9C6B12', colorAccent: '#FFC340',
+      extraSections: [{ key: 'languagefile', label: 'Language File' }],
+      hrefs: {
+        briefing: 'AdExposed-Ramp1-Recruit-Briefing.dc.html',
+        practice: 'AdExposed-Ramp1-Recruit-Practice.dc.html',
+        languagefile: 'AdExposed-Ramp1-Recruit-LanguageFile.dc.html',
+        checkpoint: 'AdExposed-Ramp1-Recruit-Checkpoint.dc.html',
+      },
+    }) : [];
+
+    const label = (pct) => pct === null || pct === undefined ? 'Not started' : (pct >= 80 ? 'Ready' : pct >= 50 ? 'Developing' : 'Building');
+    const r = this.state.readinessData || {};
+    const readiness = [
+      { label: 'Grammar', status: label(r.grammar), width: `${r.grammar ?? 6}%` },
+      { label: 'Vocabulary', status: label(r.vocabulary), width: `${r.vocabulary ?? 6}%` },
+      { label: 'Ad analysis', status: label(r.adAnalysis), width: `${r.adAnalysis ?? 6}%` },
+    ];
+
+    return {
+      studentName: this.state.studentName, onNameChange: (e) => this.onNameChange(e), subTabs,
+      shown: state !== 'hidden', hidden: state === 'hidden', frozen: state === 'frozen',
+      opacity: state === 'frozen' ? '0.5' : '1', filter: state === 'frozen' ? 'grayscale(1)' : 'none', pointerEvents: state === 'frozen' ? 'none' : 'auto',
+      readiness, hasWeak: this.state.weakSkills.length > 0, noWeak: this.state.weakSkills.length === 0, weakSkills: this.state.weakSkills,
+      grammarRef: GRAMMAR_REF, vocabRef: VOCAB_REF, mistakes: MISTAKES, usefulLanguage: USEFUL_LANGUAGE,
+    };
+  }
+}
+</script>
+</body>
+</html>

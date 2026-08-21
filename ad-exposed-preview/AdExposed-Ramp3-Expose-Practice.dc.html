@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#fff;}
+    a{color:#671C25;text-decoration:none;}
+    a:hover{color:#4d151c;}
+  </style>
+</helmet>
+<div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
+
+  <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
+        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:32px;">
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#9C6B12;border-bottom-color:#FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2A7864;padding-bottom:4px;border-bottom:2px solid #6FC4B0;">03 Expose</a>
+        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
+        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+    <div>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 03 · Expose / Extra Practice</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
+      <input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" />
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
+    <div style="display:flex;gap:28px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;">
+      <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="3">
+        <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Extra Practice</div>
+        <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
+        </sc-if>
+        <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
+      </div>
+
+      <div style="margin-top:28px;border:1px dashed rgba(21,23,26,0.25);border-radius:14px;padding:56px 40px;text-align:center;background:#FBFAF7;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2A7864;">Coming soon</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#15171A;margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;">Guided practice for Ramp 03 — extra questions with hints and retries — will be published here.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
+    <div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">This section is not open yet. Ask your teacher to unlock it.</div>
+  </div>
+  </sc-if>
+
+  <div style="border-top:1px solid rgba(21,23,26,0.1);">
+    <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
+      <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="color:#2A7864;">← Mission Briefing</a>
+      <a href="AdExposed-Ramp3-Expose-Checkpoint.dc.html" style="color:#2A7864;">Checkpoint →</a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { config: null, studentName: '' };
+
+  componentDidMount() {
+    import('./adexposed-shared.js').then(mod => {
+      this._mod = mod;
+      this.setState({ config: mod.getConfig(), studentName: mod.getStudentName() });
+      this._poll = setInterval(() => {
+        const cfg = mod.getConfig();
+        if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg });
+      }, 1500);
+      this._onStorage = () => this.setState({ config: mod.getConfig() });
+      window.addEventListener('storage', this._onStorage);
+    });
+  }
+  componentWillUnmount() {
+    if (this._poll) clearInterval(this._poll);
+    if (this._onStorage) window.removeEventListener('storage', this._onStorage);
+  }
+
+  visState(key) {
+    const vis = (this.state.config && this.state.config.visibility) || {};
+    return vis[key] || 'visible';
+  }
+
+  onNameChange(e) {
+    const name = e.target.value;
+    this.setState({ studentName: name });
+    if (this._mod) this._mod.setStudentName(name);
+  }
+
+  renderVals() {
+    const state = this.visState('r3_practice');
+    const subTabs = this._mod ? this._mod.buildSubTabs({
+      rampKey: 'r3', activeSection: 'practice', config: this.state.config,
+      colorDark: '#2A7864', colorAccent: '#6FC4B0',
+      hrefs: {
+        briefing: 'AdExposed-Ramp3-Expose-Briefing.dc.html',
+        practice: 'AdExposed-Ramp3-Expose-Practice.dc.html',
+        checkpoint: 'AdExposed-Ramp3-Expose-Checkpoint.dc.html',
+      },
+    }) : [];
+    return {
+      studentName: this.state.studentName,
+      onNameChange: (e) => this.onNameChange(e),
+      subTabs,
+      shown: state !== 'hidden',
+      hidden: state === 'hidden',
+      frozen: state === 'frozen',
+      opacity: state === 'frozen' ? '0.5' : '1',
+      filter: state === 'frozen' ? 'grayscale(1)' : 'none',
+      pointerEvents: state === 'frozen' ? 'none' : 'auto',
+    };
+  }
+}
+</script>
+</body>
+</html>
