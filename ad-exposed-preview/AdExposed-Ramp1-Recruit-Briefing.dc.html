@@ -68,23 +68,11 @@
         <div style="display:flex;align-items:baseline;gap:10px;">
           <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#FFC340;">MB-01 · Incoming transmission</span>
         </div>
-        <audio id="mb01-transmission-audio" controls="{{ true }}" src="https://fsxozhthibraurgvsxtw.supabase.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio.mp3" onEnded="{{ onTransmissionEnded }}" style="width:100%;margin-top:14px;outline:none;"></audio>
-        <div style="margin-top:14px;">
-          <button onClick="{{ onOpenTranscript }}" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ transcriptBtnColor }};background:transparent;border:1px solid {{ transcriptBtnBorder }};border-radius:20px;padding:7px 16px;cursor:{{ transcriptBtnCursor }};outline:none;">View transcript</button>
-        </div>
+        <audio id="mb01-transmission-audio" controls="{{ true }}" src="./assets/director-webb-recruit-briefing.mp3" onEnded="{{ onTransmissionEnded }}" style="width:100%;margin-top:14px;outline:none;"></audio>
+        
       </div>
 
-      <sc-if value="{{ showTranscript }}" hint-placeholder-val="{{ false }}">
-      <div onClick="{{ onCloseTranscript }}" style="position:fixed;inset:0;background:rgba(21,23,26,0.6);z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <div onClick="{{ stopInner }}" style="background:#15171A;border-radius:14px;padding:26px 30px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;">
-            <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#FFC340;">MB-01 · Transcript</span>
-            <span onClick="{{ onCloseTranscript }}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8b8a84;cursor:pointer;flex-shrink:0;">Close ✕</span>
-          </div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#F3F1EA;line-height:1.75;margin-top:16px;">"Recruit, this is Director Webb from SIGNAL Intelligence Unit. Before you can work on a real case, we need to know your starting point. Your first task is the Initial Level Test. Complete all twenty questions on your own. Some will be easy. Some may not. That is the point. This test is diagnostic. It does not count towards your academic grade. Then RECRUIT begins. You will learn to ask the first questions of every advertisement: Who is advertising? What are they promoting? Whom are they trying to reach? You will investigate the AURÉLIA campaign, identify slogans, claims and media, and prepare for the Agency Entry Test. One rule: do not guess. Read the evidence. See through the noise. Webb out."</div>
-        </div>
-      </div>
-      </sc-if>
+      
 
       <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:40px;margin-top:32px;align-items:start;">
         <div>
