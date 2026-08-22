@@ -93,5 +93,7 @@ apply_transcript_gates(root)
 from mission_transcript_runtime_repair import repair_transcript_runtimes
 repair_transcript_runtimes(root)
 
+# Durable image step: copies source art outside the generated preview tree,
+# then replaces the old R1 embedded image and R2-R4 image-slot placeholders.
 from apply_ramp_context_images import apply_ramp_context_images
 apply_ramp_context_images(root)
