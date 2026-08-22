@@ -3,6 +3,7 @@
 Status: **GOLD · LOCKED**
 Locked: 2026-08-22
 Scope: learner-facing RAMP 02 Listening Practice structure, inventory, hierarchy and navigation.
+Navigation amendment: **AD-EXPOSE Learner Navigation Gold v2** supersedes the original history-driven Back behavior.
 
 ## 1. Public practice inventory
 
@@ -54,19 +55,22 @@ Every main learner page in RAMP 01–04 uses the same hierarchy:
 
 1. global ramp navigation;
 2. breadcrumb;
-3. visible `← Back` control;
+3. visible deterministic parent arrow;
 4. visible `All ramps` escape hatch;
 5. four section tabs: `Mission Briefing`, `Listening Practice`, `Extra Practice`, `Checkpoint`;
-6. activity-level back navigation where a section contains a second interface level.
+6. activity-level parent navigation where a section contains a second interface level.
 
-`← Back` behavior:
+Parent-arrow behavior is hierarchical, never browser-history-driven:
 
-- when the learner arrived from another AD EXPOSE page on the same site, return to that previous page;
-- otherwise use a deterministic fallback;
-- on a Mission Briefing, fallback = AD EXPOSE hub;
-- on Listening Practice / Extra Practice / Checkpoint, fallback = that ramp’s Mission Briefing.
+- Mission Briefing → `← AD EXPOSE home` → Hub;
+- Listening Practice → `← Ramp XX overview` → that ramp’s Mission Briefing;
+- Extra Practice → `← Ramp XX overview` → that ramp’s Mission Briefing;
+- Checkpoint → `← Ramp XX overview` → that ramp’s Mission Briefing;
+- listening activity detail → `← All listening activities` → library.
 
-This prevents a direct or refreshed URL from creating a dead end.
+`document.referrer` and `window.history.back()` are forbidden for the site-level navigation control. This removes loops such as Listening → Mission Briefing → Listening.
+
+Canonical route details are locked in `docs/AD-EXPOSE-NAVIGATION-GOLD-v2.md`.
 
 ## 4. Locked media and security rules
 
@@ -85,12 +89,12 @@ The static publisher applies the layers in this order:
 2. Mission Briefing/audio locks;
 3. RAMP 02 DECODE Listening Gold inventory;
 4. Listening library/detail interface;
-5. site-level ramp navigation.
+5. deterministic site-level ramp navigation v2.
 
-The navigation pass validates all 16 main ramp pages before publication and also verifies that DECODE keeps its library plus all activity-to-library back controls.
+The navigation pass validates all 16 main ramp pages, RECRUIT nested routes and DECODE’s activity-to-library controls before publication. It also fails publication if history-driven site-level Back code reappears.
 
 ## 6. Gold acceptance evidence
 
-GitHub Actions publication QA passed after the final navigation matcher was anchored to the actual `subTabs` component rather than to per-ramp CSS. This makes the contract tolerant of the small visual differences between RECRUIT and later ramps while preserving one navigation behavior.
+The route audit corrected the original navigation assumption: a learner-facing Back arrow must express information architecture, not browser history. The deterministic parent graph is therefore part of the Gold contract.
 
 Future descendants should reuse this structure unless an explicit structural-change trigger is approved.
