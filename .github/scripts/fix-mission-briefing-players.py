@@ -92,3 +92,6 @@ apply_transcript_gates(root)
 
 from mission_transcript_runtime_repair import repair_transcript_runtimes
 repair_transcript_runtimes(root)
+
+from apply_ramp_context_images import apply_ramp_context_images
+apply_ramp_context_images(root)
