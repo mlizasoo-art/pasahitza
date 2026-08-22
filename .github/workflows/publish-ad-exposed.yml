@@ -8,6 +8,7 @@ on:
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
       - '.github/scripts/fix-mission-briefing-players.py'
       - '.github/scripts/apply-r2-decode-listening-gold.py'
+      - '.github/scripts/apply-jingle-lab-source-amendment.py'
       - 'docs/ad-exposed-preview-trigger.txt'
       - 'ad-exposed-preview/**'
   pull_request:
@@ -17,6 +18,7 @@ on:
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
       - '.github/scripts/fix-mission-briefing-players.py'
       - '.github/scripts/apply-r2-decode-listening-gold.py'
+      - '.github/scripts/apply-jingle-lab-source-amendment.py'
       - 'docs/ad-exposed-preview-trigger.txt'
   workflow_dispatch:
 
@@ -122,6 +124,7 @@ jobs:
 
           python3 .github/scripts/finalize-ad-exposed-audio-layout.py "$out"
           python3 .github/scripts/fix-mission-briefing-players.py "$out"
+          python3 .github/scripts/apply-jingle-lab-source-amendment.py "$out"
 
           cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
           touch "$out/.nojekyll"
@@ -150,15 +153,22 @@ jobs:
           grep -Fq 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
           grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
 
-          # DECODE Gold Listening Practice: canonical session order and source bindings.
+          # DECODE Gold Listening Practice v1.1: canonical order + amended Jingle Lab sources.
           r2="$out/AdExposed-Ramp2-Decode-Listening.dc.html"
-          grep -Fq 'data-listening-gold="v1"' "$r2"
+          grep -Fq 'data-listening-gold="v1.1"' "$r2"
           grep -Fq '01 · S05 · D-S5-W01' "$r2"
           grep -Fq 'Jingle Lab' "$r2"
-          grep -Fq 'https://www.hatads.org.uk/catalogue/record/e2c54d1f-40bc-479a-a3cc-aff7f46a3bee' "$r2"
-          grep -Fq 'https://www.doyouremember.co.uk/memory/club-biscuits' "$r2"
+          grep -Fq 'Calgon · Autoglass · Chicken Tonight · WeBuyAnyCar.com' "$r2"
+          grep -Fq '>Calgon</div>' "$r2"
+          grep -Fq 'https://www.youtube.com/watch?v=3FY0k3hLIAk' "$r2"
+          grep -Fq '>Autoglass</div>' "$r2"
+          grep -Fq 'https://www.youtube.com/watch?v=zvnvN2F1Rm4' "$r2"
           grep -Fq 'https://www.youtube.com/watch?v=x1veMqaPOxo' "$r2"
           grep -Fq 'https://www.youtube.com/watch?v=f-yEWZTBQ64' "$r2"
+          ! grep -Fq '>Mars Bar</div>' "$r2"
+          ! grep -Fq '>Jacob'"'"'s Club</div>' "$r2"
+          ! grep -Fq 'https://www.hatads.org.uk/catalogue/record/e2c54d1f-40bc-479a-a3cc-aff7f46a3bee' "$r2"
+          ! grep -Fq 'https://www.doyouremember.co.uk/memory/club-biscuits' "$r2"
           grep -Fq '02 · S07 · D-S7-01' "$r2"
           grep -Fq 'Save the Children · Most Shocking Second a Day' "$r2"
           grep -Fq 'https://www.youtube.com/watch?v=RBQ-IoHfimQ' "$r2"
@@ -184,7 +194,7 @@ jobs:
           ! find "$out" -type f \( -iname '*S10*' -o -iname '*secure*' \) | grep -q .
 
           echo 'AD_EXPOSE_STATIC_WEBSITE=PASS'
-          echo 'DECODE_LISTENING_GOLD=PASS'
+          echo 'DECODE_LISTENING_GOLD_V1_1=PASS'
 
       - name: Commit reproducible static website to current branch
         shell: bash
