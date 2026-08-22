@@ -1,0 +1,40 @@
+name: Probe natural Mission Briefings v2 live
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/verify-natural-v2-pr-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  live-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify live assets and page identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://mlizasoo-art.github.io/pasahitza/ad-exposed-preview'
+          mkdir -p /tmp/adex-probe
+          check_asset() {
+            local rel="$1" sha="$2" size="$3" out="/tmp/adex-probe/$(basename "$1")"
+            curl -fLsS -H 'Cache-Control: no-cache' "$base/$rel?qa=probe-${GITHUB_RUN_ID}" -o "$out"
+            test "$(stat --format=%s "$out")" -eq "$size"
+            test "$(sha256sum "$out" | awk '{print $1}')" = "$sha"
+          }
+          check_asset 'assets/director-webb-recruit-briefing.mp3' 657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532 955053
+          check_asset 'assets/dr-lena-vasquez-decode-briefing.mp3' b19d54fe8c52a29039fb5f8c6c491bfd4fec75bbde21ffe4f47ea344c95046ec 682153
+          check_asset 'assets/ethics-division-reviewer-expose-briefing.mp3' 5dea6401b75f145edc545191c960918df1ca360467b33f5b92513b72d7384ddc 711828
+          check_asset 'assets/the-client-final-commission.mp3' 362fc4df4290734b5b275bd2f30d22a74dd8d525832b6d1e02203e60c80b270b 690512
+          check_asset 'audio/ad-expose/decode/cleanstep-s9.mp3' a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866 577245
+          check_asset 'audio/ad-expose/expose/media-standards-s12.mp3' 715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f 989353
+          curl -fLsS -H 'Cache-Control: no-cache' "$base/AdExposed-Ramp3-Expose-Briefing.dc.html?qa=probe-${GITHUB_RUN_ID}" -o /tmp/adex-probe/r3.html
+          grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Ethics Division Reviewer — Mission Briefing' /tmp/adex-probe/r3.html
+          grep -Fq 'src="./assets/ethics-division-reviewer-expose-briefing.mp3"' /tmp/adex-probe/r3.html
+          ! grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing' /tmp/adex-probe/r3.html
+          ! grep -Eqi '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' /tmp/adex-probe/r3.html
+          echo 'NATURAL_V2_LIVE_PROBE=PASS'
