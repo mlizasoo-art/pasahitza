@@ -1,5 +1,4 @@
 from pathlib import Path
-import re
 import sys
 
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('ad-exposed-preview')
@@ -73,12 +72,11 @@ runtime = r'''
 '''
 
 
-# Insert the navigation strip immediately before the ramp subtab row. This keeps the
-# hierarchy stable: global ramp nav -> breadcrumb -> Back/All ramps -> section tabs.
-subtabs = re.compile(
-    r'(\n\s*<div style="max-width:1120px;margin:0 auto;padding:0 48px;">\s*\n\s*<div style="display:flex;gap:28px;border-bottom:1px solid rgba\(21,23,26,0\.1\);margin-top:22px;">)',
-    re.M,
-)
+# Insert immediately before the container that owns the four section tabs. We locate
+# that container from the subTabs component rather than assuming one exact gap/flex style,
+# because RECRUIT and the later ramps have slightly different tab-row CSS.
+subtabs_token = '<sc-for list="{{ subTabs }}" as="tab"'
+container_marker = '  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">'
 
 patched = []
 for path in sorted(root.glob('AdExposed-Ramp*.dc.html')):
@@ -89,13 +87,17 @@ for path in sorted(root.glob('AdExposed-Ramp*.dc.html')):
     if 'data-ramp-back-nav="v1"' in text:
         raise SystemExit(f'Ramp back navigation already present before pass: {path.name}')
 
+    tabs_index = text.find(subtabs_token)
+    if tabs_index < 0:
+        # Secondary R1 drill/language pages may not use the four-tab shell.
+        continue
+    insert_at = text.rfind(container_marker, 0, tabs_index)
+    if insert_at < 0:
+        continue
+
     fallback = 'AdExposed-Hub.dc.html' if path.name == cfg['briefing'] else cfg['briefing']
     block = nav_block(cfg['label'], fallback)
-    text, count = subtabs.subn('\n' + block + r'\1', text, count=1)
-    if count != 1:
-        # Some secondary R1 pages do not use the four-tab shell. They are left untouched;
-        # the required main learner pages are checked below.
-        continue
+    text = text[:insert_at] + block + '\n' + text[insert_at:]
 
     if '</body>' not in text:
         raise SystemExit(f'Could not locate </body> in {path.name}')
