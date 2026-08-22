@@ -1,0 +1,85 @@
+name: Fix AD EXPOSE Mission Briefing players
+
+on:
+  push:
+    paths:
+      - '.github/scripts/fix-mission-briefing-players.py'
+      - '.github/workflows/fix-mission-briefings.yml'
+      - 'docs/mission-briefing-fix-trigger.txt'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/scripts/fix-mission-briefing-players.py'
+      - '.github/workflows/fix-mission-briefings.yml'
+      - 'docs/mission-briefing-fix-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ad-exposed-mission-briefings
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Apply Webb-equivalent Mission Briefing players
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/fix-mission-briefing-players.py ad-exposed-preview
+
+          grep -Fq 'id="mb01-transmission-audio" controls="{{ true }}" src="./assets/director-webb-recruit-briefing.mp3"' ad-exposed-preview/AdExposed-Ramp1-Recruit-Briefing.dc.html
+          grep -Fq 'id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3"' ad-exposed-preview/AdExposed-Ramp2-Decode-Briefing.dc.html
+          grep -Fq 'id="mb03-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' ad-exposed-preview/AdExposed-Ramp3-Expose-Briefing.dc.html
+          grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' ad-exposed-preview/AdExposed-Ramp4-Create-Briefing.dc.html
+          ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' ad-exposed-preview/AdExposed-Ramp{1,2,3,4}-*-Briefing.dc.html
+
+          echo 'MISSION_BRIEFINGS_BUILD=PASS'
+
+      - name: Commit patched Mission Briefing pages
+        if: github.actor != 'github-actions[bot]'
+        run: |
+          set -euo pipefail
+          branch='${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}'
+          git config user.name 'ad-expose-mission-briefing[bot]'
+          git config user.email 'ad-expose-mission-briefing@users.noreply.github.com'
+          git add -- ad-exposed-preview/AdExposed-Ramp2-Decode-Briefing.dc.html ad-exposed-preview/AdExposed-Ramp3-Expose-Briefing.dc.html ad-exposed-preview/AdExposed-Ramp4-Create-Briefing.dc.html
+          if git diff --cached --quiet; then
+            echo 'Mission Briefing pages already match Webb.'
+          else
+            git commit -m 'fix: render R2-R4 Mission Briefing audio like Webb'
+            git pull --rebase origin "$branch"
+            git push origin "HEAD:${branch}"
+          fi
+
+      - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ad-exposed-preview
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
