@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/publish-ad-exposed.yml'
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
+      - '.github/scripts/fix-mission-briefing-players.py'
       - 'docs/ad-exposed-preview-trigger.txt'
       - 'ad-exposed-preview/**'
   pull_request:
@@ -13,6 +14,7 @@ on:
     paths:
       - '.github/workflows/publish-ad-exposed.yml'
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
+      - '.github/scripts/fix-mission-briefing-players.py'
       - 'docs/ad-exposed-preview-trigger.txt'
   workflow_dispatch:
 
@@ -117,6 +119,7 @@ jobs:
           test "$(stat --format=%s "$out/audio/ad-expose/expose/media-standards-s12.mp3")" -eq 989353
 
           python3 .github/scripts/finalize-ad-exposed-audio-layout.py "$out"
+          python3 .github/scripts/fix-mission-briefing-players.py "$out"
 
           cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
           touch "$out/.nojekyll"
@@ -135,17 +138,16 @@ jobs:
             grep -q '>Listening Practice</div>' "$out/$p"
           done
 
-          # Mission Briefing audio: local, named and non-autoplay.
-          grep -q 'MB-01 · RAMP 01 · RECRUIT · Director Webb — Mission Briefing' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'src="./assets/director-webb-recruit-briefing.mp3"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
-          grep -q 'src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
-          grep -q 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Ethics Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
-          grep -q 'src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
-          grep -q 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
-          grep -q 'src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
+          # Mission Briefing audio: exactly the known-working Webb DC control pattern.
+          grep -Fq 'id="mb01-transmission-audio" controls="{{ true }}" src="./assets/director-webb-recruit-briefing.mp3"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -Fq 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
+          grep -Fq 'id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
+          grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -Fq 'id="mb03-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -Fq 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
+          grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
 
-          # Listening Practice is separate from Extra Practice and ordered by session/activity.
+          # Listening Practice remains separate from Extra Practice.
           grep -q '01 · S09 · D-S9-W02 · RAMP 02 · DECODE' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
           grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
           grep -q '01 · S12 · E-S12-W01 · RAMP 03 · EXPOSE' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
@@ -158,7 +160,7 @@ jobs:
           ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$out"
           ! find "$out" -type f \( -iname '*S10*' -o -iname '*secure*' \) | grep -q .
 
-          echo 'AD_EXPOSE_FOUR_TAB_LISTENING_PRACTICE=PASS'
+          echo 'AD_EXPOSE_MISSION_BRIEFINGS_WEBB_PARITY=PASS'
 
       - name: Commit reproducible static website to current branch
         shell: bash
