@@ -1,0 +1,26 @@
+{
+  "schema_version": "ad-expose-a2-mission-briefings-live/v1",
+  "status": "PASS",
+  "checked_at": "2026-08-22T13:22:11Z",
+  "base_url": "https://mlizasoo-art.github.io/pasahitza/ad-exposed-preview",
+  "delivery_profile": {
+    "language_level": "A2",
+    "rate_multiplier": 0.88,
+    "sentence_pause_seconds": 1,
+    "major_pause_every_sentences": 3,
+    "major_pause_seconds": 2
+  },
+  "assets": {
+    "webb": {"sha256": "657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532", "size_bytes": 955053, "regenerated": false},
+    "decode": {"sha256": "efa58b1b3d699702cbe28e29f1bec0f5dbc103a69d476c4419e69dd8b2560cd2", "size_bytes": 698871},
+    "expose": {"sha256": "b5576a0deb5b3326d5115339459f236ccd98b58df18628bb7b5a8e08a9645d01", "size_bytes": 756132},
+    "create": {"sha256": "704776e139803b2b1f48c5de300848725655febb7fd4de5a6cd216f7dd6c3e84", "size_bytes": 710992}
+  },
+  "pages": {
+    "r2_player": "PASS",
+    "r3_player": "PASS",
+    "r4_player": "PASS",
+    "autoplay": false
+  },
+  "practice_listenings_changed": false
+}
