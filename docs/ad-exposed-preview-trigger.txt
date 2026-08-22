@@ -1,4 +1,4 @@
 AD EXPOSE static website publication trigger
 2026-08-22
-release: complete-audio-library-v1
-scope: mission briefings + ordered ramp listening repositories
+release: a2-mission-briefings-v1
+scope: R2/R3/R4 Mission Briefings only; Webb and Listening Practice unchanged
