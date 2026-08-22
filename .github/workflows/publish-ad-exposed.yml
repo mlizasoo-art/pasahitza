@@ -1,0 +1,148 @@
+name: Publish AD EXPOSE static website
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-ad-exposed.yml'
+      - '.github/scripts/finalize-ad-exposed-audio-layout.py'
+      - 'docs/ad-exposed-preview-trigger.txt'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/publish-ad-exposed.yml'
+      - '.github/scripts/finalize-ad-exposed-audio-layout.py'
+      - 'docs/ad-exposed-preview-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Materialize AD EXPOSE static files and complete audio library
+        shell: bash
+        run: |
+          set -euo pipefail
+          out='ad-exposed-preview'
+          base='https://unidades-app.vercel.app/ad-exposed/site'
+
+          rm -rf "$out"
+          mkdir -p "$out/assets" "$out/audio/ad-expose/decode" "$out/audio/ad-expose/expose"
+
+          files=(
+            'AdExposed-Hub.dc.html'
+            'AdExposed-Ramp1-Recruit-Briefing.dc.html'
+            'AdExposed-Ramp1-Recruit-Checkpoint.dc.html'
+            'AdExposed-Ramp1-Recruit-Drill.dc.html'
+            'AdExposed-Ramp1-Recruit-LanguageFile.dc.html'
+            'AdExposed-Ramp1-Recruit-Practice.dc.html'
+            'AdExposed-Ramp1-Recruit-WhoWhatWhom.dc.html'
+            'AdExposed-Ramp2-Decode-Briefing.dc.html'
+            'AdExposed-Ramp2-Decode-Checkpoint.dc.html'
+            'AdExposed-Ramp2-Decode-Practice.dc.html'
+            'AdExposed-Ramp3-Expose-Briefing.dc.html'
+            'AdExposed-Ramp3-Expose-Checkpoint.dc.html'
+            'AdExposed-Ramp3-Expose-Practice.dc.html'
+            'AdExposed-Ramp4-Create-Briefing.dc.html'
+            'AdExposed-Ramp4-Create-Checkpoint.dc.html'
+            'AdExposed-Ramp4-Create-Practice.dc.html'
+            'support.js'
+            'image-slot.js'
+            'adexposed-shared.js'
+            'adexposed-drill.js'
+          )
+          for f in "${files[@]}"; do
+            echo "Fetching $f"
+            curl --fail --location --retry 5 --retry-delay 2 "$base/$f" -o "$out/$f"
+            test -s "$out/$f"
+          done
+
+          echo 'Fetching locked RECRUIT Mission Briefing'
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1' \
+            -o "$out/assets/director-webb-recruit-briefing.mp3"
+
+          echo 'Fetching DECODE / EXPOSE / CREATE Mission Briefings'
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/audio/ad-expose/decode/decode-intro.mp3' \
+            -o "$out/assets/dr-lena-vasquez-decode-briefing.mp3"
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/audio/ad-expose/expose/expose-intro.mp3' \
+            -o "$out/assets/dr-lena-vasquez-expose-ethics-briefing.mp3"
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/audio/ad-expose/create/create-intro.mp3' \
+            -o "$out/assets/the-client-final-commission.mp3"
+
+          echo 'Fetching ordered ramp listening-repository files'
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/audio/ad-expose/decode/cleanstep-s9.mp3' \
+            -o "$out/audio/ad-expose/decode/cleanstep-s9.mp3"
+          curl --fail --location --retry 5 --retry-delay 2 \
+            'https://unidades-app.vercel.app/audio/ad-expose/expose/media-standards-s12.mp3' \
+            -o "$out/audio/ad-expose/expose/media-standards-s12.mp3"
+
+          cat > /tmp/ad-exposed-audio.sha256 <<'EOF'
+          657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532  ad-exposed-preview/assets/director-webb-recruit-briefing.mp3
+          4bc227e2a0bb17e6ae76cff710895dbb9bff191757b973c81c2535eb29221336  ad-exposed-preview/assets/dr-lena-vasquez-decode-briefing.mp3
+          5b282ae55ad4b4877de18a9ad538f2986d207fb6d22799c3ebf6c87a173ba576  ad-exposed-preview/assets/dr-lena-vasquez-expose-ethics-briefing.mp3
+          05b682c3cbab84e245c8b9a9c3566a2d57862ad236b5ad2ef641ff7569d41104  ad-exposed-preview/assets/the-client-final-commission.mp3
+          a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866  ad-exposed-preview/audio/ad-expose/decode/cleanstep-s9.mp3
+          715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f  ad-exposed-preview/audio/ad-expose/expose/media-standards-s12.mp3
+          EOF
+          sed -i 's/^          //' /tmp/ad-exposed-audio.sha256
+          sha256sum --check --strict /tmp/ad-exposed-audio.sha256
+
+          test "$(stat --format=%s "$out/assets/director-webb-recruit-briefing.mp3")" -eq 955053
+          test "$(stat --format=%s "$out/assets/dr-lena-vasquez-decode-briefing.mp3")" -eq 411733
+          test "$(stat --format=%s "$out/assets/dr-lena-vasquez-expose-ethics-briefing.mp3")" -eq 536285
+          test "$(stat --format=%s "$out/assets/the-client-final-commission.mp3")" -eq 469830
+          test "$(stat --format=%s "$out/audio/ad-expose/decode/cleanstep-s9.mp3")" -eq 577245
+          test "$(stat --format=%s "$out/audio/ad-expose/expose/media-standards-s12.mp3")" -eq 989353
+
+          python3 .github/scripts/finalize-ad-exposed-audio-layout.py "$out"
+
+          cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
+          touch "$out/.nojekyll"
+
+          grep -q 'MB-01 · Director Webb — RECRUIT Briefing' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'MB-02 · Dr. Lena Vasquez — DECODE Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
+          grep -q 'src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
+          grep -q 'MB-03 · Dr. Lena Vasquez — EXPOSE Ethics Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -q 'src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -q 'MB-04 · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
+          grep -q 'src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
+          grep -q 'data-listening-repository="RAMP 02 · DECODE"' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q '01 · S09 · RAMP 02 · DECODE LISTENING REPOSITORY' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q 'data-listening-repository="RAMP 03 · EXPOSE"' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          grep -q '01 · S12 · RAMP 03 · EXPOSE LISTENING REPOSITORY' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          grep -q 'src="./audio/ad-expose/expose/media-standards-s12.mp3"' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$out"
+          ! find "$out" -type f -iname '*S10*' -o -iname '*secure*' | grep -q .
+
+          echo 'AD_EXPOSE_COMPLETE_AUDIO_LIBRARY=PASS'
+
+      - name: Commit isolated static website to current branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch='${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}'
+          git config user.name 'ad-expose-preview[bot]'
+          git config user.email 'ad-expose-preview@users.noreply.github.com'
+          git add -- ad-exposed-preview
+          if git diff --cached --quiet; then
+            echo 'No static website changes to commit.'
+            exit 0
+          fi
+          git commit -m 'release: publish complete AD EXPOSE audio library'
+          git pull --rebase origin "$branch"
+          git push origin "HEAD:${branch}"
