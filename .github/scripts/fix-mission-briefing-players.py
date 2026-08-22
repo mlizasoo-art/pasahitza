@@ -103,5 +103,6 @@ apply_ramp_context_images(root)
 # remain human-readable in the publisher directory.
 runpy.run_path(str(Path(__file__).with_name('apply-r2-decode-listening-gold.py')), run_name='__main__')
 
-# Library/detail navigation layered on top of the complete Gold repository.
+# Library/detail navigation is applied only after the complete Gold inventory exists;
+# its matcher intentionally accepts extra section attributes used by SIGNAL-owned audio.
 runpy.run_path(str(Path(__file__).with_name('apply-listening-index-ui.py')), run_name='__main__')
