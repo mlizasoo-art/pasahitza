@@ -13,18 +13,18 @@ BRIEFINGS = [
         'title': 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing',
         'src': './assets/dr-lena-vasquez-decode-briefing.mp3',
         'accent': '#7EB6E8',
-        'sha256': 'efa58b1b3d699702cbe28e29f1bec0f5dbc103a69d476c4419e69dd8b2560cd2',
-        'size': 698871,
+        'sha256': 'b19d54fe8c52a29039fb5f8c6c491bfd4fec75bbde21ffe4f47ea344c95046ec',
+        'size': 682153,
     },
     {
         'page': 'AdExposed-Ramp3-Expose-Briefing.dc.html',
         'audio_id': 'AD-EXPOSE-R3-INTRO-EXPOSE-TRACK01',
         'player_id': 'mb03-transmission-audio',
-        'title': 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing',
-        'src': './assets/dr-lena-vasquez-expose-ethics-briefing.mp3',
+        'title': 'MB-03 · RAMP 03 · EXPOSE · Ethics Division Reviewer — Mission Briefing',
+        'src': './assets/ethics-division-reviewer-expose-briefing.mp3',
         'accent': '#6FC4B0',
-        'sha256': 'b5576a0deb5b3326d5115339459f236ccd98b58df18628bb7b5a8e08a9645d01',
-        'size': 756132,
+        'sha256': '5dea6401b75f145edc545191c960918df1ca360467b33f5b92513b72d7384ddc',
+        'size': 711828,
     },
     {
         'page': 'AdExposed-Ramp4-Create-Briefing.dc.html',
@@ -33,8 +33,8 @@ BRIEFINGS = [
         'title': 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission',
         'src': './assets/the-client-final-commission.mp3',
         'accent': '#F0996E',
-        'sha256': '704776e139803b2b1f48c5de300848725655febb7fd4de5a6cd216f7dd6c3e84',
-        'size': 710992,
+        'sha256': '362fc4df4290734b5b275bd2f30d22a74dd8d525832b6d1e02203e60c80b270b',
+        'size': 690512,
     },
 ]
 
@@ -67,9 +67,6 @@ for cfg in BRIEFINGS:
         raise SystemExit(f"Missing Mission Briefing page: {page}")
     text = page.read_text(encoding='utf-8')
 
-    # Replace the entire generated intro card, not only the audio tag. This
-    # deliberately mirrors the known-working Webb card structure, including
-    # the DC boolean binding controls="{{ true }}".
     pattern = re.compile(
         rf'      <div data-audio-id="{re.escape(cfg["audio_id"])}"[\s\S]*?</audio>\s*</div>',
         re.M,
