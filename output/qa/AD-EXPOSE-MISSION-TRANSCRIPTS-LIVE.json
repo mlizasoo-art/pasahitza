@@ -1,0 +1,20 @@
+{
+  "schema_version": "ad-expose-mission-transcripts-live/v1",
+  "status": "PASS",
+  "checked_at": "2026-08-22T15:22:12Z",
+  "base_url": "https://mlizasoo-art.github.io/pasahitza/ad-exposed-preview",
+  "required_complete_plays": 2,
+  "progress_storage": "localStorage",
+  "skip_forward_counts": false,
+  "transcript_after_unlock": true,
+  "replay_while_reading": true,
+  "autoplay": false,
+  "ramps": {
+    "recruit": "PASS",
+    "decode": "PASS",
+    "expose": "PASS_DISTINCT_ETHICS_REVIEWER",
+    "create": "PASS"
+  },
+  "mission_audio_bytes_changed": false,
+  "listening_practice_changed": false
+}
