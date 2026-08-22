@@ -86,3 +86,6 @@ for cfg in BRIEFINGS:
     page.write_text(text, encoding='utf-8')
 
 print('MISSION_BRIEFING_PLAYER_PARITY=PASS')
+
+from mission_briefing_transcripts import apply_transcript_gates
+apply_transcript_gates(root)
