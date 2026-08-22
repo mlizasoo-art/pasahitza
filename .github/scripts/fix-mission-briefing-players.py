@@ -107,6 +107,6 @@ runpy.run_path(str(Path(__file__).with_name('apply-r2-decode-listening-gold.py')
 # its matcher intentionally accepts extra section attributes used by SIGNAL-owned audio.
 runpy.run_path(str(Path(__file__).with_name('apply-listening-index-ui.py')), run_name='__main__')
 
-# Site-level learner navigation is the final structural pass: every main ramp page gets
-# a visible Back control with a deterministic fallback and an All ramps escape hatch.
+# Site-level learner navigation is the final structural pass. Its matcher is anchored
+# to the actual subTabs component so small per-ramp CSS differences cannot break it.
 runpy.run_path(str(Path(__file__).with_name('apply-ramp-navigation.py')), run_name='__main__')
