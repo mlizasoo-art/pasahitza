@@ -70,6 +70,20 @@
         </div>
         <audio id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3" style="width:100%;margin-top:14px;outline:none;"></audio>
       </div>
+      <div id="mb02-transmission-audio-transcript-shell" data-transcript-for="AD-EXPOSE-R2-INTRO-DECODE-TRACK01" style="margin-top:12px;border:1px solid rgba(21,23,26,0.14);border-radius:10px;padding:14px 16px;background:#FAFAF8;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#6B6A63;">Transcript</div>
+            <div id="mb02-transmission-audio-transcript-status" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#6B6A63;margin-top:4px;">Locked · complete 2 full listens first (0/2)</div>
+          </div>
+          <button id="mb02-transmission-audio-transcript-button" type="button" disabled style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(21,23,26,0.2);border-radius:6px;background:#fff;color:#8B8A84;padding:9px 13px;cursor:not-allowed;">Read transcript</button>
+        </div>
+        <div id="mb02-transmission-audio-transcript-panel" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(21,23,26,0.12);">
+          <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#7EB6E8;margin-bottom:12px;">Read + listen again</div>
+          <p style="margin:0 0 12px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#15171A;">Welcome to DECODE, Analyst. In RECRUIT, you learned the basic parts of an advert. Now you will learn how adverts persuade people.</p><p style="margin:0 0 12px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#15171A;">In this ramp, we will use three simple ideas: emotional, rational and social appeal. Emotional appeal uses feelings. Rational appeal uses facts and reasons.</p><p style="margin:0 0 12px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#15171A;">Social appeal uses groups and popularity. One advert can use more than one appeal. Your job is to find the strongest appeal and explain your answer with evidence.</p>
+          <audio id="mb02-transmission-audio-transcript-replay" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3" style="width:100%;margin-top:6px;outline:none;"></audio>
+        </div>
+      </div>
 
       <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:40px;margin-top:26px;align-items:start;">
         <div>
@@ -166,5 +180,52 @@ class Component extends DCLogic {
   }
 }
 </script>
+<!-- MISSION_TRANSCRIPT_RUNTIME:AD-EXPOSE-R2-INTRO-DECODE-TRACK01 -->
+<script>
+(function () {
+  const playerId = 'mb02-transmission-audio';
+  const storageKey = 'adex-mission-complete-plays::AD-EXPOSE-R2-INTRO-DECODE-TRACK01';
+  const requiredPlays = 2;
+  function boot() {
+    const audio = document.getElementById(playerId);
+    const button = document.getElementById(playerId + '-transcript-button');
+    const status = document.getElementById(playerId + '-transcript-status');
+    const panel = document.getElementById(playerId + '-transcript-panel');
+    const replay = document.getElementById(playerId + '-transcript-replay');
+    if (!audio || !button || !status || !panel || !replay) { setTimeout(boot, 120); return; }
+    let plays = 0;
+    try { plays = Math.max(0, Math.min(requiredPlays, Number(localStorage.getItem(storageKey) || 0))); } catch (_) {}
+    let eligible = false;
+    let invalidated = false;
+    const save = () => { try { localStorage.setItem(storageKey, String(plays)); } catch (_) {} };
+    function render() {
+      const unlocked = plays >= requiredPlays;
+      status.textContent = unlocked ? 'Unlocked · read the transcript and listen again.' : 'Locked · complete 2 full listens first (' + plays + '/2)';
+      button.disabled = !unlocked;
+      button.style.cursor = unlocked ? 'pointer' : 'not-allowed';
+      button.style.color = unlocked ? '#15171A' : '#8B8A84';
+      button.style.borderColor = unlocked ? '#7EB6E8' : 'rgba(21,23,26,0.2)';
+      if (!unlocked) panel.style.display = 'none';
+    }
+    audio.addEventListener('play', () => { if (audio.currentTime <= 1.25) { eligible = true; invalidated = false; } });
+    audio.addEventListener('seeking', () => { if (eligible && audio.currentTime > 3) invalidated = true; });
+    audio.addEventListener('ended', () => {
+      if (eligible && !invalidated && plays < requiredPlays) { plays += 1; save(); }
+      eligible = false; invalidated = false; render();
+    });
+    button.addEventListener('click', () => {
+      if (plays < requiredPlays) return;
+      const opening = panel.style.display === 'none' || !panel.style.display;
+      panel.style.display = opening ? 'block' : 'none';
+      button.textContent = opening ? 'Hide transcript' : 'Read transcript';
+      if (opening) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    replay.controls = true;
+    render();
+  }
+  boot();
+})();
+</script>
+<!-- /MISSION_TRANSCRIPT_RUNTIME:AD-EXPOSE-R2-INTRO-DECODE-TRACK01 -->
 </body>
 </html>
