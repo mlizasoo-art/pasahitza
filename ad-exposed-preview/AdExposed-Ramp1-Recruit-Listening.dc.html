@@ -25,8 +25,8 @@
         <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
       </a>
       <div style="display:flex;align-items:center;gap:32px;">
-        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#9C6B12;border-bottom-color:#FFC340;">01 Recruit</a>
-        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2F5F82;padding-bottom:4px;border-bottom:2px solid #7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9C6B12;padding-bottom:4px;border-bottom:2px solid #FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
         <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
         <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
         <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
@@ -36,7 +36,7 @@
 
   <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
     <div>
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 02 · Decode / Extra Practice</span>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 01 · Recruit / Listening Practice</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
@@ -45,7 +45,7 @@
   </div>
 
   <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
-    <div style="display:flex;gap:28px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;">
+    <div style="display:flex;gap:24px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;flex-wrap:wrap;">
       <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="4">
         <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
       </sc-for>
@@ -56,16 +56,21 @@
   <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
     <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
       <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Extra Practice</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Listening Practice</div>
         <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
           <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
         </sc-if>
         <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
       </div>
 
-      <div style="margin-top:28px;border:1px dashed rgba(21,23,26,0.25);border-radius:14px;padding:56px 40px;text-align:center;background:#FBFAF7;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2F5F82;">Coming soon</div>
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#15171A;margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;">Guided practice for Ramp 02 — extra questions with hints and retries — will be published here.</div>
+      <div data-listening-practice="RAMP 01 · RECRUIT" style="margin-top:28px;padding:18px 20px;border:1px solid rgba(21,23,26,.12);border-radius:12px;background:#fff;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9C6B12;">RAMP 01 · RECRUIT · LISTENING PRACTICE</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;line-height:1.55;color:#6B6A63;margin-top:7px;">Recordings are ordered by session and activity code so each file can be identified immediately.</div>
+      </div>
+
+      <div style="margin-top:20px;border:1px dashed rgba(21,23,26,.22);border-radius:12px;padding:24px;background:#FBFAF7;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:#9C6B12;">NO SEPARATE LISTENING FILE YET</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;line-height:1.6;color:#444;margin-top:8px;">No separate listening-practice recording is assigned to RECRUIT yet. Use the Director Webb audio in Mission Briefing.</div>
       </div>
     </div>
   </div>
@@ -78,8 +83,8 @@
 
   <div style="border-top:1px solid rgba(21,23,26,0.1);">
     <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
-      <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="color:#2F5F82;">← Mission Briefing</a>
-      <a href="AdExposed-Ramp2-Decode-Checkpoint.dc.html" style="color:#2F5F82;">Checkpoint →</a>
+      <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="color:#9C6B12;">← Mission Briefing</a>
+      <a href="AdExposed-Ramp1-Recruit-LanguageFile.dc.html" style="color:#9C6B12;">Language File →</a>
     </div>
   </div>
 
@@ -89,6 +94,8 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { config: null, studentName: '' };
+
+  talCases = ['GREEN SPOKE BIKE CO-OP', 'REWEAR COMMUNITY WORKSHOP', 'SECOND PLATE FOOD RESCUE', 'NIGHT OWL BOOKS', 'ROOT & BEAN', 'OPEN DOOR COMMUNITY ARTS', 'SUNPATCH COMMUNITY GARDENS'];
 
   componentDidMount() {
     import('./adexposed-shared.js').then(mod => {
@@ -119,20 +126,22 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const state = this.visState('r2_practice');
+    const state = this.visState('r1_listening');
     const subTabs = this._mod ? this._mod.buildSubTabs({
-      rampKey: 'r2', activeSection: 'practice', config: this.state.config,
-      colorDark: '#2F5F82', colorAccent: '#7EB6E8',
+      rampKey: 'r1', activeSection: 'listening', config: this.state.config,
+      colorDark: '#9C6B12', colorAccent: '#FFC340',
+      extraSections: [{ key: 'languagefile', label: 'Language File' }],
       hrefs: {
-        briefing: 'AdExposed-Ramp2-Decode-Briefing.dc.html',
-        practice: 'AdExposed-Ramp2-Decode-Practice.dc.html',
-        checkpoint: 'AdExposed-Ramp2-Decode-Checkpoint.dc.html',
+        briefing: 'AdExposed-Ramp1-Recruit-Briefing.dc.html',
+        practice: 'AdExposed-Ramp1-Recruit-Practice.dc.html',
+        languagefile: 'AdExposed-Ramp1-Recruit-LanguageFile.dc.html',
+        checkpoint: 'AdExposed-Ramp1-Recruit-Checkpoint.dc.html',
       },
     }) : [];
     return {
       studentName: this.state.studentName,
       onNameChange: (e) => this.onNameChange(e),
-      subTabs,
+      subTabs, talCases: this.talCases,
       shown: state !== 'hidden',
       hidden: state === 'hidden',
       frozen: state === 'frozen',
@@ -143,7 +152,5 @@ class Component extends DCLogic {
   }
 }
 </script>
-
-
 </body>
 </html>
