@@ -1,3 +1,4 @@
 AD EXPOSE static preview publication trigger
-2026-08-21
-retry: 3
+2026-08-22
+retry: 4
+purpose: canonical v2.1 audio publication
