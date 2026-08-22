@@ -23,6 +23,33 @@ def patch_webb() -> None:
         "MB-01 · Director Webb — RECRUIT Briefing",
         1,
     )
+
+    webb_sources = [
+        r'src="/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1"',
+        r'src="https://fsxozhthibraurgvsxtw\.supabase\.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio\.mp3"',
+    ]
+    for pattern in webb_sources:
+        text = re.sub(
+            pattern,
+            'src="./assets/director-webb-recruit-briefing.mp3"',
+            text,
+        )
+
+    # Preserve the locked website policy already established for Webb: player
+    # only, no learner-facing transcript control.
+    text = re.sub(
+        r'<div style="margin-top:14px;">\s*<button[^>]*onClick="\{\{ onOpenTranscript \}\}"[^>]*>View transcript</button>\s*</div>',
+        '',
+        text,
+        flags=re.S,
+    )
+    text = re.sub(
+        r'<sc-if value="\{\{ showTranscript \}\}"[^>]*>.*?</sc-if>',
+        '',
+        text,
+        flags=re.S,
+    )
+
     if 'src="./assets/director-webb-recruit-briefing.mp3"' not in text:
         raise SystemExit("Locked Webb player missing from RECRUIT Mission Briefing")
     save(path, text)
@@ -55,9 +82,9 @@ def move_practice_to_repository(
 ) -> None:
     path, text = load(name)
 
-    # The Vercel source route may already append this canonical block at the
-    # end of <body>. The static GitHub site needs the player inside the ramp's
-    # actual listening repository, not hanging below the Claude Design shell.
+    # The Vercel source route appends this canonical block at the end of the
+    # document. The GitHub static site instead presents it inside the actual
+    # ramp listening repository.
     block_re = re.compile(
         r'<!-- AD EXPOSE v2\.1 canonical audio binding: '
         + re.escape(audio_id)
@@ -84,8 +111,8 @@ def move_practice_to_repository(
         1,
     )
 
-    # Keep the existing Extra Practice navigation contract, but make the
-    # student-facing content unmistakably a listening repository.
+    # Keep the existing navigation contract, but make the learner-facing
+    # content unmistakably a listening repository.
     text = text.replace(
         ">Extra Practice</div>",
         ">Listening Repository</div>",
