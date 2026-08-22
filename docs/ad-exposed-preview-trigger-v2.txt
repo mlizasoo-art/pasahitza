@@ -1,0 +1,3 @@
+AD EXPOSE complete audio publication trigger
+2026-08-22
+scope: mission briefings + ordered ramp listening repositories
