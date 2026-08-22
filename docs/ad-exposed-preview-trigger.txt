@@ -1,3 +1,4 @@
-AD EXPOSE static preview publication trigger
-2026-08-21
-retry: 3
+AD EXPOSE static website publication trigger
+2026-08-22
+release: complete-audio-library-v1
+scope: mission briefings + ordered ramp listening repositories
