@@ -40,7 +40,7 @@ jobs:
           expected_size='955053'
 
           rm -rf "$out"
-          mkdir -p "$out/assets"
+          mkdir -p "$out/assets" "$out/audio/ad-expose/decode" "$out/audio/ad-expose/expose"
           files=(
             'AdExposed-Hub.dc.html'
             'AdExposed-Ramp1-Recruit-Briefing.dc.html'
@@ -77,14 +77,24 @@ jobs:
           echo "$expected_sha  $target" | sha256sum --check --strict
           test "$(stat --format=%s "$target")" -eq "$expected_size"
 
+          echo 'Fetching canonical v2.1 Vasquez audio assets'
+          clean="$out/audio/ad-expose/decode/cleanstep-s9.mp3"
+          standards="$out/audio/ad-expose/expose/media-standards-s12.mp3"
+          curl --fail --location --retry 5 --retry-delay 3 \
+            'https://unidades-app.vercel.app/audio/ad-expose/decode/cleanstep-s9.mp3' -o "$clean"
+          curl --fail --location --retry 5 --retry-delay 3 \
+            'https://unidades-app.vercel.app/audio/ad-expose/expose/media-standards-s12.mp3' -o "$standards"
+          echo 'a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866  '"$clean" | sha256sum --check --strict
+          echo '715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f  '"$standards" | sha256sum --check --strict
+          test "$(stat --format=%s "$clean")" -eq 577245
+          test "$(stat --format=%s "$standards")" -eq 989353
+
           python3 - "$briefing" "$local_webb" <<'PY'
           from pathlib import Path
           import re, sys
-
           path = Path(sys.argv[1])
           local_webb = sys.argv[2]
           text = path.read_text(encoding='utf-8')
-
           audio_patterns = [
               r'src="/api/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/1"',
               r'src="https://fsxozhthibraurgvsxtw\.supabase\.co/storage/v1/object/public/audio/f4ccb9e2-f32d-493d-97fb-a138703f9d28/session_1_audio\.mp3"',
@@ -95,17 +105,82 @@ jobs:
               replaced += count
           if replaced == 0 and f'src="{local_webb}"' not in text:
               raise SystemExit('Webb audio source not found in recovered briefing')
-
-          # Contract: HIDDEN_FROM_LEARNER. Remove the recovered Claude Design transcript UI.
-          text = re.sub(
-              r'<div style="margin-top:14px;">\s*<button[^>]*onClick="\{\{ onOpenTranscript \}\}"[^>]*>View transcript</button>\s*</div>',
-              '', text, flags=re.S
-          )
-          text = re.sub(
-              r'<sc-if value="\{\{ showTranscript \}\}"[^>]*>.*?</sc-if>',
-              '', text, flags=re.S
-          )
+          text = re.sub(r'<div style="margin-top:14px;">\s*<button[^>]*onClick="\{\{ onOpenTranscript \}\}"[^>]*>View transcript</button>\s*</div>', '', text, flags=re.S)
+          text = re.sub(r'<sc-if value="\{\{ showTranscript \}\}"[^>]*>.*?</sc-if>', '', text, flags=re.S)
           path.write_text(text, encoding='utf-8')
+          PY
+
+          python3 - "$out" <<'PY'
+          from pathlib import Path
+          import json, sys
+
+          root = Path(sys.argv[1])
+          bindings = [
+            {
+              'page':'AdExposed-Ramp2-Decode-Practice.dc.html',
+              'audio_id':'AD-EXPOSE-R2-S9-CLEANSTEP-TRACK01',
+              'title':'CleanStep SIGNAL Briefing',
+              'src':'./audio/ad-expose/decode/cleanstep-s9.mp3',
+              'accent':'#2F5F82',
+              'storage':'ad-expose:AD-EXPOSE-R2-S9-CLEANSTEP-TRACK01:complete-plays',
+              'transcript':'Yesterday, SIGNAL received a new advertisement for CleanStep trainers. While I was checking the campaign, I noticed the claim “100% planet-friendly.” The company said that the upper fabric used 40% recycled polyester. However, the advertisement did not explain the sole, the packaging, the transport, or the other materials in the shoe. I am not saying that the product is environmentally harmful. The company also has a real recycling programme. My conclusion is simpler: one environmental benefit does not prove that the whole product is “100% planet-friendly.” The claim is broader than the evidence.'
+            },
+            {
+              'page':'AdExposed-Ramp3-Expose-Practice.dc.html',
+              'audio_id':'AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01',
+              'title':'SIGNAL Media Standards Briefing',
+              'src':'./audio/ad-expose/expose/media-standards-s12.mp3',
+              'accent':'#2A7864',
+              'storage':'ad-expose:AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01:complete-plays',
+              'transcript':'People raise concerns about advertising for many different reasons. First, some audiences need extra care. Children, for example, may find it difficult to recognise persuasive techniques, and adults sometimes complain when child celebrities are used to promote fast food or toys. Another common concern is representation. Some adverts have shown women mainly as objects used to sell products, while others repeat narrow ideas about what men or women should look like or do. Violence presented as funny can also cause complaints. Alcohol advertising near content for children is another sensitive issue. Beauty advertising creates a different problem when bodies are heavily edited or when one body type is repeatedly presented as the ideal. This can connect advertising with body image and social pressure. Remember: a complaint does not automatically prove that an advert is illegal or unethical. For SIGNAL, complaints are clues. Analysts still need to examine the actual message, audience, evidence and context before reaching a judgement.'
+            }
+          ]
+
+          for b in bindings:
+            path = root / b['page']
+            text = path.read_text(encoding='utf-8')
+            marker = f'data-audio-id="{b["audio_id"]}"'
+            if marker in text:
+              continue
+            dom_id = 'signal-audio-' + ''.join(ch if ch.isalnum() else '-' for ch in b['audio_id'].lower())
+            panel = f'''
+<!-- AD EXPOSE v2.1 canonical audio binding: {b['audio_id']} -->
+<section id="{dom_id}" data-audio-id="{b['audio_id']}" style="max-width:980px;margin:24px auto;padding:20px;border:1px solid rgba(21,23,26,.22);border-radius:14px;background:#FBFAF7;color:#15171A;font-family:'IBM Plex Sans',sans-serif;box-sizing:border-box">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:{b['accent']};margin-bottom:7px">SIGNAL AUDIO BRIEFING</div>
+  <h2 style="font-size:22px;line-height:1.15;margin:0 0 8px">{b['title']}</h2>
+  <p style="margin:0 0 14px;line-height:1.5;color:#555">Listen to the complete briefing twice. The transcript unlocks after your first complete play.</p>
+  <audio controls preload="metadata" src="{b['src']}" style="width:100%"></audio>
+  <div data-play-status style="margin-top:9px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600">Complete plays: 0/2</div>
+  <button type="button" data-transcript-button disabled style="margin-top:12px;padding:9px 12px;border:1px solid #15171A;border-radius:7px;background:#15171A;color:#fff;font-weight:700;cursor:pointer;opacity:.55">Transcript locked</button>
+  <div data-transcript hidden style="margin-top:14px;padding:14px;border-left:4px solid {b['accent']};background:#fff;line-height:1.6"></div>
+</section>
+<script>
+(() => {{
+  const root = document.getElementById({json.dumps(dom_id)});
+  if (!root) return;
+  const player = root.querySelector('audio');
+  const status = root.querySelector('[data-play-status]');
+  const button = root.querySelector('[data-transcript-button]');
+  const panel = root.querySelector('[data-transcript]');
+  const key = {json.dumps(b['storage'])};
+  const transcript = {json.dumps(b['transcript'], ensure_ascii=False)};
+  let plays = Math.max(0, Number(localStorage.getItem(key) || 0));
+  const render = () => {{
+    status.textContent = 'Complete plays: ' + Math.min(plays, 2) + '/2';
+    if (plays >= 1) {{ button.disabled = false; button.textContent = panel.hidden ? 'Show transcript' : 'Hide transcript'; button.style.opacity = '1'; }}
+  }};
+  player.addEventListener('ended', () => {{ plays = Math.min(2, plays + 1); localStorage.setItem(key, String(plays)); render(); }});
+  button.addEventListener('click', () => {{
+    if (plays < 1) return;
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden && !panel.textContent) panel.textContent = transcript;
+    button.textContent = panel.hidden ? 'Show transcript' : 'Hide transcript';
+  }});
+  render();
+}})();
+</script>'''
+            text = text.replace('</body>', panel + '\n</body>')
+            path.write_text(text, encoding='utf-8')
           PY
 
           cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
@@ -117,8 +192,16 @@ jobs:
           grep -q 'src="./assets/director-webb-recruit-briefing.mp3"' "$briefing"
           ! grep -q 'View transcript' "$briefing"
           ! grep -q 'MB-01 · Transcript' "$briefing"
+          grep -q 'data-audio-id="AD-EXPOSE-R2-S9-CLEANSTEP-TRACK01"' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q './audio/ad-expose/decode/cleanstep-s9.mp3' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q 'data-audio-id="AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01"' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          grep -q './audio/ad-expose/expose/media-standards-s12.mp3' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          grep -q 'Transcript locked' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q 'Complete plays:' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
           test -s "$target"
-          echo 'STATIC_PREVIEW_AUDIO_GOLD=PASS'
+          test -s "$clean"
+          test -s "$standards"
+          echo 'STATIC_PREVIEW_AUDIO_V2_1=PASS'
 
       - name: Commit isolated preview to current branch
         shell: bash
@@ -132,5 +215,5 @@ jobs:
             echo 'No preview changes to commit.'
             exit 0
           fi
-          git commit -m 'feat: publish AD EXPOSE with locked local Webb audio'
+          git commit -m 'feat: publish AD EXPOSE v2.1 canonical audio'
           git push origin "HEAD:${branch}"
