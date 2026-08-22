@@ -106,3 +106,7 @@ runpy.run_path(str(Path(__file__).with_name('apply-r2-decode-listening-gold.py')
 # Library/detail navigation is applied only after the complete Gold inventory exists;
 # its matcher intentionally accepts extra section attributes used by SIGNAL-owned audio.
 runpy.run_path(str(Path(__file__).with_name('apply-listening-index-ui.py')), run_name='__main__')
+
+# Site-level learner navigation is the final structural pass. Its matcher is anchored
+# to the actual subTabs component so small per-ramp CSS differences cannot break it.
+runpy.run_path(str(Path(__file__).with_name('apply-ramp-navigation.py')), run_name='__main__')
