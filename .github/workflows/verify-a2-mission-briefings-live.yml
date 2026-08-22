@@ -1,4 +1,4 @@
-name: Verify natural A2 Mission Briefings live
+name: Verify Mission Briefing transcript gates live
 
 on:
   push:
@@ -19,86 +19,75 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify live GitHub Pages Mission Briefings v2
+      - name: Verify live Mission Briefing transcript flow
         shell: bash
         run: |
           set -euo pipefail
           base='https://mlizasoo-art.github.io/pasahitza/ad-exposed-preview'
           mkdir -p /tmp/adex-live output/qa
 
-          wait_for_asset() {
-            local url="$1" file="$2" sha="$3" size="$4"
+          wait_for_page() {
+            local url="$1" file="$2" marker="$3"
             for i in $(seq 1 30); do
-              if curl -fLsS -H 'Cache-Control: no-cache' "${url}?qa=natural-v2-${i}" -o "$file"; then
-                got_size=$(stat --format=%s "$file")
-                got_sha=$(sha256sum "$file" | awk '{print $1}')
-                if [ "$got_size" = "$size" ] && [ "$got_sha" = "$sha" ]; then
-                  return 0
-                fi
+              if curl -fLsS -H 'Cache-Control: no-cache' "${url}?qa=transcript-v1-${i}" -o "$file"; then
+                if grep -Fq "$marker" "$file"; then return 0; fi
               fi
               sleep 10
             done
-            echo "Live asset did not converge: $url" >&2
-            echo "size=$(stat --format=%s "$file" 2>/dev/null || echo missing) sha=$(sha256sum "$file" 2>/dev/null | awk '{print $1}' || true)" >&2
+            echo "Live page did not converge: $url" >&2
             return 1
           }
 
-          wait_for_asset "$base/assets/director-webb-recruit-briefing.mp3" /tmp/adex-live/webb.mp3 657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532 955053
-          wait_for_asset "$base/assets/dr-lena-vasquez-decode-briefing.mp3" /tmp/adex-live/decode.mp3 b19d54fe8c52a29039fb5f8c6c491bfd4fec75bbde21ffe4f47ea344c95046ec 682153
-          wait_for_asset "$base/assets/ethics-division-reviewer-expose-briefing.mp3" /tmp/adex-live/expose.mp3 5dea6401b75f145edc545191c960918df1ca360467b33f5b92513b72d7384ddc 711828
-          wait_for_asset "$base/assets/the-client-final-commission.mp3" /tmp/adex-live/create.mp3 362fc4df4290734b5b275bd2f30d22a74dd8d525832b6d1e02203e60c80b270b 690512
-          wait_for_asset "$base/audio/ad-expose/decode/cleanstep-s9.mp3" /tmp/adex-live/cleanstep.mp3 a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866 577245
-          wait_for_asset "$base/audio/ad-expose/expose/media-standards-s12.mp3" /tmp/adex-live/media-standards.mp3 715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f 989353
+          wait_for_page "$base/AdExposed-Ramp1-Recruit-Briefing.dc.html" /tmp/adex-live/r1.html 'id="mb01-transmission-audio-transcript-shell"'
+          wait_for_page "$base/AdExposed-Ramp2-Decode-Briefing.dc.html" /tmp/adex-live/r2.html 'id="mb02-transmission-audio-transcript-shell"'
+          wait_for_page "$base/AdExposed-Ramp3-Expose-Briefing.dc.html" /tmp/adex-live/r3.html 'id="mb03-transmission-audio-transcript-shell"'
+          wait_for_page "$base/AdExposed-Ramp4-Create-Briefing.dc.html" /tmp/adex-live/r4.html 'id="mb04-transmission-audio-transcript-shell"'
 
-          curl -fLsS -H 'Cache-Control: no-cache' "$base/AdExposed-Ramp2-Decode-Briefing.dc.html?qa=natural-v2" -o /tmp/adex-live/r2.html
-          curl -fLsS -H 'Cache-Control: no-cache' "$base/AdExposed-Ramp3-Expose-Briefing.dc.html?qa=natural-v2" -o /tmp/adex-live/r3.html
-          curl -fLsS -H 'Cache-Control: no-cache' "$base/AdExposed-Ramp4-Create-Briefing.dc.html?qa=natural-v2" -o /tmp/adex-live/r4.html
+          for n in 1 2 3 4; do
+            f="/tmp/adex-live/r${n}.html"
+            grep -Fq 'const requiredPlays = 2;' "$f"
+            grep -Fq 'Locked · complete 2 full listens first (0/2)' "$f"
+            grep -Fq 'Unlocked · read the transcript and listen again.' "$f"
+            grep -Fq 'localStorage.setItem(storageKey, String(plays))' "$f"
+            grep -Fq 'Read + listen again' "$f"
+            ! grep -Eqi '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$f"
+          done
 
-          grep -Fq 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' /tmp/adex-live/r2.html
-          grep -Fq 'id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3"' /tmp/adex-live/r2.html
-          grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Ethics Division Reviewer — Mission Briefing' /tmp/adex-live/r3.html
-          grep -Fq 'id="mb03-transmission-audio" controls="{{ true }}" src="./assets/ethics-division-reviewer-expose-briefing.mp3"' /tmp/adex-live/r3.html
-          ! grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing' /tmp/adex-live/r3.html
-          grep -Fq 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' /tmp/adex-live/r4.html
-          grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' /tmp/adex-live/r4.html
-          ! grep -Eqi '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' /tmp/adex-live/r2.html /tmp/adex-live/r3.html /tmp/adex-live/r4.html
+          grep -Fq 'id="mb01-transmission-audio-transcript-replay"' /tmp/adex-live/r1.html
+          grep -Fq 'id="mb02-transmission-audio-transcript-replay"' /tmp/adex-live/r2.html
+          grep -Fq 'id="mb03-transmission-audio-transcript-replay"' /tmp/adex-live/r3.html
+          grep -Fq 'id="mb04-transmission-audio-transcript-replay"' /tmp/adex-live/r4.html
 
-          cat > output/qa/AD-EXPOSE-A2-MISSION-BRIEFINGS-LIVE.json <<EOF
+          grep -Fq 'Recruit, this is Director Webb from SIGNAL Intelligence Unit.' /tmp/adex-live/r1.html
+          grep -Fq 'Welcome to DECODE, Analyst.' /tmp/adex-live/r2.html
+          grep -Fq 'Ethics Division Reviewer — Mission Briefing' /tmp/adex-live/r3.html
+          grep -Fq 'Is the advert fair and responsible?' /tmp/adex-live/r3.html
+          grep -Fq 'The Client — Final Commission' /tmp/adex-live/r4.html
+          grep -Fq 'Make something SIGNAL can support.' /tmp/adex-live/r4.html
+
+          cat > output/qa/AD-EXPOSE-MISSION-TRANSCRIPTS-LIVE.json <<EOF
           {
-            "schema_version": "ad-expose-a2-mission-briefings-live/v2",
+            "schema_version": "ad-expose-mission-transcripts-live/v1",
             "status": "PASS",
             "checked_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "base_url": "$base",
-            "delivery_profile": {
-              "language_level": "A2",
-              "mode": "chunk_paced_v2",
-              "rate_multiplier": 0.88,
-              "chunk_sentences": 3,
-              "sentence_pause_seconds": 1,
-              "major_pause_every_sentences": 3,
-              "major_pause_seconds": 2
+            "required_complete_plays": 2,
+            "progress_storage": "localStorage",
+            "skip_forward_counts": false,
+            "transcript_after_unlock": true,
+            "replay_while_reading": true,
+            "autoplay": false,
+            "ramps": {
+              "recruit": "PASS",
+              "decode": "PASS",
+              "expose": "PASS_DISTINCT_ETHICS_REVIEWER",
+              "create": "PASS"
             },
-            "assets": {
-              "webb": {"sha256": "657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532", "size_bytes": 955053, "regenerated": false},
-              "decode": {"speaker": "Dr. Lena Vasquez", "sha256": "b19d54fe8c52a29039fb5f8c6c491bfd4fec75bbde21ffe4f47ea344c95046ec", "size_bytes": 682153},
-              "expose": {"speaker": "Ethics Division Reviewer", "personal_name": null, "sha256": "5dea6401b75f145edc545191c960918df1ca360467b33f5b92513b72d7384ddc", "size_bytes": 711828},
-              "create": {"speaker": "The Client · Office of Media Integrity", "personal_name": null, "sha256": "362fc4df4290734b5b275bd2f30d22a74dd8d525832b6d1e02203e60c80b270b", "size_bytes": 690512}
-            },
-            "pages": {
-              "r2_player": "PASS",
-              "r3_player": "PASS",
-              "r3_identity": "PASS_DISTINCT_REVIEWER",
-              "r4_player": "PASS",
-              "autoplay": false
-            },
-            "practice_listenings": {
-              "changed": false,
-              "cleanstep_sha256": "a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866",
-              "media_standards_sha256": "715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f"
-            }
+            "mission_audio_bytes_changed": false,
+            "listening_practice_changed": false
           }
           EOF
-          echo 'NATURAL_A2_MISSION_BRIEFINGS_LIVE=PASS'
+          echo 'MISSION_BRIEFING_TRANSCRIPTS_LIVE=PASS'
 
       - name: Persist live QA evidence
         shell: bash
@@ -106,11 +95,11 @@ jobs:
           set -euo pipefail
           git config user.name 'ad-expose-live-qa[bot]'
           git config user.email 'ad-expose-live-qa@users.noreply.github.com'
-          git add output/qa/AD-EXPOSE-A2-MISSION-BRIEFINGS-LIVE.json
+          git add output/qa/AD-EXPOSE-MISSION-TRANSCRIPTS-LIVE.json
           if git diff --cached --quiet; then
             echo 'Live QA evidence already current.'
           else
-            git commit -m 'qa: record natural A2 Mission Briefings live PASS'
+            git commit -m 'qa: record Mission Briefing transcript gates live PASS'
             git pull --rebase origin main
             git push origin HEAD:main
           fi
