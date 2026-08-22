@@ -7,6 +7,7 @@ on:
       - '.github/workflows/publish-ad-exposed.yml'
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
       - '.github/scripts/fix-mission-briefing-players.py'
+      - '.github/scripts/apply-r2-decode-listening-gold.py'
       - 'docs/ad-exposed-preview-trigger.txt'
       - 'ad-exposed-preview/**'
   pull_request:
@@ -15,6 +16,7 @@ on:
       - '.github/workflows/publish-ad-exposed.yml'
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
       - '.github/scripts/fix-mission-briefing-players.py'
+      - '.github/scripts/apply-r2-decode-listening-gold.py'
       - 'docs/ad-exposed-preview-trigger.txt'
   workflow_dispatch:
 
@@ -92,7 +94,7 @@ jobs:
             'https://unidades-app.vercel.app/audio/ad-expose/create/create-intro.mp3' \
             -o "$out/assets/the-client-final-commission.mp3"
 
-          echo 'Fetching learner listening-practice files (unchanged in this release)'
+          echo 'Fetching learner listening-practice files'
           curl --fail --location --retry 5 --retry-delay 2 \
             'https://unidades-app.vercel.app/audio/ad-expose/decode/cleanstep-s9.mp3' \
             -o "$out/audio/ad-expose/decode/cleanstep-s9.mp3"
@@ -138,7 +140,7 @@ jobs:
             grep -q '>Listening Practice</div>' "$out/$p"
           done
 
-          # Mission Briefing audio: exactly the known-working Webb DC control pattern.
+          # Mission Briefing audio: exactly the known-working DC control pattern.
           grep -Fq 'id="mb01-transmission-audio" controls="{{ true }}" src="./assets/director-webb-recruit-briefing.mp3"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
           grep -Fq 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
           grep -Fq 'id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
@@ -148,9 +150,29 @@ jobs:
           grep -Fq 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
           grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
 
-          # Listening Practice remains separate from Extra Practice and byte-locked.
-          grep -q '01 · S09 · D-S9-W02 · RAMP 02 · DECODE' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
-          grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
+          # DECODE Gold Listening Practice: canonical session order and source bindings.
+          r2="$out/AdExposed-Ramp2-Decode-Listening.dc.html"
+          grep -Fq 'data-listening-gold="v1"' "$r2"
+          grep -Fq '01 · S05 · D-S5-W01' "$r2"
+          grep -Fq 'Jingle Lab' "$r2"
+          grep -Fq 'https://www.hatads.org.uk/catalogue/record/e2c54d1f-40bc-479a-a3cc-aff7f46a3bee' "$r2"
+          grep -Fq 'https://www.doyouremember.co.uk/memory/club-biscuits' "$r2"
+          grep -Fq 'https://www.youtube.com/watch?v=x1veMqaPOxo' "$r2"
+          grep -Fq 'https://www.youtube.com/watch?v=f-yEWZTBQ64' "$r2"
+          grep -Fq '02 · S07 · D-S7-01' "$r2"
+          grep -Fq 'Save the Children · Most Shocking Second a Day' "$r2"
+          grep -Fq 'https://www.youtube.com/watch?v=RBQ-IoHfimQ' "$r2"
+          grep -Fq '03 · S08 · D-S8-01' "$r2"
+          grep -Fq 'Dove · Real Beauty Sketches' "$r2"
+          grep -Fq 'https://www.dove.com/us/en/campaigns/purpose/real-beauty-sketches.html' "$r2"
+          grep -Fq '04 · S09 · D-S9-W02' "$r2"
+          grep -Fq 'CleanStep SIGNAL Briefing' "$r2"
+          grep -Fq 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$r2"
+          grep -Fq 'Transcript locked · complete one full listen' "$r2"
+          ! grep -q 'D-S10' "$r2"
+          ! grep -q 'SECURE-LISTENING' "$r2"
+
+          # EXPOSE remains byte-locked and separate from Extra Practice.
           grep -q '01 · S12 · E-S12-W01 · RAMP 03 · EXPOSE' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
           grep -q 'src="./audio/ad-expose/expose/media-standards-s12.mp3"' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
           grep -q '>Extra Practice</div>' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
@@ -161,7 +183,8 @@ jobs:
           ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$out"
           ! find "$out" -type f \( -iname '*S10*' -o -iname '*secure*' \) | grep -q .
 
-          echo 'AD_EXPOSE_NATURAL_MISSION_BRIEFINGS=PASS'
+          echo 'AD_EXPOSE_STATIC_WEBSITE=PASS'
+          echo 'DECODE_LISTENING_GOLD=PASS'
 
       - name: Commit reproducible static website to current branch
         shell: bash
@@ -174,7 +197,7 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No static website changes to commit.'
           else
-            git commit -m 'release: publish natural AD EXPOSE Mission Briefings'
+            git commit -m 'release: publish AD EXPOSE static website'
             git pull --rebase origin "$branch"
             git push origin "HEAD:${branch}"
           fi

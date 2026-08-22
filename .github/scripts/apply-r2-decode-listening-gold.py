@@ -1,63 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
-  <style>
-    body{margin:0;background:#fff;}
-    a{color:#671C25;text-decoration:none;}
-    a:hover{color:#4d151c;}
-  </style>
-</helmet>
-<div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
+from pathlib import Path
+import re
+import sys
 
-  <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
-    <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
-        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
-      </a>
-      <div style="display:flex;align-items:center;gap:32px;">
-        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#9C6B12;border-bottom-color:#FFC340;">01 Recruit</a>
-        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2F5F82;padding-bottom:4px;border-bottom:2px solid #7EB6E8;">02 Decode</a>
-        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
-        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
-        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
-      </div>
-    </div>
-  </div>
+root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('ad-exposed-preview')
+page = root / 'AdExposed-Ramp2-Decode-Listening.dc.html'
+if not page.exists():
+    raise SystemExit(f'Missing DECODE Listening Practice page: {page}')
 
-  <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-    <div>
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 02 · Decode / Listening Practice</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
-      <input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" />
-    </div>
-  </div>
+text = page.read_text(encoding='utf-8')
+shown_marker = '  <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">'
+hidden_marker = '  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">'
+start = text.find(shown_marker)
+end = text.find(hidden_marker)
+if start < 0 or end < 0 or end <= start:
+    raise SystemExit('Could not locate DECODE Listening Practice shown shell')
 
-  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
-    <div style="display:flex;gap:28px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;">
-      <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="4">
-        <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
-      </sc-for>
-    </div>
-  </div>
+cleanstep_transcript = (
+    'Yesterday, SIGNAL received a new advertisement for CleanStep trainers. '
+    'While I was checking the campaign, I noticed the claim “100% planet-friendly.” '
+    'The company said that the upper fabric used 40% recycled polyester. '
+    'However, the advertisement did not explain the sole, the packaging, the transport, or the other materials in the shoe. '
+    'I am not saying that the product is environmentally harmful. '
+    'The company also has a real recycling programme. '
+    'My conclusion is simpler: one environmental benefit does not prove that the whole product is “100% planet-friendly.” '
+    'The claim is broader than the evidence.'
+)
 
-  <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">
+shown = f'''  <sc-if value="{{{{ shown }}}}" hint-placeholder-val="{{{{ true }}}}">
   <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
-    <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
+    <div style="opacity:{{{{ opacity }}}};filter:{{{{ filter }}}};pointer-events:{{{{ pointerEvents }}}};">
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Listening Practice</div>
-        <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{{{ frozen }}}}" hint-placeholder-val="{{{{ false }}}}">
           <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
         </sc-if>
         <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
@@ -164,7 +138,7 @@
           <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;line-height:1.55;color:#D8D8D5;margin-top:6px;">Listen twice. First identify the main problem; then locate the evidence. The practice transcript unlocks after your first complete attempt for error analysis.</div>
         </div>
         <div style="padding:20px 22px;">
-          <audio id="cleanstep-practice-audio" data-cleanstep-main controls="{{ true }}" preload="metadata" src="./audio/ad-expose/decode/cleanstep-s9.mp3" style="width:100%;"></audio>
+          <audio id="cleanstep-practice-audio" data-cleanstep-main controls="{{{{ true }}}}" preload="metadata" src="./audio/ad-expose/decode/cleanstep-s9.mp3" style="width:100%;"></audio>
           <div data-cleanstep-status style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:#2F5F82;">Complete plays: 0/2</div>
 
           <div data-practice-quiz="cleanstep" style="margin-top:20px;">
@@ -180,8 +154,8 @@
             <button type="button" data-cleanstep-transcript-button disabled style="padding:9px 12px;border:1px solid #171717;border-radius:8px;background:#fff;color:#8B8A84;font-weight:700;cursor:not-allowed;">Transcript locked · complete one full listen</button>
             <div data-cleanstep-transcript hidden style="margin-top:14px;padding:15px 16px;border-left:4px solid #2F5F82;background:#F4F1E7;line-height:1.62;font-size:13.5px;">
               <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#2F5F82;margin-bottom:8px;">Read + listen again</div>
-              <div>Yesterday, SIGNAL received a new advertisement for CleanStep trainers. While I was checking the campaign, I noticed the claim “100% planet-friendly.” The company said that the upper fabric used 40% recycled polyester. However, the advertisement did not explain the sole, the packaging, the transport, or the other materials in the shoe. I am not saying that the product is environmentally harmful. The company also has a real recycling programme. My conclusion is simpler: one environmental benefit does not prove that the whole product is “100% planet-friendly.” The claim is broader than the evidence.</div>
-              <audio controls="{{ true }}" preload="metadata" src="./audio/ad-expose/decode/cleanstep-s9.mp3" style="width:100%;margin-top:12px;"></audio>
+              <div>{cleanstep_transcript}</div>
+              <audio controls="{{{{ true }}}}" preload="metadata" src="./audio/ad-expose/decode/cleanstep-s9.mp3" style="width:100%;margin-top:12px;"></audio>
             </div>
           </div>
         </div>
@@ -189,82 +163,12 @@
     </div>
   </div>
   </sc-if>
-  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">
-  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
-    <div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">This section is not open yet. Ask your teacher to unlock it.</div>
-  </div>
-  </sc-if>
+'''
 
-  <div style="border-top:1px solid rgba(21,23,26,0.1);">
-    <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
-      <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="color:#2F5F82;">← Mission Briefing</a>
-      <a href="AdExposed-Ramp2-Decode-Checkpoint.dc.html" style="color:#2F5F82;">Checkpoint →</a>
-    </div>
-  </div>
+text = text[:start] + shown + text[end:]
 
-</div>
-
-</x-dc>
-<script type="text/x-dc" data-dc-script>
-class Component extends DCLogic {
-  state = { config: null, studentName: '' };
-
-  componentDidMount() {
-    import('./adexposed-shared.js').then(mod => {
-      this._mod = mod;
-      this.setState({ config: mod.getConfig(), studentName: mod.getStudentName() });
-      this._poll = setInterval(() => {
-        const cfg = mod.getConfig();
-        if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg });
-      }, 1500);
-      this._onStorage = () => this.setState({ config: mod.getConfig() });
-      window.addEventListener('storage', this._onStorage);
-    });
-  }
-  componentWillUnmount() {
-    if (this._poll) clearInterval(this._poll);
-    if (this._onStorage) window.removeEventListener('storage', this._onStorage);
-  }
-
-  visState(key) {
-    const vis = (this.state.config && this.state.config.visibility) || {};
-    return vis[key] || 'visible';
-  }
-
-  onNameChange(e) {
-    const name = e.target.value;
-    this.setState({ studentName: name });
-    if (this._mod) this._mod.setStudentName(name);
-  }
-
-  renderVals() {
-    const state = this.visState('r2_listening');
-    const subTabs = this._mod ? this._mod.buildSubTabs({
-      rampKey: 'r2', activeSection: 'listening', config: this.state.config,
-      colorDark: '#2F5F82', colorAccent: '#7EB6E8',
-      hrefs: {
-        briefing: 'AdExposed-Ramp2-Decode-Briefing.dc.html',
-        practice: 'AdExposed-Ramp2-Decode-Practice.dc.html',
-        checkpoint: 'AdExposed-Ramp2-Decode-Checkpoint.dc.html',
-      },
-    }) : [];
-    return {
-      studentName: this.state.studentName,
-      onNameChange: (e) => this.onNameChange(e),
-      subTabs,
-      shown: state !== 'hidden',
-      hidden: state === 'hidden',
-      frozen: state === 'frozen',
-      opacity: state === 'frozen' ? '0.5' : '1',
-      filter: state === 'frozen' ? 'grayscale(1)' : 'none',
-      pointerEvents: state === 'frozen' ? 'none' : 'auto',
-    };
-  }
-}
-</script>
-
-
-
+runtime_marker = '<!-- DECODE LISTENING GOLD RUNTIME -->'
+runtime = r'''
 <!-- DECODE LISTENING GOLD RUNTIME -->
 <script>
 (() => {
@@ -371,6 +275,29 @@ class Component extends DCLogic {
   setTimeout(refresh, 1200);
 })();
 </script>
+'''
 
-</body>
-</html>
+if runtime_marker in text:
+    text = re.sub(r'<!-- DECODE LISTENING GOLD RUNTIME -->[\s\S]*?</script>', runtime.strip(), text, count=1)
+else:
+    text = text.replace('</body>', runtime + '\n</body>', 1)
+
+required_tokens = [
+    'data-listening-gold="v1"',
+    'D-S5-W01', 'Jingle Lab',
+    'D-S7-01', 'Most Shocking Second a Day',
+    'D-S8-01', 'Real Beauty Sketches',
+    'D-S9-W02', 'CleanStep SIGNAL Briefing',
+    'data-cleanstep-main',
+    'Transcript locked · complete one full listen',
+]
+for token in required_tokens:
+    if token not in text:
+        raise SystemExit(f'Missing DECODE listening gold token: {token}')
+if re.search(r'<audio[^>]*\sautoplay(?:\s|=|>)', text, re.I):
+    raise SystemExit('Autoplay detected in DECODE Listening Practice')
+if 'D-S10' in text or 'SECURE-LISTENING' in text:
+    raise SystemExit('Secure checkpoint listening leaked into DECODE Listening Practice')
+
+page.write_text(text, encoding='utf-8')
+print('DECODE_LISTENING_GOLD=PASS')

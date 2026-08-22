@@ -1,6 +1,7 @@
 from pathlib import Path
 import hashlib
 import re
+import runpy
 import sys
 
 root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('ad-exposed-preview')
@@ -97,3 +98,7 @@ repair_transcript_runtimes(root)
 # then replaces the old R1 embedded image and R2-R4 image-slot placeholders.
 from apply_ramp_context_images import apply_ramp_context_images
 apply_ramp_context_images(root)
+
+# Gold Listening Practice step for DECODE. Run as a script so its filename can
+# remain human-readable in the publisher directory.
+runpy.run_path(str(Path(__file__).with_name('apply-r2-decode-listening-gold.py')), run_name='__main__')
