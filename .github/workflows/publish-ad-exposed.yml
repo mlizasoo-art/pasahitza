@@ -87,12 +87,12 @@ jobs:
             -o "$out/assets/dr-lena-vasquez-decode-briefing.mp3"
           curl --fail --location --retry 5 --retry-delay 2 \
             'https://unidades-app.vercel.app/audio/ad-expose/expose/expose-intro.mp3' \
-            -o "$out/assets/dr-lena-vasquez-expose-ethics-briefing.mp3"
+            -o "$out/assets/ethics-division-reviewer-expose-briefing.mp3"
           curl --fail --location --retry 5 --retry-delay 2 \
             'https://unidades-app.vercel.app/audio/ad-expose/create/create-intro.mp3' \
             -o "$out/assets/the-client-final-commission.mp3"
 
-          echo 'Fetching learner listening-practice files'
+          echo 'Fetching learner listening-practice files (unchanged in this release)'
           curl --fail --location --retry 5 --retry-delay 2 \
             'https://unidades-app.vercel.app/audio/ad-expose/decode/cleanstep-s9.mp3' \
             -o "$out/audio/ad-expose/decode/cleanstep-s9.mp3"
@@ -102,9 +102,9 @@ jobs:
 
           cat > /tmp/ad-exposed-audio.sha256 <<'EOF'
           657f76613b76444b538fd6b9371f66ce6ebc84c9fdc34a1d76d35eb2c8795532  ad-exposed-preview/assets/director-webb-recruit-briefing.mp3
-          efa58b1b3d699702cbe28e29f1bec0f5dbc103a69d476c4419e69dd8b2560cd2  ad-exposed-preview/assets/dr-lena-vasquez-decode-briefing.mp3
-          b5576a0deb5b3326d5115339459f236ccd98b58df18628bb7b5a8e08a9645d01  ad-exposed-preview/assets/dr-lena-vasquez-expose-ethics-briefing.mp3
-          704776e139803b2b1f48c5de300848725655febb7fd4de5a6cd216f7dd6c3e84  ad-exposed-preview/assets/the-client-final-commission.mp3
+          b19d54fe8c52a29039fb5f8c6c491bfd4fec75bbde21ffe4f47ea344c95046ec  ad-exposed-preview/assets/dr-lena-vasquez-decode-briefing.mp3
+          5dea6401b75f145edc545191c960918df1ca360467b33f5b92513b72d7384ddc  ad-exposed-preview/assets/ethics-division-reviewer-expose-briefing.mp3
+          362fc4df4290734b5b275bd2f30d22a74dd8d525832b6d1e02203e60c80b270b  ad-exposed-preview/assets/the-client-final-commission.mp3
           a9097bf58c757f157323ce321050e5cf57d0f87de427fb87480ffc57018f4866  ad-exposed-preview/audio/ad-expose/decode/cleanstep-s9.mp3
           715a0ab53fcbef1a0e67b53855c24b5861ff7b2dfad414fc76a336c62190925f  ad-exposed-preview/audio/ad-expose/expose/media-standards-s12.mp3
           EOF
@@ -112,9 +112,9 @@ jobs:
           sha256sum --check --strict /tmp/ad-exposed-audio.sha256
 
           test "$(stat --format=%s "$out/assets/director-webb-recruit-briefing.mp3")" -eq 955053
-          test "$(stat --format=%s "$out/assets/dr-lena-vasquez-decode-briefing.mp3")" -eq 698871
-          test "$(stat --format=%s "$out/assets/dr-lena-vasquez-expose-ethics-briefing.mp3")" -eq 756132
-          test "$(stat --format=%s "$out/assets/the-client-final-commission.mp3")" -eq 710992
+          test "$(stat --format=%s "$out/assets/dr-lena-vasquez-decode-briefing.mp3")" -eq 682153
+          test "$(stat --format=%s "$out/assets/ethics-division-reviewer-expose-briefing.mp3")" -eq 711828
+          test "$(stat --format=%s "$out/assets/the-client-final-commission.mp3")" -eq 690512
           test "$(stat --format=%s "$out/audio/ad-expose/decode/cleanstep-s9.mp3")" -eq 577245
           test "$(stat --format=%s "$out/audio/ad-expose/expose/media-standards-s12.mp3")" -eq 989353
 
@@ -142,12 +142,13 @@ jobs:
           grep -Fq 'id="mb01-transmission-audio" controls="{{ true }}" src="./assets/director-webb-recruit-briefing.mp3"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
           grep -Fq 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
           grep -Fq 'id="mb02-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
-          grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
-          grep -Fq 'id="mb03-transmission-audio" controls="{{ true }}" src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Ethics Division Reviewer — Mission Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -Fq 'id="mb03-transmission-audio" controls="{{ true }}" src="./assets/ethics-division-reviewer-expose-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          ! grep -Fq 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
           grep -Fq 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
           grep -Fq 'id="mb04-transmission-audio" controls="{{ true }}" src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
 
-          # Listening Practice remains separate from Extra Practice.
+          # Listening Practice remains separate from Extra Practice and byte-locked.
           grep -q '01 · S09 · D-S9-W02 · RAMP 02 · DECODE' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
           grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
           grep -q '01 · S12 · E-S12-W01 · RAMP 03 · EXPOSE' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
@@ -160,7 +161,7 @@ jobs:
           ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$out"
           ! find "$out" -type f \( -iname '*S10*' -o -iname '*secure*' \) | grep -q .
 
-          echo 'AD_EXPOSE_MISSION_BRIEFINGS_WEBB_PARITY=PASS'
+          echo 'AD_EXPOSE_NATURAL_MISSION_BRIEFINGS=PASS'
 
       - name: Commit reproducible static website to current branch
         shell: bash
@@ -173,7 +174,7 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No static website changes to commit.'
           else
-            git commit -m 'release: publish AD EXPOSE listening practice navigation'
+            git commit -m 'release: publish natural AD EXPOSE Mission Briefings'
             git pull --rebase origin "$branch"
             git push origin "HEAD:${branch}"
           fi
