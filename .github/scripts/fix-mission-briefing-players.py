@@ -89,3 +89,6 @@ print('MISSION_BRIEFING_PLAYER_PARITY=PASS')
 
 from mission_briefing_transcripts import apply_transcript_gates
 apply_transcript_gates(root)
+
+from mission_transcript_runtime_repair import repair_transcript_runtimes
+repair_transcript_runtimes(root)
