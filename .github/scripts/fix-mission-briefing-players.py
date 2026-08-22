@@ -13,8 +13,8 @@ BRIEFINGS = [
         'title': 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing',
         'src': './assets/dr-lena-vasquez-decode-briefing.mp3',
         'accent': '#7EB6E8',
-        'sha256': '4bc227e2a0bb17e6ae76cff710895dbb9bff191757b973c81c2535eb29221336',
-        'size': 411733,
+        'sha256': 'efa58b1b3d699702cbe28e29f1bec0f5dbc103a69d476c4419e69dd8b2560cd2',
+        'size': 698871,
     },
     {
         'page': 'AdExposed-Ramp3-Expose-Briefing.dc.html',
@@ -23,8 +23,8 @@ BRIEFINGS = [
         'title': 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Mission Briefing',
         'src': './assets/dr-lena-vasquez-expose-ethics-briefing.mp3',
         'accent': '#6FC4B0',
-        'sha256': '5b282ae55ad4b4877de18a9ad538f2986d207fb6d22799c3ebf6c87a173ba576',
-        'size': 536285,
+        'sha256': 'b5576a0deb5b3326d5115339459f236ccd98b58df18628bb7b5a8e08a9645d01',
+        'size': 756132,
     },
     {
         'page': 'AdExposed-Ramp4-Create-Briefing.dc.html',
@@ -33,8 +33,8 @@ BRIEFINGS = [
         'title': 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission',
         'src': './assets/the-client-final-commission.mp3',
         'accent': '#F0996E',
-        'sha256': '05b682c3cbab84e245c8b9a9c3566a2d57862ad236b5ad2ef641ff7569d41104',
-        'size': 469830,
+        'sha256': '704776e139803b2b1f48c5de300848725655febb7fd4de5a6cd216f7dd6c3e84',
+        'size': 710992,
     },
 ]
 
