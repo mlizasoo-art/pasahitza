@@ -15,133 +15,141 @@
     body{margin:0;background:#fff;}
     a{color:#671C25;text-decoration:none;}
     a:hover{color:#4d151c;}
+    .listen-card{margin-top:28px;border:1px solid rgba(47,95,130,.22);border-radius:14px;background:#FBFAF7;padding:28px;}
+    .listen-kicker{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#2F5F82;}
+    .listen-title{font-size:24px;font-weight:700;color:#15171A;margin-top:8px;}
+    .listen-copy{font-size:14px;line-height:1.65;color:#444;margin-top:8px;max-width:760px;}
+    .player-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:20px;padding:18px;border:1px solid rgba(21,23,26,.12);border-radius:10px;background:#fff;}
+    .player-row audio{width:min(560px,100%);}
+    .play-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#2F5F82;}
+    .task-block{margin-top:26px;padding-top:22px;border-top:1px solid rgba(21,23,26,.12);}
+    .task-block h3{font-size:17px;margin:0 0 14px;color:#15171A;}
+    .q{margin:16px 0 20px;}
+    .q legend{font-weight:600;font-size:14px;line-height:1.5;margin-bottom:8px;}
+    .opt{display:block;margin:7px 0;font-size:13.5px;line-height:1.45;}
+    .opt input{margin-right:8px;}
+    .action-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:26px;}
+    .action-btn{border:0;border-radius:7px;padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;background:#2F5F82;color:#fff;}
+    .action-btn[disabled]{opacity:.38;cursor:not-allowed;}
+    .status-box{font-size:13px;line-height:1.55;color:#444;}
+    .transcript{display:none;margin-top:22px;border-left:3px solid #7EB6E8;background:#fff;padding:18px 20px;font-size:13.5px;line-height:1.7;color:#25282b;}
+    .transcript.open{display:block;}
+    .attempt-note{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;margin-top:8px;}
   </style>
 </helmet>
 <div style="min-height:100vh;font-family:'IBM Plex Sans',sans-serif;background:#fff;">
 
   <div style="position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid rgba(21,23,26,0.1);">
     <div style="max-width:1120px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;">
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;">
-        <span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span>
-      </a>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.14em;"><span style="color:#6B6A63;"> · </span><span style="color:#671C25;">AD EXPOSED</span></a>
       <div style="display:flex;align-items:center;gap:32px;">
-        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#9C6B12;border-bottom-color:#FFC340;">01 Recruit</a>
+        <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;">01 Recruit</a>
         <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2F5F82;padding-bottom:4px;border-bottom:2px solid #7EB6E8;">02 Decode</a>
-        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
-        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
-        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;">03 Expose</a>
+        <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;">04 Create</a>
+        <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);">Teacher ↗</a>
       </div>
     </div>
   </div>
 
   <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-    <div>
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 02 · Decode / Extra Practice</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
-      <input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" />
-    </div>
+    <div><a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 02 · Decode / Extra Practice</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span><input value="{{ studentName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:#15171A;border:1px solid rgba(21,23,26,0.25);border-radius:6px;padding:5px 10px;width:140px;outline:none;" /></div>
   </div>
 
-  <div style="max-width:1120px;margin:0 auto;padding:0 48px;">
-    <div style="display:flex;gap:28px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;">
-      <sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="3">
-        <div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div>
-      </sc-for>
-    </div>
-  </div>
+  <div style="max-width:1120px;margin:0 auto;padding:0 48px;"><div style="display:flex;gap:28px;border-bottom:1px solid rgba(21,23,26,0.1);margin-top:22px;"><sc-for list="{{ subTabs }}" as="tab" hint-placeholder-count="3"><div onClick="{{ tab.onClick }}" style="padding:0 0 12px 0;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ tab.color }};border-bottom:2px solid {{ tab.borderColor }};cursor:{{ tab.cursor }};">{{ tab.label }}</div></sc-for></div></div>
 
   <sc-if value="{{ shown }}" hint-placeholder-val="{{ true }}">
   <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
     <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Extra Practice</div>
-        <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
-          <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
-        </sc-if>
-        <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:14px;"><div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Extra Practice</div><sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span></sc-if><div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div></div>
 
-      <div style="margin-top:28px;border:1px dashed rgba(21,23,26,0.25);border-radius:14px;padding:56px 40px;text-align:center;background:#FBFAF7;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2F5F82;">Coming soon</div>
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#15171A;margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;">Guided practice for Ramp 02 — extra questions with hints and retries — will be published here.</div>
-      </div>
+      <section class="listen-card" id="D-S9-W02">
+        <div class="listen-kicker">D-S9-W02 · Listening Mini-Checkpoint</div>
+        <div class="listen-title">CleanStep SIGNAL Briefing</div>
+        <div class="listen-copy">Listen twice. Complete every item before your first submission. The transcript stays locked until that first complete attempt; after it unlocks, you may use it for error analysis and revise your answers once.</div>
+
+        <div class="player-row">
+          <audio id="cleanstep-audio" controls preload="metadata" src="./assets/cleanstep-s9.mp3"></audio>
+          <div class="play-count" id="cleanstep-play-count">Complete listens: 0 / 2</div>
+        </div>
+
+        <form id="cleanstep-form">
+          <div class="task-block">
+            <h3>EOI-style Task 1 — Multiple Choice</h3>
+            <fieldset class="q"><legend>1. What problem does Vasquez identify?</legend><label class="opt"><input type="radio" name="c1" value="A">A. No brand name</label><label class="opt"><input type="radio" name="c1" value="B">B. The environmental claim is broader than the evidence</label><label class="opt"><input type="radio" name="c1" value="C">C. The trainers are too expensive</label></fieldset>
+            <fieldset class="q"><legend>2. Which part contains recycled material?</legend><label class="opt"><input type="radio" name="c2" value="A">A. Sole</label><label class="opt"><input type="radio" name="c2" value="B">B. Box</label><label class="opt"><input type="radio" name="c2" value="C">C. Upper fabric</label></fieldset>
+            <fieldset class="q"><legend>3. What information is not explained?</legend><label class="opt"><input type="radio" name="c3" value="A">A. Remaining materials, transport and packaging</label><label class="opt"><input type="radio" name="c3" value="B">B. Company name</label><label class="opt"><input type="radio" name="c3" value="C">C. Product size</label></fieldset>
+            <fieldset class="q"><legend>4. What is Vasquez’s conclusion?</legend><label class="opt"><input type="radio" name="c4" value="A">A. The product definitely harms the environment</label><label class="opt"><input type="radio" name="c4" value="B">B. One environmental benefit does not prove the whole product is “100% planet-friendly”</label><label class="opt"><input type="radio" name="c4" value="C">C. Recycled material is always misleading</label></fieldset>
+          </div>
+
+          <div class="task-block">
+            <h3>EOI-style Task 2 — True / False / Not Stated</h3>
+            <fieldset class="q"><legend>1. The upper fabric contains 40% recycled polyester.</legend><label class="opt"><input type="radio" name="t1" value="T">True</label><label class="opt"><input type="radio" name="t1" value="F">False</label><label class="opt"><input type="radio" name="t1" value="NS">Not Stated</label></fieldset>
+            <fieldset class="q"><legend>2. The advert explains the packaging and transport.</legend><label class="opt"><input type="radio" name="t2" value="T">True</label><label class="opt"><input type="radio" name="t2" value="F">False</label><label class="opt"><input type="radio" name="t2" value="NS">Not Stated</label></fieldset>
+            <fieldset class="q"><legend>3. Vasquez says the product definitely damages the environment.</legend><label class="opt"><input type="radio" name="t3" value="T">True</label><label class="opt"><input type="radio" name="t3" value="F">False</label><label class="opt"><input type="radio" name="t3" value="NS">Not Stated</label></fieldset>
+            <fieldset class="q"><legend>4. The company has a real recycling programme.</legend><label class="opt"><input type="radio" name="t4" value="T">True</label><label class="opt"><input type="radio" name="t4" value="F">False</label><label class="opt"><input type="radio" name="t4" value="NS">Not Stated</label></fieldset>
+            <fieldset class="q"><legend>5. The trainers are available in three colours.</legend><label class="opt"><input type="radio" name="t5" value="T">True</label><label class="opt"><input type="radio" name="t5" value="F">False</label><label class="opt"><input type="radio" name="t5" value="NS">Not Stated</label></fieldset>
+          </div>
+
+          <div class="action-row"><button class="action-btn" id="cleanstep-submit" type="submit">Submit first attempt</button><div class="status-box" id="cleanstep-status">Complete two full listens and answer every item.</div></div>
+          <div class="attempt-note">No answer key is displayed. After the first complete attempt, use the unlocked transcript to analyse and revise your own answers once.</div>
+        </form>
+
+        <div class="transcript" id="cleanstep-transcript"><strong>Transcript — unlocked after first complete attempt</strong><br><br>Yesterday, SIGNAL received a new advertisement for CleanStep trainers. While I was checking the campaign, I noticed the claim “100% planet-friendly.” The company said that the upper fabric used 40% recycled polyester. However, the advertisement did not explain the sole, the packaging, the transport, or the other materials in the shoe. I am not saying that the product is environmentally harmful. The company also has a real recycling programme. My conclusion is simpler: one environmental benefit does not prove that the whole product is “100% planet-friendly.” The claim is broader than the evidence.</div>
+      </section>
     </div>
   </div>
   </sc-if>
-  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}">
-  <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
-    <div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">This section is not open yet. Ask your teacher to unlock it.</div>
-  </div>
-  </sc-if>
 
-  <div style="border-top:1px solid rgba(21,23,26,0.1);">
-    <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
-      <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="color:#2F5F82;">← Mission Briefing</a>
-      <a href="AdExposed-Ramp2-Decode-Checkpoint.dc.html" style="color:#2F5F82;">Checkpoint →</a>
-    </div>
-  </div>
+  <sc-if value="{{ hidden }}" hint-placeholder-val="{{ false }}"><div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;"><div style="border:1px dashed rgba(21,23,26,0.25);border-radius:12px;padding:20px 24px;background:#FBFAF7;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;color:#6B6A63;">This section is not open yet. Ask your teacher to unlock it.</div></div></sc-if>
 
+  <div style="border-top:1px solid rgba(21,23,26,0.1);"><div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;"><a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="color:#2F5F82;">← Mission Briefing</a><a href="AdExposed-Ramp2-Decode-Checkpoint.dc.html" style="color:#2F5F82;">Checkpoint →</a></div></div>
 </div>
-
 </x-dc>
+
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { config: null, studentName: '' };
-
   componentDidMount() {
     import('./adexposed-shared.js').then(mod => {
       this._mod = mod;
       this.setState({ config: mod.getConfig(), studentName: mod.getStudentName() });
-      this._poll = setInterval(() => {
-        const cfg = mod.getConfig();
-        if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg });
-      }, 1500);
+      this._poll = setInterval(() => { const cfg = mod.getConfig(); if (JSON.stringify(cfg) !== JSON.stringify(this.state.config)) this.setState({ config: cfg }); }, 1500);
       this._onStorage = () => this.setState({ config: mod.getConfig() });
       window.addEventListener('storage', this._onStorage);
     });
   }
-  componentWillUnmount() {
-    if (this._poll) clearInterval(this._poll);
-    if (this._onStorage) window.removeEventListener('storage', this._onStorage);
-  }
-
-  visState(key) {
-    const vis = (this.state.config && this.state.config.visibility) || {};
-    return vis[key] || 'visible';
-  }
-
-  onNameChange(e) {
-    const name = e.target.value;
-    this.setState({ studentName: name });
-    if (this._mod) this._mod.setStudentName(name);
-  }
-
+  componentWillUnmount() { if (this._poll) clearInterval(this._poll); if (this._onStorage) window.removeEventListener('storage', this._onStorage); }
+  visState(key) { const vis = (this.state.config && this.state.config.visibility) || {}; return vis[key] || 'visible'; }
+  onNameChange(e) { const name = e.target.value; this.setState({ studentName: name }); if (this._mod) this._mod.setStudentName(name); }
   renderVals() {
     const state = this.visState('r2_practice');
-    const subTabs = this._mod ? this._mod.buildSubTabs({
-      rampKey: 'r2', activeSection: 'practice', config: this.state.config,
-      colorDark: '#2F5F82', colorAccent: '#7EB6E8',
-      hrefs: {
-        briefing: 'AdExposed-Ramp2-Decode-Briefing.dc.html',
-        practice: 'AdExposed-Ramp2-Decode-Practice.dc.html',
-        checkpoint: 'AdExposed-Ramp2-Decode-Checkpoint.dc.html',
-      },
-    }) : [];
-    return {
-      studentName: this.state.studentName,
-      onNameChange: (e) => this.onNameChange(e),
-      subTabs,
-      shown: state !== 'hidden',
-      hidden: state === 'hidden',
-      frozen: state === 'frozen',
-      opacity: state === 'frozen' ? '0.5' : '1',
-      filter: state === 'frozen' ? 'grayscale(1)' : 'none',
-      pointerEvents: state === 'frozen' ? 'none' : 'auto',
-    };
+    const subTabs = this._mod ? this._mod.buildSubTabs({ rampKey:'r2', activeSection:'practice', config:this.state.config, colorDark:'#2F5F82', colorAccent:'#7EB6E8', hrefs:{ briefing:'AdExposed-Ramp2-Decode-Briefing.dc.html', practice:'AdExposed-Ramp2-Decode-Practice.dc.html', checkpoint:'AdExposed-Ramp2-Decode-Checkpoint.dc.html' } }) : [];
+    return { studentName:this.state.studentName, onNameChange:(e)=>this.onNameChange(e), subTabs, shown:state!=='hidden', hidden:state==='hidden', frozen:state==='frozen', opacity:state==='frozen'?'0.5':'1', filter:state==='frozen'?'grayscale(1)':'none', pointerEvents:state==='frozen'?'none':'auto' };
   }
 }
+</script>
+<script>
+(function(){
+  const key='adexpose:D-S9-W02';
+  function start(){
+    const audio=document.getElementById('cleanstep-audio'), form=document.getElementById('cleanstep-form'), button=document.getElementById('cleanstep-submit'), status=document.getElementById('cleanstep-status'), count=document.getElementById('cleanstep-play-count'), transcript=document.getElementById('cleanstep-transcript');
+    if(!audio||!form) return setTimeout(start,120);
+    let state={plays:0,attempt:0,answers:{}};
+    try{state=Object.assign(state,JSON.parse(localStorage.getItem(key)||'{}'));}catch(e){}
+    const groups=['c1','c2','c3','c4','t1','t2','t3','t4','t5'];
+    groups.forEach(n=>{if(state.answers&&state.answers[n]){const el=form.querySelector('input[name="'+n+'"][value="'+state.answers[n]+'"]');if(el)el.checked=true;}});
+    function save(){localStorage.setItem(key,JSON.stringify(state));}
+    function complete(){return groups.every(n=>form.querySelector('input[name="'+n+'"]:checked'));}
+    function render(){count.textContent='Complete listens: '+Math.min(state.plays,2)+' / 2';if(state.attempt>=1)transcript.classList.add('open');if(state.attempt===0){button.textContent='Submit first attempt';button.disabled=!(state.plays>=2&&complete());status.textContent=state.plays<2?'Complete two full listens before submitting.':(complete()?'Ready for your first complete submission.':'Answer every item before submitting.');}else if(state.attempt===1){button.textContent='Submit one retry';button.disabled=!complete();status.textContent='Transcript unlocked. Analyse your evidence, revise if needed, then submit once more.';}else{button.textContent='Retry saved';button.disabled=true;status.textContent='Your one revision has been saved. Keep the transcript for error analysis.';form.querySelectorAll('input').forEach(x=>x.disabled=true);}}
+    audio.addEventListener('ended',()=>{state.plays=Math.min(2,(state.plays||0)+1);save();render();});
+    form.addEventListener('change',()=>{state.answers={};groups.forEach(n=>{const x=form.querySelector('input[name="'+n+'"]:checked');if(x)state.answers[n]=x.value;});save();render();});
+    form.addEventListener('submit',e=>{e.preventDefault();if(state.attempt===0&&state.plays<2)return;if(!complete())return;state.attempt=Math.min(2,(state.attempt||0)+1);save();render();transcript.scrollIntoView({behavior:'smooth',block:'nearest'});});
+    render();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
 </script>
 </body>
 </html>
