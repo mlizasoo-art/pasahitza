@@ -15,6 +15,7 @@ text = page.read_text(encoding='utf-8')
 # the specific distinction used in DECODE: a short, catchy advertising tune/phrase.
 # Calgon and Autoglass make that distinction immediately audible.
 replacements = {
+    'data-listening-gold="v1"': 'data-listening-gold="v1.1"',
     'Mars Bar · Jacob’s Club · Chicken Tonight · WeBuyAnyCar.com':
         'Calgon · Autoglass · Chicken Tonight · WeBuyAnyCar.com',
     '>Mars Bar</div>': '>Calgon</div>',
@@ -46,6 +47,7 @@ text = text.replace(
 )
 
 required = [
+    'data-listening-gold="v1.1"',
     'Calgon · Autoglass · Chicken Tonight · WeBuyAnyCar.com',
     '>Calgon</div>',
     'https://www.youtube.com/watch?v=3FY0k3hLIAk',
@@ -74,4 +76,4 @@ if 'D-S10' in text or 'SECURE-LISTENING' in text:
     raise SystemExit('Secure S10 material leaked during Jingle Lab amendment')
 
 page.write_text(text, encoding='utf-8')
-print('JINGLE_LAB_SOURCE_AMENDMENT=PASS clips=Calgon,Autoglass,ChickenTonight,WeBuyAnyCar')
+print('JINGLE_LAB_SOURCE_AMENDMENT=PASS gold=v1.1 clips=Calgon,Autoglass,ChickenTonight,WeBuyAnyCar')
