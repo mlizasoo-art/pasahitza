@@ -1,3 +1,5 @@
+import './adexposed-audio-v21.js';
+
 const CONFIG_KEY = 'adexposed_teacher_config';
 const LOG_KEY = 'adexposed_activity_log';
 const NAME_KEY = 'adexposed_student_name';
