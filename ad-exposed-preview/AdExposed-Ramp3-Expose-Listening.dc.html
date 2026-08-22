@@ -26,8 +26,8 @@
       </a>
       <div style="display:flex;align-items:center;gap:32px;">
         <a href="AdExposed-Ramp1-Recruit-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#9C6B12;border-bottom-color:#FFC340;">01 Recruit</a>
-        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2F5F82;padding-bottom:4px;border-bottom:2px solid #7EB6E8;">02 Decode</a>
-        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2A7864;border-bottom-color:#6FC4B0;">03 Expose</a>
+        <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#2F5F82;border-bottom-color:#7EB6E8;">02 Decode</a>
+        <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2A7864;padding-bottom:4px;border-bottom:2px solid #6FC4B0;">03 Expose</a>
         <a href="AdExposed-Ramp4-Create-Briefing.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#15171A;padding-bottom:4px;border-bottom:2px solid transparent;" style-hover="color:#BD5A34;border-bottom-color:#F0996E;">04 Create</a>
         <a href="AdExposed-Teacher-Dashboard.dc.html" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A63;padding-left:24px;border-left:1px solid rgba(21,23,26,0.16);" style-hover="color:#15171A;">Teacher ↗</a>
       </div>
@@ -36,7 +36,7 @@
 
   <div style="max-width:1120px;margin:0 auto;padding:20px 48px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
     <div>
-      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 02 · Decode / Extra Practice</span>
+      <a href="AdExposed-Hub.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6A63;">Ad Exposed</a><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6A63;letter-spacing:0.1em;text-transform:uppercase;"> / Ramp 03 · Expose / Listening Practice</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A63;">Signed in as</span>
@@ -56,17 +56,62 @@
   <div style="max-width:1120px;margin:0 auto;padding:32px 48px 90px;">
     <div style="opacity:{{ opacity }};filter:{{ filter }};pointer-events:{{ pointerEvents }};">
       <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Extra Practice</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#15171A;">Listening Practice</div>
         <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
           <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#6B6A63;padding:3px 9px;border-radius:4px;">Frozen by your teacher</span>
         </sc-if>
         <div style="flex:1;height:1px;background:#15171A;opacity:0.15;margin-left:6px;"></div>
       </div>
 
-      <div style="margin-top:28px;border:1px dashed rgba(21,23,26,0.25);border-radius:14px;padding:56px 40px;text-align:center;background:#FBFAF7;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2F5F82;">Coming soon</div>
-        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#15171A;margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;">Guided practice for Ramp 02 — extra questions with hints and retries — will be published here.</div>
+      <div data-listening-practice="RAMP 03 · EXPOSE" style="margin-top:28px;padding:18px 20px;border:1px solid rgba(21,23,26,.12);border-radius:12px;background:#fff;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#2A7864;">RAMP 03 · EXPOSE · LISTENING PRACTICE</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:13px;line-height:1.55;color:#6B6A63;margin-top:7px;">Recordings are ordered by session and activity code so each file can be identified immediately.</div>
       </div>
+
+<!-- AD EXPOSE v2.1 canonical audio binding: AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01 -->
+<section id="signal-audio-ad-expose-r3-s12-media-standards-track01" data-audio-id="AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01" style="max-width:980px;margin:24px auto;padding:18px 20px;border:2px solid #171717;border-radius:14px;background:#fffdf4;color:#171717;font-family:Arial,sans-serif;box-sizing:border-box">
+  <div style="font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">01 · S12 · E-S12-W01 · RAMP 03 · EXPOSE</div>
+  <h2 style="font-size:22px;line-height:1.15;margin:0 0 8px">SIGNAL Media Standards Briefing</h2>
+  <p style="margin:0 0 14px;line-height:1.45">Listen to the complete briefing twice. The transcript unlocks after your first complete play.</p>
+  <audio controls preload="metadata" src="./audio/ad-expose/expose/media-standards-s12.mp3" style="width:100%"></audio>
+  <div data-play-status style="margin-top:9px;font-size:13px;font-weight:700">Complete plays: 0/2</div>
+  <button type="button" data-transcript-button disabled style="margin-top:12px;padding:9px 12px;border:1px solid #171717;border-radius:8px;background:#171717;color:white;font-weight:700;cursor:pointer;opacity:.55">Transcript locked</button>
+  <div data-transcript hidden style="margin-top:14px;padding:14px;border-left:4px solid #171717;background:#f4f1e7;line-height:1.55"></div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById("signal-audio-ad-expose-r3-s12-media-standards-track01");
+  if (!root) return;
+  const player = root.querySelector('audio');
+  const status = root.querySelector('[data-play-status]');
+  const button = root.querySelector('[data-transcript-button]');
+  const panel = root.querySelector('[data-transcript]');
+  const required = 2;
+  const key = "ad-expose:AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01:complete-plays";
+  const transcript = "People raise concerns about advertising for many different reasons. First, some audiences need extra care. Children, for example, may find it difficult to recognise persuasive techniques, and adults sometimes complain when child celebrities are used to promote fast food or toys. Another common concern is representation. Some adverts have shown women mainly as objects used to sell products, while others repeat narrow ideas about what men or women should look like or do. Violence presented as funny can also cause complaints. Alcohol advertising near content for children is another sensitive issue. Beauty advertising creates a different problem when bodies are heavily edited or when one body type is repeatedly presented as the ideal. This can connect advertising with body image and social pressure. Remember: a complaint does not automatically prove that an advert is illegal or unethical. For SIGNAL, complaints are clues. Analysts still need to examine the actual message, audience, evidence and context before reaching a judgement.";
+  let plays = Math.max(0, Number(localStorage.getItem(key) || 0));
+  const render = () => {
+    status.textContent = 'Complete plays: ' + Math.min(plays, required) + '/' + required;
+    if (plays >= 1) {
+      button.disabled = false;
+      button.textContent = panel.hidden ? 'Show transcript' : 'Hide transcript';
+      button.style.opacity = '1';
+    }
+  };
+  player.addEventListener('ended', () => {
+    plays = Math.min(required, plays + 1);
+    localStorage.setItem(key, String(plays));
+    render();
+  });
+  button.addEventListener('click', () => {
+    if (plays < 1) return;
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden && !panel.textContent) panel.textContent = transcript;
+    button.textContent = panel.hidden ? 'Show transcript' : 'Hide transcript';
+  });
+  render();
+})();
+</script>
     </div>
   </div>
   </sc-if>
@@ -78,8 +123,8 @@
 
   <div style="border-top:1px solid rgba(21,23,26,0.1);">
     <div style="max-width:1120px;margin:0 auto;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">
-      <a href="AdExposed-Ramp2-Decode-Briefing.dc.html" style="color:#2F5F82;">← Mission Briefing</a>
-      <a href="AdExposed-Ramp2-Decode-Checkpoint.dc.html" style="color:#2F5F82;">Checkpoint →</a>
+      <a href="AdExposed-Ramp3-Expose-Briefing.dc.html" style="color:#2A7864;">← Mission Briefing</a>
+      <a href="AdExposed-Ramp3-Expose-Checkpoint.dc.html" style="color:#2A7864;">Checkpoint →</a>
     </div>
   </div>
 
@@ -119,14 +164,14 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const state = this.visState('r2_practice');
+    const state = this.visState('r3_listening');
     const subTabs = this._mod ? this._mod.buildSubTabs({
-      rampKey: 'r2', activeSection: 'practice', config: this.state.config,
-      colorDark: '#2F5F82', colorAccent: '#7EB6E8',
+      rampKey: 'r3', activeSection: 'listening', config: this.state.config,
+      colorDark: '#2A7864', colorAccent: '#6FC4B0',
       hrefs: {
-        briefing: 'AdExposed-Ramp2-Decode-Briefing.dc.html',
-        practice: 'AdExposed-Ramp2-Decode-Practice.dc.html',
-        checkpoint: 'AdExposed-Ramp2-Decode-Checkpoint.dc.html',
+        briefing: 'AdExposed-Ramp3-Expose-Briefing.dc.html',
+        practice: 'AdExposed-Ramp3-Expose-Practice.dc.html',
+        checkpoint: 'AdExposed-Ramp3-Expose-Checkpoint.dc.html',
       },
     }) : [];
     return {

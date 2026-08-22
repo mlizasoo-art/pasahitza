@@ -2,10 +2,12 @@ name: Publish AD EXPOSE static website
 
 on:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/publish-ad-exposed.yml'
       - '.github/scripts/finalize-ad-exposed-audio-layout.py'
       - 'docs/ad-exposed-preview-trigger.txt'
+      - 'ad-exposed-preview/**'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -16,9 +18,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ad-exposed-pages-${{ github.event_name }}-${{ github.event.pull_request.number || 'main' }}
+  cancel-in-progress: false
 
 jobs:
-  publish:
+  build:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +36,7 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
           fetch-depth: 0
 
-      - name: Materialize AD EXPOSE static files and complete audio library
+      - name: Materialize AD EXPOSE static files, mission briefings and listening practice
         shell: bash
         run: |
           set -euo pipefail
@@ -82,7 +90,7 @@ jobs:
             'https://unidades-app.vercel.app/audio/ad-expose/create/create-intro.mp3' \
             -o "$out/assets/the-client-final-commission.mp3"
 
-          echo 'Fetching ordered ramp listening-repository files'
+          echo 'Fetching learner listening-practice files'
           curl --fail --location --retry 5 --retry-delay 2 \
             'https://unidades-app.vercel.app/audio/ad-expose/decode/cleanstep-s9.mp3' \
             -o "$out/audio/ad-expose/decode/cleanstep-s9.mp3"
@@ -113,25 +121,46 @@ jobs:
           cp "$out/AdExposed-Hub.dc.html" "$out/index.html"
           touch "$out/.nojekyll"
 
-          grep -q 'MB-01 · Director Webb — RECRUIT Briefing' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
-          grep -q 'MB-02 · Dr. Lena Vasquez — DECODE Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
+          # Four-tab submenu contract on every ramp.
+          grep -q "label: 'Mission Briefing'" "$out/adexposed-shared.js"
+          grep -q "label: 'Listening Practice'" "$out/adexposed-shared.js"
+          grep -q "label: 'Extra Practice'" "$out/adexposed-shared.js"
+          grep -q "label: 'Checkpoint'" "$out/adexposed-shared.js"
+          for p in \
+            AdExposed-Ramp1-Recruit-Listening.dc.html \
+            AdExposed-Ramp2-Decode-Listening.dc.html \
+            AdExposed-Ramp3-Expose-Listening.dc.html \
+            AdExposed-Ramp4-Create-Listening.dc.html; do
+            test -s "$out/$p"
+            grep -q '>Listening Practice</div>' "$out/$p"
+          done
+
+          # Mission Briefing audio: local, named and non-autoplay.
+          grep -q 'MB-01 · RAMP 01 · RECRUIT · Director Webb — Mission Briefing' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'src="./assets/director-webb-recruit-briefing.mp3"' "$out/AdExposed-Ramp1-Recruit-Briefing.dc.html"
+          grep -q 'MB-02 · RAMP 02 · DECODE · Dr. Lena Vasquez — Mission Briefing' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
           grep -q 'src="./assets/dr-lena-vasquez-decode-briefing.mp3"' "$out/AdExposed-Ramp2-Decode-Briefing.dc.html"
-          grep -q 'MB-03 · Dr. Lena Vasquez — EXPOSE Ethics Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
+          grep -q 'MB-03 · RAMP 03 · EXPOSE · Dr. Lena Vasquez — Ethics Briefing' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
           grep -q 'src="./assets/dr-lena-vasquez-expose-ethics-briefing.mp3"' "$out/AdExposed-Ramp3-Expose-Briefing.dc.html"
-          grep -q 'MB-04 · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
+          grep -q 'MB-04 · RAMP 04 · CREATE · The Client — Final Commission' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
           grep -q 'src="./assets/the-client-final-commission.mp3"' "$out/AdExposed-Ramp4-Create-Briefing.dc.html"
-          grep -q 'data-listening-repository="RAMP 02 · DECODE"' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
-          grep -q '01 · S09 · RAMP 02 · DECODE LISTENING REPOSITORY' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
-          grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
-          grep -q 'data-listening-repository="RAMP 03 · EXPOSE"' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
-          grep -q '01 · S12 · RAMP 03 · EXPOSE LISTENING REPOSITORY' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
-          grep -q 'src="./audio/ad-expose/expose/media-standards-s12.mp3"' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+
+          # Listening Practice is separate from Extra Practice and ordered by session/activity.
+          grep -q '01 · S09 · D-S9-W02 · RAMP 02 · DECODE' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
+          grep -q 'src="./audio/ad-expose/decode/cleanstep-s9.mp3"' "$out/AdExposed-Ramp2-Decode-Listening.dc.html"
+          grep -q '01 · S12 · E-S12-W01 · RAMP 03 · EXPOSE' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
+          grep -q 'src="./audio/ad-expose/expose/media-standards-s12.mp3"' "$out/AdExposed-Ramp3-Expose-Listening.dc.html"
+          grep -q '>Extra Practice</div>' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          grep -q '>Extra Practice</div>' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+          ! grep -q 'AD-EXPOSE-R2-S9-CLEANSTEP-TRACK01' "$out/AdExposed-Ramp2-Decode-Practice.dc.html"
+          ! grep -q 'AD-EXPOSE-R3-S12-MEDIA-STANDARDS-TRACK01' "$out/AdExposed-Ramp3-Expose-Practice.dc.html"
+
           ! grep -R -n -E '<audio[^>]*[[:space:]]autoplay([[:space:]=>])' "$out"
-          ! find "$out" -type f -iname '*S10*' -o -iname '*secure*' | grep -q .
+          ! find "$out" -type f \( -iname '*S10*' -o -iname '*secure*' \) | grep -q .
 
-          echo 'AD_EXPOSE_COMPLETE_AUDIO_LIBRARY=PASS'
+          echo 'AD_EXPOSE_FOUR_TAB_LISTENING_PRACTICE=PASS'
 
-      - name: Commit isolated static website to current branch
+      - name: Commit reproducible static website to current branch
         shell: bash
         run: |
           set -euo pipefail
@@ -141,8 +170,32 @@ jobs:
           git add -- ad-exposed-preview
           if git diff --cached --quiet; then
             echo 'No static website changes to commit.'
-            exit 0
+          else
+            git commit -m 'release: publish AD EXPOSE listening practice navigation'
+            git pull --rebase origin "$branch"
+            git push origin "HEAD:${branch}"
           fi
-          git commit -m 'release: publish complete AD EXPOSE audio library'
-          git pull --rebase origin "$branch"
-          git push origin "HEAD:${branch}"
+
+      - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ad-exposed-preview
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy AD EXPOSE to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
