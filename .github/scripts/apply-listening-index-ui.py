@@ -83,24 +83,32 @@ index = '''
       </section>
 '''
 
-first_section = re.search(r'\n\s*<section\s+id="[^"]+"\s+data-listening-item="D-S5-W01"', text)
+first_section = re.search(r'\n\s*<section\b(?=[^>]*\bdata-listening-item="D-S5-W01")[^>]*>', text)
 if not first_section:
     raise SystemExit('Could not locate first DECODE Gold listening section')
 text = text[:first_section.start()] + '\n' + index + text[first_section.start():]
 
 # Convert each long activity block into a hidden detail view with a durable back control.
+# Match by data-listening-item regardless of attribute order or extra attributes (CleanStep
+# also carries its audio binding on the section opening).
 for activity in ACTIVITIES:
     activity_id = re.escape(activity['id'])
     pattern = re.compile(
-        rf'(<section\s+id="[^"]+"\s+data-listening-item="{activity_id}")(\s+style="[^"]*">)',
+        rf'(<section\b(?=[^>]*\bdata-listening-item="{activity_id}")[^>]*)(>)',
         re.M,
     )
     toolbar = '''
         <div data-listening-detail-toolbar style="padding:11px 18px;border-bottom:1px solid rgba(47,95,130,.12);background:#FBFCFD;">
           <button type="button" data-listening-back style="appearance:none;border:0;background:transparent;padding:4px 0;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#2F5F82;">← All listening activities</button>
         </div>'''
-    replacement = rf'\1 data-listening-detail="{activity["id"]}" hidden\2{toolbar}'
-    text, count = pattern.subn(replacement, text, count=1)
+
+    def decorate(match):
+        opening = match.group(1)
+        if 'data-listening-detail=' in opening:
+            raise SystemExit(f'Detail attributes already present for {activity["id"]}')
+        return opening + f' data-listening-detail="{activity["id"]}" hidden' + match.group(2) + toolbar
+
+    text, count = pattern.subn(decorate, text, count=1)
     if count != 1:
         raise SystemExit(f'Could not convert {activity["id"]} to detail view')
 
